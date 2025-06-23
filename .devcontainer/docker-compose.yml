@@ -43,8 +43,8 @@ services:
     volumes:
       - green_fuels_minio_data_container:/data/s3
     environment:
-      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
-      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+      MINIO_ROOT_USER: ${MINIO_USERNAME}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     command: server /data/s3 --console-address ":9001"
     restart: unless-stopped
     network_mode: host
