@@ -1,18 +1,23 @@
-schema "public" {}
+schema "public" {
+  comment = "Public schema for the application, containing all application tables and enums"
+}
 
 # Enum for transaction types
 enum "transaction_type_enum" {
-  values = ["deposit", "withdrawal", "loan", "payback"]
+  schema = schema.public
+  values = ["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"]
 }
 
 # Enum for loan types
 enum "loan_type_enum" {
-  values = ["Livestock", "Individual", "Laagodi"]
+  schema = schema.public
+  values = ["LIVESTOCK", "INDIVIDUAL", "LAAGODI"]
 }
 
 # Enum for fund types (used only if loan_type = Laagodi)
 enum "fund_type_enum" {
-  values = ["DDS funds", "Project funds"]
+  schema = schema.public
+  values = ["DDS_FUNDS", "PROJECT_FUNDS"]
 }
 
 table "supervisors" {
@@ -122,7 +127,6 @@ table "villages" {
 
   foreign_key "fk_villages_mandal" {
     columns = [column.mandal]
-    ref_table = table.mandals
     ref_columns = [table.mandals.column.id]
     on_delete = "RESTRICT"
   }
@@ -179,7 +183,6 @@ table "members" {
 
   foreign_key "fk_members_village" {
     columns = [column.village_id]
-    ref_table = table.villages
     ref_columns = [table.villages.column.id]
     on_delete = "RESTRICT"
   }
@@ -246,24 +249,22 @@ table "transactions" {
 
   foreign_key "fk_transactions_supervisor" {
     columns = [column.supervised_by]
-    ref_table = table.supervisors
     ref_columns = [table.supervisors.column.id]
     on_delete = "RESTRICT"
   }
 
   foreign_key "fk_transactions_member" {
     columns = [column.member]
-    ref_table = table.members
     ref_columns = [table.members.column.id]
     on_delete = "RESTRICT"
   }
 
   check "loan_type_required_for_loans" {
-    expr = "type != 'loan' OR loan_type IS NOT NULL"
+    expr = "type != 'LOAN' OR loan_type IS NOT NULL"
   }
 
   check "fund_type_required_for_laagodi" {
-    expr = "loan_type != 'Laagodi' OR fund_type IS NOT NULL"
+    expr = "loan_type != 'LAAGODI' OR fund_type IS NOT NULL"
   }
 
   primary_key {
