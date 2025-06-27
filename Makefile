@@ -3,7 +3,7 @@ migrate:
 	# Add your migrate command here
 	cd backend && atlas schema apply \
 	-u "postgres://postgres:@localhost:5432/postgres?sslmode=disable" \
-	--to file://schema-application.hcl \
+	--to file://schema-public.hcl \
 	--to file://schema-baseline.hcl \
 	--dev-url "docker://postgres/15"
 

@@ -235,6 +235,16 @@ table "transactions" {
     null = true
   }
 
+  column "transaction_date" {
+    type = date
+    null = false
+  }
+
+  column "recipet_number" {
+    type = text
+    null = false
+  }
+
   column "created_at" {
     type = timestamp
     null = false
