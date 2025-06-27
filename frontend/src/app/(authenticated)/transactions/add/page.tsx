@@ -33,11 +33,36 @@ import {
 } from "@/components/ui/select"
 import { getMandals, getVillages, getCustomers } from "@/lib/api-client"
 import { Mandal, Village, Customer } from "@/types/api"
+import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-  mandal: z.string(),
-  village: z.string(),
-  customer: z.string()
+  mandal: z.string().min(1, { message: "Please select a mandal" }),
+  village: z.string().min(1, { message: "Please select a village" }),
+  customer: z.string().min(1, { message: "Please select a customer" }),
+  transactionDate: z.date({ message: "Please select a transaction date" }),
+  amount: z.string().min(1, { message: "Please enter an amount" }).refine(
+    (val) => !isNaN(Number(val)) && Number(val) > 0,
+    { message: "Amount must be a positive number" }
+  ),
+  transactionType: z.enum(["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"], {
+    message: "Please select a transaction type"
+  }),
+  loanType: z.enum(["LIVESTOCK", "INDIVIDUAL", "LAAGODI"]).nullable(),
+  fundType: z.enum(["DDS_FUNDS", "PROJECT_FUNDS"]).nullable(),
+  comments: z.string().nullable()
+}).refine((data) => {
+  // Make loanType required when transactionType is LOAN
+  if (data.transactionType === "LOAN" && !data.loanType) {
+    return false;
+  }
+  // Make fundType required when loanType is LAAGODI
+  if (data.loanType === "LAAGODI" && !data.fundType) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please complete all required fields",
+  path: ["loanType"] // This will show the error on the loanType field
 });
 
 export default function AddTransactionForm() {
@@ -54,12 +79,19 @@ export default function AddTransactionForm() {
       mandal: '',
       village: '',
       customer: '',
+      amount: '',
+      transactionType: undefined,
+      loanType: null,
+      fundType: null,
+      comments: null,
     },
   });
 
   // Watch form values for dependent loading
   const selectedMandal = form.watch('mandal');
   const selectedVillage = form.watch('village');
+  const selectedTransactionType = form.watch('transactionType');
+  const selectedLoanType = form.watch('loanType');
 
   // Load mandals on component mount
   useEffect(() => {
@@ -90,6 +122,21 @@ export default function AddTransactionForm() {
       setCustomers([]);
     }
   }, [selectedVillage, selectedMandal, form]);
+
+  // Reset loan type when transaction type changes (if not LOAN)
+  useEffect(() => {
+    if (selectedTransactionType !== "LOAN") {
+      form.setValue('loanType', null);
+      form.setValue('fundType', null);
+    }
+  }, [selectedTransactionType, form]);
+
+  // Reset fund type when loan type changes (if not LAAGODI)
+  useEffect(() => {
+    if (selectedLoanType !== "LAAGODI") {
+      form.setValue('fundType', null);
+    }
+  }, [selectedLoanType, form]);
 
   const loadMandals = async () => {
     try {
@@ -136,28 +183,52 @@ export default function AddTransactionForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
+      // Format the data for API submission
+      const submissionData = {
+        ...values,
+        transactionDate: values.transactionDate?.toISOString(),
+        amount: parseInt(values.amount, 10), // Convert to integer as per schema
+      };
+      
+      console.log('Submitting transaction:', submissionData);
+      
+      // Here you would typically send to your API endpoint
+      // await createTransaction(submissionData);
+      
+      toast.success("Transaction submitted successfully!");
+      
+      // Show formatted data for now
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+          <code className="text-white">{JSON.stringify(submissionData, null, 2)}</code>
         </pre>
       );
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.error("Failed to submit the transaction. Please try again.");
     }
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
+    <div className="container mx-auto py-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Add New Transaction</h1>
+          <p className="text-muted-foreground mt-2">
+            Create a new financial transaction for a member in the DDS system.
+          </p>
+        </div>
         
-        <FormField
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
           control={form.control}
           name="mandal"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mandal</FormLabel>
+              <FormLabel>Mandal *</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -183,7 +254,7 @@ export default function AddTransactionForm() {
           name="village"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Village</FormLabel>
+              <FormLabel>Village *</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedMandal}>
                 <FormControl>
                   <SelectTrigger>
@@ -215,7 +286,7 @@ export default function AddTransactionForm() {
           name="customer"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Customer</FormLabel>
+              <FormLabel>Customer *</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!selectedVillage}>
                 <FormControl>
                   <SelectTrigger>
@@ -243,8 +314,159 @@ export default function AddTransactionForm() {
             </FormItem>
           )}
         />
+            </div>
+
+            {/* Transaction Details Section */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold">Transaction Details</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <FormField
+          control={form.control}
+          name="transactionDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Transaction Date *</FormLabel>
+              <FormControl>
+                <Input
+                  type="date"
+                  value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      field.onChange(new Date(e.target.value));
+                    }
+                  }}
+                />
+              </FormControl>
+              <FormDescription>Select the date when this transaction occurred</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount (₹) *</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="Enter amount"
+                  min="0"
+                  step="1"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>Enter the transaction amount in rupees</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="transactionType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Transaction Type *</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select transaction type" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="DEPOSIT">Deposit</SelectItem>
+                  <SelectItem value="WITHDRAWL">Withdrawal</SelectItem>
+                  <SelectItem value="LOAN">Loan</SelectItem>
+                  <SelectItem value="PAYBACK">Payback</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>Select the type of transaction</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {selectedTransactionType === "LOAN" && (
+          <FormField
+            control={form.control}
+            name="loanType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Loan Type *</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value || undefined}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select loan type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="LIVESTOCK">Livestock</SelectItem>
+                    <SelectItem value="INDIVIDUAL">Individual</SelectItem>
+                    <SelectItem value="LAAGODI">Laagodi</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Select the type of loan (required for loan transactions)</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        {selectedLoanType === "LAAGODI" && (
+          <FormField
+            control={form.control}
+            name="fundType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Fund Type *</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value || undefined}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select fund type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="DDS_FUNDS">DDS Funds</SelectItem>
+                    <SelectItem value="PROJECT_FUNDS">Project Funds</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Select the fund type (required for Laagodi loans)</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
+          name="comments"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Comments (Optional)</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Add any additional comments"
+                  {...field}
+                  value={field.value || ''}
+                />
+              </FormControl>
+              <FormDescription>Any additional notes about this transaction</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+              </div>
+            </div>
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>
+      </div>
+    </div>
   )
 }
