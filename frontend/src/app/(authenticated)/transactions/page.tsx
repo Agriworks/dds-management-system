@@ -23,17 +23,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { DatePickerWithRange } from '@/components/ui/date-picker-with-range'; // You'll need to create this component
+import { DatePickerWithRange } from '@/components/ui/date-picker-with-range';
 import { cn } from '@/lib/utils';
+import { DateRange } from 'react-day-picker';
 
 const formSchema = z.object({
     customer: z.string().min(1, { message: 'Please select a customer' }),
     product: z.string().min(1, { message: 'Please select a product' }),
     transactionId: z.string().optional(),
-    dateRange: z.object({
-        from: z.date().optional(),
-        to: z.date().optional(),
-    }).optional(),
+    dateRange: z.custom<DateRange>().optional(),
     amount: z.string().optional(),
 });
 
