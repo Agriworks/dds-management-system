@@ -1,8 +1,8 @@
 version: "3.8"
 
 volumes:
-  green-fuels-postgres-data:
-  green_fuels_minio_data_container:
+  dds-ms-postgres-data:
+  dds-ms-minio-data-container:
 
 services:
   app:
@@ -29,7 +29,7 @@ services:
     image: postgres:15
     restart: unless-stopped
     volumes:
-      - green-fuels-postgres-data:/var/lib/postgresql/data
+      - dds-ms-postgres-data:/var/lib/postgresql/data
     env_file:
       # Ensure that the variables in .env match the same variables in devcontainer.json
       - .env
@@ -41,7 +41,7 @@ services:
   s3local:
     image: minio/minio
     volumes:
-      - green_fuels_minio_data_container:/data/s3
+      - dds-ms-minio-data-container:/data/s3
     environment:
       MINIO_ROOT_USER: ${MINIO_USERNAME}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
