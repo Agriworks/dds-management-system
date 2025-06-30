@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createSuccessResponse, createErrorResponse } from '@/lib/api-utils';
-import { mockMandals } from '@/lib/mock-data';
+import { prisma } from '@/lib/prisma';
 
 /**
  * GET /api/mandals
@@ -8,11 +8,30 @@ import { mockMandals } from '@/lib/mock-data';
  */
 export async function GET(): Promise<NextResponse> {
   try {
-    // In a real application, you would fetch from a database
-    // For now, we'll use mock data with a small delay to simulate network request
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Fetch mandals from the database
+    const mandals = await prisma.mandals.findMany({
+      select: {
+        id: true,
+        label_english: true,
+        label_telugu: true,
+        created_at: true,
+        updated_at: true,
+      },
+      orderBy: {
+        label_english: 'asc',
+      },
+    });
 
-    return createSuccessResponse(mockMandals, 'Mandals retrieved successfully');
+    // Transform the data to match the API response format
+    const transformedMandals = mandals.map(mandal => ({
+      id: mandal.id,
+      name: mandal.label_english,
+      district: mandal.label_telugu, // Using telugu as district for compatibility
+      createdAt: mandal.created_at.toISOString(),
+      updatedAt: mandal.updated_at.toISOString(),
+    }));
+
+    return createSuccessResponse(transformedMandals, 'Mandals retrieved successfully');
   } catch (error) {
     console.error('Error fetching mandals:', error);
     return createErrorResponse(

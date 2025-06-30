@@ -8,7 +8,7 @@ atlas-apply:
 	--dev-url "docker://postgres/15"
 
 .PHONY: prisma-db-pull
-atlas-apply:
+prisma-db-pull:
 	# Add your migrate command here
 	cd frontend && npx prisma db pull
 

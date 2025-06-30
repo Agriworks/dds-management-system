@@ -8,6 +8,7 @@ import {
   VillageQueryParams,
   CustomerQueryParams
 } from '@/types/api';
+import { CreateTransactionRequest } from '@/types/transaction';
 
 // Base API configuration
 const API_BASE_URL = '/api';
@@ -92,6 +93,49 @@ export async function getCustomers(params: CustomerQueryParams): Promise<{
     customers: response.data.items,
     pagination: response.data.pagination,
   };
+}
+
+/**
+ * Create a new transaction
+ */
+export async function createTransaction(transaction: CreateTransactionRequest): Promise<{
+  id: string;
+  supervised_by: string;
+  member: string;
+  type: string;
+  amount: number;
+  comments: string | null;
+  loan_type: string | null;
+  fund_type: string | null;
+  transaction_date: string;
+  recipet_number: string;
+  created_at: string;
+  updated_at: string;
+  member_name: string;
+  supervisor_name: string;
+}> {
+  const response = await fetch(`${API_BASE_URL}/transactions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(transaction),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  
+  if (!data.success) {
+    throw new Error(data.error?.message || 'Transaction creation failed');
+  }
+
+  return data.data;
 }
 
 // Typed hooks for React components (if using SWR or React Query later)

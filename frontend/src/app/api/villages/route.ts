@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSuccessResponse, createErrorResponse, validateRequiredParams } from '@/lib/api-utils';
-import { getVillagesByMandalId } from '@/lib/mock-data';
+import { prisma } from '@/lib/prisma';
 
 /**
  * GET /api/villages?mandalId=string
@@ -21,14 +21,47 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // In a real application, you would validate that the mandal exists
-    // and fetch villages from a database
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Validate that the mandal exists
+    const mandal = await prisma.mandals.findUnique({
+      where: { id: mandalId! },
+    });
 
-    const villages = getVillagesByMandalId(mandalId!);
+    if (!mandal) {
+      return createErrorResponse(
+        'NOT_FOUND',
+        `Mandal with ID ${mandalId} not found`,
+        404
+      );
+    }
+
+    // Fetch villages from the database
+    const villages = await prisma.villages.findMany({
+      where: {
+        mandal: mandalId!,
+      },
+      select: {
+        id: true,
+        label_english: true,
+        label_telugu: true,
+        created_at: true,
+        updated_at: true,
+      },
+      orderBy: {
+        label_english: 'asc',
+      },
+    });
+
+    // Transform the data to match the API response format
+    const transformedVillages = villages.map(village => ({
+      id: village.id,
+      name: village.label_english,
+      pincode: null, // Not available in database schema
+      createdAt: village.created_at.toISOString(),
+      updatedAt: village.updated_at.toISOString(),
+    }));
 
     return createSuccessResponse(
-      villages,
+      transformedVillages,
       `Found ${villages.length} villages for mandal ${mandalId}`
     );
   } catch (error) {

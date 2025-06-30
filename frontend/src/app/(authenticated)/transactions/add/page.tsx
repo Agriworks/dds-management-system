@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { getMandals, getVillages, getCustomers } from "@/lib/api-client"
+import { getMandals, getVillages, getCustomers, createTransaction } from "@/lib/api-client"
 import { Mandal, Village, Customer } from "@/types/api"
 import { Input } from "@/components/ui/input"
 
@@ -181,31 +181,52 @@ export default function AddTransactionForm() {
     }
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // TODO: For now we'll use a default supervisor ID
+      // In a real app, this would come from the logged-in user's session
+      const defaultSupervisorId = "00000000-0000-0000-0000-000000000001";
+      
       // Format the data for API submission
-      const submissionData = {
-        ...values,
-        transactionDate: values.transactionDate?.toISOString(),
-        amount: parseInt(values.amount, 10), // Convert to integer as per schema
+      const transactionData = {
+        supervised_by: defaultSupervisorId,
+        member: values.customer, // This is the member ID from the form
+        type: values.transactionType,
+        amount: parseInt(values.amount, 10),
+        transaction_date: values.transactionDate.toISOString(),
+        comments: values.comments || null,
+        loan_type: values.loanType || null,
+        fund_type: values.fundType || null,
       };
       
-      console.log('Submitting transaction:', submissionData);
+      console.log('Submitting transaction:', transactionData);
       
-      // Here you would typically send to your API endpoint
-      // await createTransaction(submissionData);
+      // Submit to API
+      const result = await createTransaction(transactionData);
       
-      toast.success("Transaction submitted successfully!");
+      toast.success("Transaction created successfully!");
       
-      // Show formatted data for now
+      // Show the created transaction details
       toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(submissionData, null, 2)}</code>
-        </pre>
+        <div className="mt-2 space-y-2">
+          <p className="font-semibold">Transaction Created:</p>
+          <p>ID: {result.id}</p>
+          <p>Amount: ₹{result.amount}</p>
+          <p>Type: {result.type}</p>
+          <p>Member: {result.member_name}</p>
+        </div>
       );
+      
+      // Reset form
+      form.reset();
+      
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the transaction. Please try again.");
+      toast.error(
+        error instanceof Error 
+          ? `Failed to create transaction: ${error.message}` 
+          : "Failed to submit the transaction. Please try again."
+      );
     }
   }
 

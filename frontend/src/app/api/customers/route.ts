@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSuccessResponse, createErrorResponse, validateRequiredParams } from '@/lib/api-utils';
-import { getCustomersByVillageAndMandal } from '@/lib/mock-data';
+import { prisma } from '@/lib/prisma';
 
 /**
  * GET /api/customers?villageId=string&mandalId=string&limit=number&offset=number&search=string
@@ -51,20 +51,90 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // In a real application, you would validate that the village and mandal exist
-    // and fetch customers from a database
-    await new Promise(resolve => setTimeout(resolve, 150));
+    // Validate that the village exists and belongs to the specified mandal
+    const village = await prisma.villages.findFirst({
+      where: {
+        id: villageId!,
+        mandal: mandalId!,
+      },
+    });
 
-    const { customers, total } = getCustomersByVillageAndMandal(
-      villageId!,
-      mandalId!,
-      limit,
-      offset,
-      search || undefined
-    );
+    if (!village) {
+      return createErrorResponse(
+        'NOT_FOUND',
+        `Village with ID ${villageId} not found in mandal ${mandalId}`,
+        404
+      );
+    }
+
+    // Build search conditions
+    const searchConditions = search
+      ? {
+          OR: [
+            {
+              full_name_english: {
+                contains: search,
+                mode: 'insensitive' as const,
+              },
+            },
+            {
+              phone_number: {
+                contains: search,
+              },
+            },
+            {
+              husband_or_father_name: {
+                contains: search,
+                mode: 'insensitive' as const,
+              },
+            },
+          ],
+        }
+      : {};
+
+    // Fetch customers from the database with pagination
+    const [customers, total] = await Promise.all([
+      prisma.members.findMany({
+        where: {
+          village_id: villageId!,
+          ...searchConditions,
+        },
+        select: {
+          id: true,
+          full_name_english: true,
+          phone_number: true,
+          house_number: true,
+          husband_or_father_name: true,
+          created_at: true,
+          updated_at: true,
+        },
+        orderBy: {
+          full_name_english: 'asc',
+        },
+        take: limit,
+        skip: offset,
+      }),
+      prisma.members.count({
+        where: {
+          village_id: villageId!,
+          ...searchConditions,
+        },
+      }),
+    ]);
+
+    // Transform the data to match the API response format
+    const transformedCustomers = customers.map(customer => ({
+      id: customer.id,
+      name: customer.full_name_english,
+      phone: customer.phone_number,
+      houseNumber: customer.house_number,
+      fatherOrHusbandName: customer.husband_or_father_name,
+      createdAt: customer.created_at.toISOString(),
+      updatedAt: customer.updated_at.toISOString(),
+    }));
 
     const paginatedResponse = {
-      items: customers,
+      items: transformedCustomers,
       pagination: {
         total,
         limit,
