@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model mandals {
+  id            String     @id @db.Uuid
+  label_english String
+  label_telugu  String
+  created_at    DateTime   @default(now()) @db.Timestamp(6)
+  updated_at    DateTime   @default(now()) @db.Timestamp(6)
+  villages      villages[]
+}
+
+model members {
+  id                     String         @id @db.Uuid
+  full_name_english      String
+  village_id             String         @db.Uuid
+  house_number           String
+  phone_number           String
+  husband_or_father_name String
+  created_at             DateTime       @default(now()) @db.Timestamp(6)
+  updated_at             DateTime       @default(now()) @db.Timestamp(6)
+  villages               villages       @relation(fields: [village_id], references: [id], onUpdate: NoAction, map: "fk_members_village")
+  transactions           transactions[]
+}
+
+model supervisors {
+  id                String         @id @db.Uuid
+  full_name_english String
+  full_name_telugu  String
+  created_at        DateTime       @default(now()) @db.Timestamp(6)
+  updated_at        DateTime       @default(now()) @db.Timestamp(6)
+  transactions      transactions[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model transactions {
+  id               String                @id @db.Uuid
+  supervised_by    String                @db.Uuid
+  member           String                @db.Uuid
+  type             transaction_type_enum
+  amount           Int
+  comments         String?
+  loan_type        loan_type_enum?
+  fund_type        fund_type_enum?
+  transaction_date DateTime              @db.Date
+  recipet_number   String
+  created_at       DateTime              @default(now()) @db.Timestamp(6)
+  updated_at       DateTime              @default(now()) @db.Timestamp(6)
+  members          members               @relation(fields: [member], references: [id], onUpdate: NoAction, map: "fk_transactions_member")
+  supervisors      supervisors           @relation(fields: [supervised_by], references: [id], onUpdate: NoAction, map: "fk_transactions_supervisor")
+}
+
+model villages {
+  id            String    @id @db.Uuid
+  label_english String
+  label_telugu  String
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  updated_at    DateTime  @default(now()) @db.Timestamp(6)
+  mandal        String    @db.Uuid
+  members       members[]
+  mandals       mandals   @relation(fields: [mandal], references: [id], onUpdate: NoAction, map: "fk_villages_mandal")
+}
+
+enum fund_type_enum {
+  DDS_FUNDS
+  PROJECT_FUNDS
+}
+
+enum loan_type_enum {
+  LIVESTOCK
+  INDIVIDUAL
+  LAAGODI
+}
+
+enum transaction_type_enum {
+  DEPOSIT
+  WITHDRAWL
+  LOAN
+  PAYBACK
+}
