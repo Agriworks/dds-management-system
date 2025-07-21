@@ -99,3 +99,22 @@ export interface Supervisor {
   created_at: string;
   updated_at: string;
 }
+
+// Transaction with extra fields from API
+export interface TransactionWithNames extends Transaction {
+  member_name: string;
+  supervisor_name: string;
+  recipet_number: string;
+  transaction_date: string;
+}
+
+// API response type for getTransactions
+export interface GetTransactionsApiResponse {
+  transactions: TransactionWithNames[];
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+  };
+}
