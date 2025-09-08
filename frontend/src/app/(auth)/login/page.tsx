@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,8 +23,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPreview() {
-  const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn] = useState(false);
   const [error, setError] = useState<string | null>(null)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,13 +37,11 @@ export default function LoginPreview() {
     try {
       const result = await signIn('google', {
         callbackUrl: '/transactions/browse',
-        redirect: false,
+        redirect: true,
       })
       console.log(result)
       if (result?.error) {
         setError('Not authorized. Please contact administrator.')
-      } else if (result?.ok) {
-        router.push('/transactions/browse')
       }
     } catch (error) {
       console.error('Sign in error:', error)
@@ -111,6 +107,9 @@ export default function LoginPreview() {
               </div>
             </form>
           </Form>
+          {error && (
+            <p className="mt-2 text-sm text-red-600">{error}</p>
+          )}
 
           <div className="mt-6">
             <div className="relative">
