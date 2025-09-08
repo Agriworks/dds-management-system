@@ -13,6 +13,8 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Ignore generated code (e.g., Prisma) from linting
+  { ignores: ["src/generated/**", "src/**/generated/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...storybook.configs["flat/recommended"]
 ];
