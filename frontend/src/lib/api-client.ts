@@ -8,7 +8,8 @@ import {
   VillageQueryParams,
   CustomerQueryParams
 } from '@/types/api';
-import { CreateTransactionRequest } from '@/types/transaction';
+import { CreateTransactionRequest, TransactionType, LoanType, FundType, GetTransactionsApiResponse } from '@/types/transaction';
+import type { TransactionWithNames } from '@/types/transaction';
 
 // Base API configuration
 const API_BASE_URL = '/api';
@@ -96,6 +97,78 @@ export async function getCustomers(params: CustomerQueryParams): Promise<{
 }
 
 /**
+ * Fetch transactions with pagination and optional filters
+ */
+export async function getTransactions(params: {
+  limit?: number;
+  offset?: number;
+  memberId?: string;
+  supervisorId?: string;
+  type?: TransactionType;
+}): Promise<GetTransactionsApiResponse> {
+  const searchParams = new URLSearchParams();
+
+  // Add optional parameters
+  if (params.limit) {
+    searchParams.append('limit', params.limit.toString());
+  }
+  if (params.offset) {
+    searchParams.append('offset', params.offset.toString());
+  }
+  if (params.memberId) {
+    searchParams.append('memberId', params.memberId);
+  }
+  if (params.supervisorId) {
+    searchParams.append('supervisorId', params.supervisorId);
+  }
+  if (params.type) {
+    searchParams.append('type', params.type);
+  }
+
+  const response = await apiRequest<unknown>(`/transactions?${searchParams}`);
+
+  // Type guards
+  function isNewShape(resp: unknown): resp is GetTransactionsApiResponse {
+    if (typeof resp !== 'object' || resp === null) return false;
+    const obj = resp as Record<string, unknown>;
+    return Array.isArray(obj.transactions) && typeof obj.pagination === 'object' && obj.pagination !== null;
+  }
+  function isLegacyShape(resp: unknown): resp is { data: { items: TransactionWithNames[]; pagination: GetTransactionsApiResponse['pagination'] } } {
+    if (typeof resp !== 'object' || resp === null) return false;
+    const obj = resp as Record<string, unknown>;
+    const data = obj.data as Record<string, unknown> | undefined;
+    return (
+      !!data &&
+      Array.isArray(data.items) &&
+      typeof data.pagination === 'object' && data.pagination !== null
+    );
+  }
+
+  let items: TransactionWithNames[] = [];
+  let pagination: GetTransactionsApiResponse['pagination'];
+
+  if (isNewShape(response)) {
+    items = response.transactions;
+    pagination = response.pagination;
+  } else if (isLegacyShape(response)) {
+    items = response.data.items;
+    pagination = response.data.pagination;
+  } else {
+    throw new Error('Unexpected transactions API response shape');
+  }
+
+  return {
+    transactions: items.map((t) => ({
+      ...t,
+      type: t.type as TransactionType,
+      loan_type: t.loan_type as LoanType | null,
+      fund_type: t.fund_type as FundType | null,
+    })),
+    pagination,
+  };
+}
+
+/**
  * Create a new transaction
  */
 export async function createTransaction(transaction: CreateTransactionRequest): Promise<{
@@ -159,6 +232,34 @@ export type CustomerApiHook = (params: {
   search?: string;
 }) => {
   customers: Customer[] | undefined;
+  pagination: { total: number; limit: number; offset: number; hasMore: boolean } | undefined;
+  loading: boolean;
+  error: Error | null;
+};
+
+export type TransactionApiHook = (params: {
+  limit?: number;
+  offset?: number;
+  memberId?: string;
+  supervisorId?: string;
+  type?: 'DEPOSIT' | 'WITHDRAWL' | 'LOAN' | 'PAYBACK';
+}) => {
+  transactions: Array<{
+    id: string;
+    supervised_by: string;
+    member: string;
+    type: string;
+    amount: number;
+    comments: string | null;
+    loan_type: string | null;
+    fund_type: string | null;
+    transaction_date: string;
+    recipet_number: string;
+    created_at: string;
+    updated_at: string;
+    member_name: string;
+    supervisor_name: string;
+  }> | undefined;
   pagination: { total: number; limit: number; offset: number; hasMore: boolean } | undefined;
   loading: boolean;
   error: Error | null;
