@@ -16,11 +16,11 @@ export function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export function useDebouncedCallback<T extends (...args: any[]) => any>(
-  callback: T,
+export function useDebouncedCallback<TArgs extends unknown[]>(
+  callback: (...args: TArgs) => void,
   delay: number
-): (...args: Parameters<T>) => void {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+): (...args: TArgs) => void {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
@@ -30,7 +30,7 @@ export function useDebouncedCallback<T extends (...args: any[]) => any>(
     };
   }, []);
 
-  return useCallback((...args: Parameters<T>) => {
+  return useCallback((...args: TArgs) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
