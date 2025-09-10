@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -82,6 +83,7 @@
     "eslint-config-next": "15.3.3",
     "eslint-plugin-storybook": "^9.0.6",
     "playwright": "^1.52.0",
+    "prettier": "^3.6.2",
     "prisma": "^6.10.1",
     "storybook": "^9.0.6",
     "tailwindcss": "^4",
