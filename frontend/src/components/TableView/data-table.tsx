@@ -66,8 +66,11 @@ export function DataTable<TData, TValue>({
   onSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [expanded, setExpanded] = React.useState({});
 
@@ -87,7 +90,7 @@ export function DataTable<TData, TValue>({
     },
     pageCount: pageCount ?? -1,
     onPaginationChange: (updater) => {
-      if (typeof updater === 'function') {
+      if (typeof updater === "function") {
         const newState = updater({ pageIndex, pageSize });
         onPaginationChange?.(newState.pageIndex, newState.pageSize);
       } else {
@@ -118,7 +121,13 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      {!hideToolbar && <DataTableToolbar table={table} printSelectedRows={handleExport} onSearch={onSearch} />}
+      {!hideToolbar && (
+        <DataTableToolbar
+          table={table}
+          printSelectedRows={handleExport}
+          onSearch={onSearch}
+        />
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="whitespace-nowrap">
@@ -129,9 +138,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -140,13 +149,19 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   <span className="loader" /> Loading...
                 </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center overflow-hidden text-ellipsis">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center overflow-hidden text-ellipsis"
+                >
                   {isLastPage ? "End of the Table" : "No results found"}
                 </TableCell>
               </TableRow>

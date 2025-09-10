@@ -5,8 +5,9 @@ This document describes the API endpoints for managing Mandals, Villages, and Cu
 ## Overview
 
 The API provides three main endpoints for hierarchical data retrieval:
+
 1. **Mandals** - Administrative regions
-2. **Villages** - Sub-regions within mandals  
+2. **Villages** - Sub-regions within mandals
 3. **Customers** - Individuals or businesses within villages
 
 ## Endpoints
@@ -18,6 +19,7 @@ The API provides three main endpoints for hierarchical data retrieval:
 **Description:** Retrieves all available mandals.
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -28,6 +30,7 @@ The API provides three main endpoints for hierarchical data retrieval:
 ```
 
 **Example Response:**
+
 ```json
 {
   "success": true,
@@ -54,9 +57,11 @@ The API provides three main endpoints for hierarchical data retrieval:
 **Description:** Retrieves all villages for a specific mandal.
 
 **Query Parameters:**
+
 - `mandalId` (required): The ID of the mandal
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -67,11 +72,13 @@ The API provides three main endpoints for hierarchical data retrieval:
 ```
 
 **Example Request:**
+
 ```
 GET /api/villages?mandalId=mandal-1
 ```
 
 **Example Response:**
+
 ```json
 {
   "success": true,
@@ -100,6 +107,7 @@ GET /api/villages?mandalId=mandal-1
 **Description:** Retrieves paginated customers for a specific village and mandal.
 
 **Query Parameters:**
+
 - `villageId` (required): The ID of the village
 - `mandalId` (required): The ID of the mandal
 - `limit` (optional): Number of customers to return (1-100, default: 10)
@@ -107,6 +115,7 @@ GET /api/villages?mandalId=mandal-1
 - `search` (optional): Search term for filtering customers by name, phone, or email
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -125,11 +134,13 @@ GET /api/villages?mandalId=mandal-1
 ```
 
 **Example Request:**
+
 ```
 GET /api/customers?villageId=village-1&mandalId=mandal-1&limit=5&offset=0&search=ramesh
 ```
 
 **Example Response:**
+
 ```json
 {
   "success": true,
@@ -168,14 +179,14 @@ GET /api/customers?villageId=village-1&mandalId=mandal-1&limit=5&offset=0&search
 All API requests and responses are fully typed. Import types from:
 
 ```typescript
-import { 
-  Mandal, 
-  Village, 
-  Customer, 
-  GetMandalsResponse, 
-  GetVillagesResponse, 
-  GetCustomersResponse 
-} from '@/types/api';
+import {
+  Mandal,
+  Village,
+  Customer,
+  GetMandalsResponse,
+  GetVillagesResponse,
+  GetCustomersResponse,
+} from "@/types/api";
 ```
 
 ### Key Types:
@@ -213,8 +224,8 @@ interface Customer {
   villageName: string;
   mandalId: string;
   mandalName: string;
-  customerType: 'individual' | 'business';
-  kycStatus: 'pending' | 'verified' | 'rejected';
+  customerType: "individual" | "business";
+  kycStatus: "pending" | "verified" | "rejected";
   createdAt: string;
   updatedAt: string;
 }
@@ -225,21 +236,21 @@ interface Customer {
 Use the provided API client functions for type-safe API calls:
 
 ```typescript
-import { getMandals, getVillages, getCustomers } from '@/lib/api-client';
+import { getMandals, getVillages, getCustomers } from "@/lib/api-client";
 
 // Get all mandals
 const mandals = await getMandals();
 
 // Get villages for a mandal
-const villages = await getVillages({ mandalId: 'mandal-1' });
+const villages = await getVillages({ mandalId: "mandal-1" });
 
 // Get customers with pagination
 const { customers, pagination } = await getCustomers({
-  villageId: 'village-1',
-  mandalId: 'mandal-1',
-  limit: '10',
-  offset: '0',
-  search: 'ramesh'
+  villageId: "village-1",
+  mandalId: "mandal-1",
+  limit: "10",
+  offset: "0",
+  search: "ramesh",
 });
 ```
 
@@ -260,6 +271,7 @@ All endpoints return consistent error responses:
 ```
 
 Common error codes:
+
 - `VALIDATION_ERROR` (400): Missing or invalid parameters
 - `INTERNAL_ERROR` (500): Server-side error
 
@@ -268,7 +280,7 @@ Common error codes:
 Use the provided test utilities in `/src/lib/api-examples.ts`:
 
 ```typescript
-import { testCompleteWorkflow } from '@/lib/api-examples';
+import { testCompleteWorkflow } from "@/lib/api-examples";
 
 // Test the complete API workflow
 await testCompleteWorkflow();

@@ -31,8 +31,8 @@ export interface Customer {
   villageName: string;
   mandalId: string;
   mandalName: string;
-  customerType: 'individual' | 'business';
-  kycStatus: 'pending' | 'verified' | 'rejected';
+  customerType: "individual" | "business";
+  kycStatus: "pending" | "verified" | "rejected";
   createdAt: string;
   updatedAt: string;
 }

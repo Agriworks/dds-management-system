@@ -1,6 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createSuccessResponse, createErrorResponse, validateRequiredParams } from '@/lib/api-utils';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import {
+  createSuccessResponse,
+  createErrorResponse,
+  validateRequiredParams,
+} from "@/lib/api-utils";
+import { prisma } from "@/lib/prisma";
 
 /**
  * GET /api/villages?mandalId=string
@@ -9,16 +13,15 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
-    const mandalId = searchParams.get('mandalId');
+    const mandalId = searchParams.get("mandalId");
 
     // Validate required parameters
-    const validationError = validateRequiredParams({ mandalId: mandalId || undefined }, ['mandalId']);
+    const validationError = validateRequiredParams(
+      { mandalId: mandalId || undefined },
+      ["mandalId"],
+    );
     if (validationError) {
-      return createErrorResponse(
-        'VALIDATION_ERROR',
-        validationError,
-        400
-      );
+      return createErrorResponse("VALIDATION_ERROR", validationError, 400);
     }
 
     // Validate that the mandal exists
@@ -28,9 +31,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     if (!mandal) {
       return createErrorResponse(
-        'NOT_FOUND',
+        "NOT_FOUND",
         `Mandal with ID ${mandalId} not found`,
-        404
+        404,
       );
     }
 
@@ -47,12 +50,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         updated_at: true,
       },
       orderBy: {
-        label_english: 'asc',
+        label_english: "asc",
       },
     });
 
     // Transform the data to match the API response format
-    const transformedVillages = villages.map(village => ({
+    const transformedVillages = villages.map((village) => ({
       id: village.id,
       name: village.label_english,
       pincode: null, // Not available in database schema
@@ -62,15 +65,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     return createSuccessResponse(
       transformedVillages,
-      `Found ${villages.length} villages for mandal ${mandalId}`
+      `Found ${villages.length} villages for mandal ${mandalId}`,
     );
   } catch (error) {
-    console.error('Error fetching villages:', error);
+    console.error("Error fetching villages:", error);
     return createErrorResponse(
-      'INTERNAL_ERROR',
-      'Failed to retrieve villages',
+      "INTERNAL_ERROR",
+      "Failed to retrieve villages",
       500,
-      { error: error instanceof Error ? error.message : 'Unknown error' }
+      { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }

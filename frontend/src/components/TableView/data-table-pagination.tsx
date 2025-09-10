@@ -52,7 +52,9 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex items-center space-x-2 justify-center">
-          <span className="text-sm font-medium">Page {table.getState().pagination.pageIndex + 1}</span>
+          <span className="text-sm font-medium">
+            Page {table.getState().pagination.pageIndex + 1}
+          </span>
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"

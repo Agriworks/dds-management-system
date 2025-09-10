@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Mandal } from "@/types/api";
 import { getMandals } from "@/lib/api-client";
 
@@ -9,7 +15,11 @@ interface MandalDropdownProps {
   disabled?: boolean;
 }
 
-export function MandalDropdown({ value, onChange, disabled }: MandalDropdownProps) {
+export function MandalDropdown({
+  value,
+  onChange,
+  disabled,
+}: MandalDropdownProps) {
   const [mandals, setMandals] = useState<Mandal[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +39,9 @@ export function MandalDropdown({ value, onChange, disabled }: MandalDropdownProp
   return (
     <Select onValueChange={onChange} value={value} disabled={disabled}>
       <SelectTrigger className="w-full">
-        <SelectValue placeholder={loading ? "Loading mandals..." : "Select a mandal"} />
+        <SelectValue
+          placeholder={loading ? "Loading mandals..." : "Select a mandal"}
+        />
       </SelectTrigger>
       <SelectContent>
         {mandals.map((mandal) => (
