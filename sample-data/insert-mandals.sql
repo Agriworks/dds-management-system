@@ -1,6 +1,7 @@
 INSERT INTO mandals (id, label_english, label_telugu, created_at, updated_at) VALUES
-  ('b1a7e2c1-3f4d-4e2a-8c1d-1a2b3c4d5e6f', 'Gajuwaka', 'గాజువాక', NOW(), NOW()),
-  ('c2b8f3d2-4e5a-5f3b-9d2e-2b3c4d5e6f7a', 'Malkapuram', 'మాల్కాపురం', NOW(), NOW()),
-  ('d3c9a4e3-5f6b-6a4c-0e3f-3c4d5e6f7a8b', 'Pendurthi', 'పెందుర్తి', NOW(), NOW()),
-  ('e4d0b5f4-6a7c-7b5d-1f4a-4d5e6f7a8b9c', 'Simhachalam', 'సింహాచలం', NOW(), NOW()),
-  ('f5e1c6a5-7b8d-8c6e-2a5b-5e6f7a8b9c0d', 'Duvvada', 'దువ్వాడ', NOW(), NOW()); 
+  ('7b4e1f58-3c0a-4c9a-9a2b-1d7c8e9f2a31', 'Raikode', 'రాయికోడ్', NOW(), NOW()),
+  ('2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', 'Nyalkal', 'న్యాల్కల్', NOW(), NOW()),
+  ('9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', 'Jharasangham', 'ఝరాసంగం', NOW(), NOW()),
+  ('c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', 'Zaheerabad', 'జహీరాబాద్', NOW(), NOW()),
+  ('0d1e2f3a-4b5c-4d6e-8f90-a1b2c3d4e5f6', 'Kohir', 'కోహిర్', NOW(), NOW()),
+  ('5e4d3c2b-1a0f-4e5d-9c8b-7a6f5e4d3c2b', 'Mogudampally', 'మోగుడంపల్లి', NOW(), NOW());

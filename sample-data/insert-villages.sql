@@ -1,21 +1,51 @@
 INSERT INTO villages (id, label_english, label_telugu, mandal, created_at, updated_at) VALUES
-  -- Gajuwaka
-  ('a1111111-1111-1111-1111-111111111111', 'Kanithi', 'కనిథి', 'b1a7e2c1-3f4d-4e2a-8c1d-1a2b3c4d5e6f', NOW(), NOW()),
-  ('a1111111-1111-1111-1111-111111111112', 'Kurmannapalem', 'కుర్మన్నపాలెం', 'b1a7e2c1-3f4d-4e2a-8c1d-1a2b3c4d5e6f', NOW(), NOW()),
-  ('a1111111-1111-1111-1111-111111111113', 'Aganampudi', 'అగనంపూడి', 'b1a7e2c1-3f4d-4e2a-8c1d-1a2b3c4d5e6f', NOW(), NOW()),
-  -- Malkapuram
-  ('b2222222-2222-2222-2222-222222222221', 'Sriharipuram', 'శ్రిహరిపురం', 'c2b8f3d2-4e5a-5f3b-9d2e-2b3c4d5e6f7a', NOW(), NOW()),
-  ('b2222222-2222-2222-2222-222222222222', 'Gnanapuram', 'జ్ఞానపురం', 'c2b8f3d2-4e5a-5f3b-9d2e-2b3c4d5e6f7a', NOW(), NOW()),
-  ('b2222222-2222-2222-2222-222222222223', 'Pedagantyada', 'పెదగంట్యాడ', 'c2b8f3d2-4e5a-5f3b-9d2e-2b3c4d5e6f7a', NOW(), NOW()),
-  -- Pendurthi
-  ('c3333333-3333-3333-3333-333333333331', 'Gopalapatnam', 'గోపాలపట్నం', 'd3c9a4e3-5f6b-6a4c-0e3f-3c4d5e6f7a8b', NOW(), NOW()),
-  ('c3333333-3333-3333-3333-333333333332', 'Pendurthi Village', 'పెందుర్తి గ్రామం', 'd3c9a4e3-5f6b-6a4c-0e3f-3c4d5e6f7a8b', NOW(), NOW()),
-  ('c3333333-3333-3333-3333-333333333333', 'Sabbavaram', 'సబ్బవరం', 'd3c9a4e3-5f6b-6a4c-0e3f-3c4d5e6f7a8b', NOW(), NOW()),
-  -- Simhachalam
-  ('d4444444-4444-4444-4444-444444444441', 'Simhapuri', 'సింహపురి', 'e4d0b5f4-6a7c-7b5d-1f4a-4d5e6f7a8b9c', NOW(), NOW()),
-  ('d4444444-4444-4444-4444-444444444442', 'Hanumanthuwaka', 'హనుమంతువాక', 'e4d0b5f4-6a7c-7b5d-1f4a-4d5e6f7a8b9c', NOW(), NOW()),
-  ('d4444444-4444-4444-4444-444444444443', 'Gopalapatnam North', 'గోపాలపట్నం నార్త్', 'e4d0b5f4-6a7c-7b5d-1f4a-4d5e6f7a8b9c', NOW(), NOW()),
-  -- Duvvada
-  ('e5555555-5555-5555-5555-555555555551', 'Duvvada Village', 'దువ్వాడ గ్రామం', 'f5e1c6a5-7b8d-8c6e-2a5b-5e6f7a8b9c0d', NOW(), NOW()),
-  ('e5555555-5555-5555-5555-555555555552', 'Lankelapalem', 'లంకెలపాలెం', 'f5e1c6a5-7b8d-8c6e-2a5b-5e6f7a8b9c0d', NOW(), NOW()),
-  ('e5555555-5555-5555-5555-555555555553', 'Parawada', 'పరవాడ', 'f5e1c6a5-7b8d-8c6e-2a5b-5e6f7a8b9c0d', NOW(), NOW()); 
+  -- Raikode
+  (gen_random_uuid(), 'Huligera', 'హులిగేరా', '7b4e1f58-3c0a-4c9a-9a2b-1d7c8e9f2a31', NOW(), NOW()),
+  (gen_random_uuid(), 'Nagwar', 'నాగ్వార్', '7b4e1f58-3c0a-4c9a-9a2b-1d7c8e9f2a31', NOW(), NOW()),
+  (gen_random_uuid(), 'Sangapur', 'సంగాపూర్', '7b4e1f58-3c0a-4c9a-9a2b-1d7c8e9f2a31', NOW(), NOW()),
+  (gen_random_uuid(), 'Itikepalle', 'ఇటికేపల్లె', '7b4e1f58-3c0a-4c9a-9a2b-1d7c8e9f2a31', NOW(), NOW()), 
+  -- Nyalkal
+  (gen_random_uuid(), 'Metalkunta', 'మెటల్కుంట', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Reijinthal', 'రైజింతల్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Shamshallapur', 'శంసల్లాపూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Tekur', 'టేకూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Vaddi', 'వడ్డి', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Hosselli', 'హోస్సెల్లీ', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Malgi', 'మాల్గి', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Gunjoti', 'గుంజోటి', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Chenigepalle', 'చెనిగేపల్లె', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Humnapur', 'హుమ్నాపూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Miriyampur', 'మిరియంపూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Ganeshpur', 'గణేశ్‌పూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Basanthpur', 'బసంత్‌పూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()),
+  (gen_random_uuid(), 'Ibrahimpur', 'ఇబ్రాహీంపూర్', '2f6a9d1b-8c73-4f1e-bd3a-56f00a9e12cd', NOW(), NOW()), 
+  -- Jharasangham
+  (gen_random_uuid(), 'Chilkapalle', 'చిల్కపల్లె', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()),
+  (gen_random_uuid(), 'Bidakanne', 'బిడకన్నె', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()),
+  (gen_random_uuid(), 'Potpalle', 'పోతపల్లె', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()),
+  (gen_random_uuid(), 'Yelgoi', 'యెల్గోయి', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()),
+  (gen_random_uuid(), 'Yedakulapally', 'ఏడకులపల్లి', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()),
+  (gen_random_uuid(), 'Jharasangham', 'ఝరాసంగం', '9a1c3e5f-2b47-4d6e-a90f-3f2e1d4c5b6a', NOW(), NOW()), 
+  -- Zaheerabad
+  (gen_random_uuid(), 'Mood Thanda', 'మూడ్ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Arjun Nayak Thanda', 'అర్జున్ నాయక్ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Lachu Nayak Thanda', 'లాచు నాయక్ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Jeedigadda Thanda', 'జీడిగడ్డ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Ontelgadda Thanda', 'ఒంటెల్గడ్డ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Jamlai Thanda', 'జంలై తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Shekhapur Thanda', 'శేఖాపూర్ తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Shekhapur', 'శేఖాపూర్', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Algole', 'అల్గోలే', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Khasimpur', 'ఖాసింపూర్', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Pastapur', 'పాస్తాపూర్', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Hothi B', 'హోతి బి', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Hothi K', 'హోతి కె', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()),
+  (gen_random_uuid(), 'Upparpally Thanda', 'ఉప్పర్పల్లి తండా', 'c4d5e6f7-8a9b-4c0d-b1e2-3f4a5b6c7d8e', NOW(), NOW()), 
+  -- Kohir
+  (gen_random_uuid(), 'Bilalpur', 'బిలాల్పూర్', '0d1e2f3a-4b5c-4d6e-8f90-a1b2c3d4e5f6', NOW(), NOW()),
+  (gen_random_uuid(), 'Gotigarpalle', 'గోటిగర్‌పల్లె', '0d1e2f3a-4b5c-4d6e-8f90-a1b2c3d4e5f6', NOW(), NOW()),
+  (gen_random_uuid(), 'Siddapur Thanda', 'సిద్ధాపూర్ తండా', '0d1e2f3a-4b5c-4d6e-8f90-a1b2c3d4e5f6', NOW(), NOW()),
+  -- Mogudampally
+  (gen_random_uuid(), 'Jadimalkapur', 'జడిమల్కాపూర్', '5e4d3c2b-1a0f-4e5d-9c8b-7a6f5e4d3c2b', NOW(), NOW()),
+  (gen_random_uuid(), 'Mannapur', 'మన్నాపూర్', '5e4d3c2b-1a0f-4e5d-9c8b-7a6f5e4d3c2b', NOW(), NOW()),
+  (gen_random_uuid(), 'Jangarbodi Thanda', 'జంగర్‌బోడి తండా', '5e4d3c2b-1a0f-4e5d-9c8b-7a6f5e4d3c2b', NOW(), NOW()); 
