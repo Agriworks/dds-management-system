@@ -1,36 +1,46 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
-export function getTransactionTypeColor(type: string) {
-  switch (type) {
+// Utilities used by transactions table
+export function getTransactionTypeColor(type: string): string {
+  const normalized = String(type || "").toUpperCase()
+
+  switch (normalized) {
     case "DEPOSIT":
-      return "bg-green-100 text-green-800";
+      return "bg-green-100 text-green-800 border-green-200"
     case "WITHDRAWL":
-      return "bg-red-100 text-red-800";
+    case "WITHDRAWAL":
+      return "bg-red-100 text-red-800 border-red-200"
     case "LOAN":
-      return "bg-blue-100 text-blue-800";
+      return "bg-amber-100 text-amber-800 border-amber-200"
     case "PAYBACK":
-      return "bg-purple-100 text-purple-800";
+      return "bg-blue-100 text-blue-800 border-blue-200"
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-100 text-gray-800 border-gray-200"
   }
 }
 
-export function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("en-US", {
+export function formatDate(input: string | Date): string {
+  const date = input instanceof Date ? input : new Date(input)
+  if (isNaN(date.getTime())) return "-"
+
+  return date.toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
-    day: "numeric",
-  });
+    day: "2-digit",
+  })
 }
 
-export function formatAmount(amount: number) {
+export function formatAmount(amount: number): string {
+  if (typeof amount !== "number" || !isFinite(amount)) return "-"
+
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
-  }).format(amount);
+    maximumFractionDigits: 0,
+  }).format(amount)
 }
