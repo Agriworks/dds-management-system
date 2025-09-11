@@ -131,7 +131,11 @@ export function Menu({ isOpen }: MenuProps) {
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" className="w-full  h-10 mt-5" disabled>
+                  <Button
+                    variant="outline"
+                    className="w-full  h-10 mt-5"
+                    disabled
+                  >
                     <Link
                       href="/account"
                       className="w-full flex justify-cente items-centerr h-10"

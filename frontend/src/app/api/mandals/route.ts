@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { createSuccessResponse, createErrorResponse } from '@/lib/api-utils';
-import { prisma } from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import { createSuccessResponse, createErrorResponse } from "@/lib/api-utils";
+import { prisma } from "@/lib/prisma";
 
 /**
  * GET /api/mandals
@@ -18,12 +18,12 @@ export async function GET(): Promise<NextResponse> {
         updated_at: true,
       },
       orderBy: {
-        label_english: 'asc',
+        label_english: "asc",
       },
     });
 
     // Transform the data to match the API response format
-    const transformedMandals = mandals.map(mandal => ({
+    const transformedMandals = mandals.map((mandal) => ({
       id: mandal.id,
       name: mandal.label_english,
       district: mandal.label_telugu, // Using telugu as district for compatibility
@@ -31,14 +31,17 @@ export async function GET(): Promise<NextResponse> {
       updatedAt: mandal.updated_at.toISOString(),
     }));
 
-    return createSuccessResponse(transformedMandals, 'Mandals retrieved successfully');
+    return createSuccessResponse(
+      transformedMandals,
+      "Mandals retrieved successfully",
+    );
   } catch (error) {
-    console.error('Error fetching mandals:', error);
+    console.error("Error fetching mandals:", error);
     return createErrorResponse(
-      'INTERNAL_ERROR',
-      'Failed to retrieve mandals',
+      "INTERNAL_ERROR",
+      "Failed to retrieve mandals",
       500,
-      { error: error instanceof Error ? error.message : 'Unknown error' }
+      { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }

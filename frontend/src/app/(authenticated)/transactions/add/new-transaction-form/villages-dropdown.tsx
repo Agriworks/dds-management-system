@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Village } from "@/types/api";
 import { getVillages } from "@/lib/api-client";
 
@@ -10,7 +16,12 @@ interface VillageDropdownProps {
   disabled?: boolean;
 }
 
-export function VillageDropdown({ mandalId, value, onChange, disabled }: VillageDropdownProps) {
+export function VillageDropdown({
+  mandalId,
+  value,
+  onChange,
+  disabled,
+}: VillageDropdownProps) {
   const [villages, setVillages] = useState<Village[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -32,9 +43,21 @@ export function VillageDropdown({ mandalId, value, onChange, disabled }: Village
   }, [mandalId]);
 
   return (
-    <Select onValueChange={onChange} value={value} disabled={disabled || !mandalId}>
+    <Select
+      onValueChange={onChange}
+      value={value}
+      disabled={disabled || !mandalId}
+    >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder={loading ? "Loading villages..." : !mandalId ? "Select a mandal first" : "Select a village"} />
+        <SelectValue
+          placeholder={
+            loading
+              ? "Loading villages..."
+              : !mandalId
+                ? "Select a mandal first"
+                : "Select a village"
+          }
+        />
       </SelectTrigger>
       <SelectContent>
         {villages.map((village) => (

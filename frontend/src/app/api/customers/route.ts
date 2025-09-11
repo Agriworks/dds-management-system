@@ -1,6 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createSuccessResponse, createErrorResponse, validateRequiredParams } from '@/lib/api-utils';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import {
+  createSuccessResponse,
+  createErrorResponse,
+  validateRequiredParams,
+} from "@/lib/api-utils";
+import { prisma } from "@/lib/prisma";
 
 /**
  * GET /api/customers?villageId=string&mandalId=string&limit=number&offset=number&search=string
@@ -9,26 +13,22 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
-    const villageId = searchParams.get('villageId');
-    const mandalId = searchParams.get('mandalId');
-    const limitParam = searchParams.get('limit');
-    const offsetParam = searchParams.get('offset');
-    const search = searchParams.get('search');
+    const villageId = searchParams.get("villageId");
+    const mandalId = searchParams.get("mandalId");
+    const limitParam = searchParams.get("limit");
+    const offsetParam = searchParams.get("offset");
+    const search = searchParams.get("search");
 
     // Validate required parameters
     const validationError = validateRequiredParams(
-      { 
-        villageId: villageId || undefined, 
-        mandalId: mandalId || undefined 
+      {
+        villageId: villageId || undefined,
+        mandalId: mandalId || undefined,
       },
-      ['villageId', 'mandalId']
+      ["villageId", "mandalId"],
     );
     if (validationError) {
-      return createErrorResponse(
-        'VALIDATION_ERROR',
-        validationError,
-        400
-      );
+      return createErrorResponse("VALIDATION_ERROR", validationError, 400);
     }
 
     // Parse and validate optional parameters
@@ -37,17 +37,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     if (isNaN(limit) || limit < 1 || limit > 100) {
       return createErrorResponse(
-        'VALIDATION_ERROR',
-        'Limit must be a number between 1 and 100',
-        400
+        "VALIDATION_ERROR",
+        "Limit must be a number between 1 and 100",
+        400,
       );
     }
 
     if (isNaN(offset) || offset < 0) {
       return createErrorResponse(
-        'VALIDATION_ERROR',
-        'Offset must be a non-negative number',
-        400
+        "VALIDATION_ERROR",
+        "Offset must be a non-negative number",
+        400,
       );
     }
 
@@ -61,9 +61,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     if (!village) {
       return createErrorResponse(
-        'NOT_FOUND',
+        "NOT_FOUND",
         `Village with ID ${villageId} not found in mandal ${mandalId}`,
-        404
+        404,
       );
     }
 
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             {
               full_name_english: {
                 contains: search,
-                mode: 'insensitive' as const,
+                mode: "insensitive" as const,
               },
             },
             {
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             {
               husband_or_father_name: {
                 contains: search,
-                mode: 'insensitive' as const,
+                mode: "insensitive" as const,
               },
             },
           ],
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           updated_at: true,
         },
         orderBy: {
-          full_name_english: 'asc',
+          full_name_english: "asc",
         },
         take: limit,
         skip: offset,
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     ]);
 
     // Transform the data to match the API response format
-    const transformedCustomers = customers.map(customer => ({
+    const transformedCustomers = customers.map((customer) => ({
       id: customer.id,
       name: customer.full_name_english,
       phone: customer.phone_number,
@@ -145,15 +145,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     return createSuccessResponse(
       paginatedResponse,
-      `Found ${customers.length} customers (${total} total) for village ${villageId}`
+      `Found ${customers.length} customers (${total} total) for village ${villageId}`,
     );
   } catch (error) {
-    console.error('Error fetching customers:', error);
+    console.error("Error fetching customers:", error);
     return createErrorResponse(
-      'INTERNAL_ERROR',
-      'Failed to retrieve customers',
+      "INTERNAL_ERROR",
+      "Failed to retrieve customers",
       500,
-      { error: error instanceof Error ? error.message : 'Unknown error' }
+      { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }
