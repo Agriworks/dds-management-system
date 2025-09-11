@@ -1,5 +1,7 @@
 generator client {
   provider = "prisma-client-js"
+  // Add the target for your deployment environment
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
   output   = "../src/generated/prisma"
 }
 
