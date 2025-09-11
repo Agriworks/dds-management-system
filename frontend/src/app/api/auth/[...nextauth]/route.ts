@@ -10,6 +10,20 @@ const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    async redirect({ url }: { url: string }): Promise<string> {
+      // If the url is the callback URL, redirect to dashboard
+      if (url.includes("/api/auth/callback/google")) {
+        return `${process.env.NEXTAUTH_URL}/transactions/browse`;
+      }
+      // Handle other redirects
+      if (url.startsWith("/")) {
+        return `${process.env.NEXTAUTH_URL}${url}`;
+      }
+      // Default case
+      return url.startsWith(process.env.NEXTAUTH_URL!)
+        ? url
+        : process.env.NEXTAUTH_URL!;
+    },
     async jwt({ token, user, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account && user) {
