@@ -1,40 +1,30 @@
 // Base types for our entities
 export interface Mandal {
   id: string;
-  name: string;
-  code: string;
-  district: string;
-  state: string;
+  label_english: string;
+  label_telugu: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Village {
   id: string;
-  name: string;
-  code: string;
+  label_english: string;
+  label_telugu: string;
   mandalId: string;
-  mandalName: string;
-  population?: number;
-  pincode?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Customer {
   id: string;
-  name: string;
-  email?: string;
-  phone: string;
-  address: string;
-  villageId: string;
-  villageName: string;
-  mandalId: string;
-  mandalName: string;
-  customerType: "individual" | "business";
-  kycStatus: "pending" | "verified" | "rejected";
-  createdAt: string;
-  updatedAt: string;
+  full_name_english: string;
+  village_id: string;
+  house_number: string;
+  phone_number: string;
+  husband_or_father_name: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // API Request types
