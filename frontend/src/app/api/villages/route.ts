@@ -57,8 +57,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Transform the data to match the API response format
     const transformedVillages = villages.map((village) => ({
       id: village.id,
-      name: village.label_english,
-      pincode: null, // Not available in database schema
+      label_english: village.label_english,
+      label_telugu: village.label_telugu,
       createdAt: village.created_at.toISOString(),
       updatedAt: village.updated_at.toISOString(),
     }));
