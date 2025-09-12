@@ -25,8 +25,8 @@ export async function GET(): Promise<NextResponse> {
     // Transform the data to match the API response format
     const transformedMandals = mandals.map((mandal) => ({
       id: mandal.id,
-      name: mandal.label_english,
-      district: mandal.label_telugu, // Using telugu as district for compatibility
+      label_english: mandal.label_english,
+      label_telugu: mandal.label_telugu,
       createdAt: mandal.created_at.toISOString(),
       updatedAt: mandal.updated_at.toISOString(),
     }));

@@ -8,24 +8,26 @@ import {
 } from "@/components/ui/select";
 import { Customer } from "@/types/api";
 import { getCustomers } from "@/lib/api-client";
+import { Loader2 } from "lucide-react";
 
 interface CustomerDropdownProps {
   mandalId: string;
   villageId: string;
   value: string;
-  onChange: (customerId: string) => void;
   disabled?: boolean;
+  onChange: (customerId: string) => void;
 }
 
 export function CustomerDropdown({
   mandalId,
   villageId,
   value,
-  onChange,
   disabled,
+  onChange,
 }: CustomerDropdownProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!mandalId || !villageId) {
@@ -34,13 +36,16 @@ export function CustomerDropdown({
     }
     async function fetchCustomers() {
       setLoading(true);
+      setError(null);
       try {
-        const { customers: data } = await getCustomers({
+        const data = await getCustomers({
           mandalId,
           villageId,
-          limit: "50",
         });
-        setCustomers(data);
+        setCustomers(data.customers);
+      } catch {
+        setError("Failed to load customers");
+        setCustomers([]);
       } finally {
         setLoading(false);
       }
@@ -57,22 +62,40 @@ export function CustomerDropdown({
       <SelectTrigger className="w-full">
         <SelectValue
           placeholder={
-            loading
-              ? "Loading customers..."
-              : !mandalId || !villageId
-                ? "Select a mandal and village first"
-                : customers.length === 0
-                  ? "No customers found"
-                  : "Select a customer"
+            loading ? (
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" /> Loading customers...
+              </span>
+            ) : error ? (
+              error
+            ) : !mandalId || !villageId ? (
+              "Select a mandal and village first"
+            ) : (
+              "Select a customer"
+            )
           }
         />
       </SelectTrigger>
       <SelectContent>
-        {customers.map((customer) => (
-          <SelectItem key={customer.id} value={customer.id}>
-            {customer.name} ({customer.phone})
-          </SelectItem>
-        ))}
+        {loading ? (
+          <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+          </div>
+        ) : error ? (
+          <div className="py-2 px-3 text-sm text-destructive text-center">
+            {error}
+          </div>
+        ) : customers.length === 0 ? (
+          <div className="py-2 px-3 text-sm text-muted-foreground text-center">
+            No customers found
+          </div>
+        ) : (
+          customers.map((customer) => (
+            <SelectItem key={customer.id} value={customer.id}>
+              {customer.full_name_english} ({customer.phone_number})
+            </SelectItem>
+          ))
+        )}
       </SelectContent>
     </Select>
   );

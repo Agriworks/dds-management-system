@@ -102,6 +102,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         select: {
           id: true,
           full_name_english: true,
+          village_id: true,
           phone_number: true,
           house_number: true,
           husband_or_father_name: true,
@@ -125,12 +126,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Transform the data to match the API response format
     const transformedCustomers = customers.map((customer) => ({
       id: customer.id,
-      name: customer.full_name_english,
-      phone: customer.phone_number,
-      houseNumber: customer.house_number,
-      fatherOrHusbandName: customer.husband_or_father_name,
-      createdAt: customer.created_at.toISOString(),
-      updatedAt: customer.updated_at.toISOString(),
+      full_name_english: customer.full_name_english,
+      village_id: customer.village_id,
+      house_number: customer.house_number,
+      phone_number: customer.phone_number,
+      husband_or_father_name: customer.husband_or_father_name,
+      created_at: customer.created_at.toISOString(),
+      updated_at: customer.updated_at.toISOString(),
     }));
 
     const paginatedResponse = {
