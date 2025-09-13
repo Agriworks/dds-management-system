@@ -390,12 +390,12 @@ export default function AddTransactionForm() {
                               <SelectValue placeholder="Select transaction type" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="DEPOSIT">Deposit</SelectItem>
+                              <SelectItem value="DEPOSIT">Deposit (డిపాజిట్)</SelectItem>
                               <SelectItem value="WITHDRAWL">
-                                Withdrawal
+                                Withdrawal (విత్డ్రావల్)
                               </SelectItem>
-                              <SelectItem value="LOAN">Loan</SelectItem>
-                              <SelectItem value="PAYBACK">Payback</SelectItem>
+                              <SelectItem value="LOAN">Loan (లోన్)</SelectItem>
+                              <SelectItem value="PAYBACK">Payback (పేబ్యాక్)</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -426,12 +426,12 @@ export default function AddTransactionForm() {
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="LIVESTOCK">
-                                  Livestock
+                                  Livestock (లివ్‌స్టాక్)
                                 </SelectItem>
                                 <SelectItem value="INDIVIDUAL">
-                                  Individual
+                                  Individual (ఇండివిజువల్)
                                 </SelectItem>
-                                <SelectItem value="LAAGODI">Laagodi</SelectItem>
+                                <SelectItem value="LAAGODI">Laagodi (లాగోడి)</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>
@@ -463,10 +463,10 @@ export default function AddTransactionForm() {
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="DDS_FUNDS">
-                                  DDS Funds
+                                  DDS Funds (డిడిఎస్ ఫండ్స్)
                                 </SelectItem>
                                 <SelectItem value="PROJECT_FUNDS">
-                                  Project Funds
+                                  Project Funds (ప్రాజెక్ట్ ఫండ్స్)
                                 </SelectItem>
                               </SelectContent>
                             </Select>
