@@ -126,7 +126,7 @@ export default function TransactionsPage() {
   };
 
   return (
-    <ContentLayout title="Transaction Management">
+    <ContentLayout title="Transactions">
       <div className="p-4 sm:p-6 lg:p-8">
         {/* Search Form Card */}
         <Card className="mb-6 shadow-md bg-background">
@@ -204,12 +204,12 @@ export default function TransactionsPage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="DEPOSIT">Deposit</SelectItem>
+                            <SelectItem value="DEPOSIT">Deposit (డిపాజిట్)</SelectItem>
                             <SelectItem value="WITHDRAWL">
-                              Withdrawal
+                              Withdrawal (విత్‌డ్రావల్)
                             </SelectItem>
-                            <SelectItem value="LOAN">Loan</SelectItem>
-                            <SelectItem value="PAYBACK">Payback</SelectItem>
+                            <SelectItem value="LOAN">Loan (లోన్)</SelectItem>
+                            <SelectItem value="PAYBACK">Payback (పేబ్యాక్)</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -312,7 +312,7 @@ export default function TransactionsPage() {
               Transaction Results
             </span>
           </div>
-          <div className="p-6 overflow-x-auto">
+          <div className="overflow-x-auto">
             <DataTable
               columns={columns}
               data={transactions}
