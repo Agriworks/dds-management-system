@@ -149,7 +149,7 @@ export function SearchableSelect({
           )}
         </SelectValue>
       </SelectTrigger>
-      <SelectContent className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none">
+      <SelectContent className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none" side="top" align="start">
         {/* Search Input */}
         <div className="p-2 border-b">
           <div className="relative">
