@@ -54,7 +54,8 @@ export function SearchableSelect({
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [filteredOptions, setFilteredOptions] = React.useState<SearchableSelectOption[]>(options);
+  const [filteredOptions, setFilteredOptions] =
+    React.useState<SearchableSelectOption[]>(options);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   // Filter options based on search term
@@ -63,7 +64,8 @@ export function SearchableSelect({
       setFilteredOptions(options);
     } else {
       const filtered = options.filter((option) => {
-        const searchText = `${option.label} ${option.searchText || ""}`.toLowerCase();
+        const searchText =
+          `${option.label} ${option.searchText || ""}`.toLowerCase();
         return searchText.includes(searchTerm.toLowerCase());
       });
       setFilteredOptions(filtered);
@@ -74,7 +76,7 @@ export function SearchableSelect({
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
-    
+
     // Call the onSearch callback if provided
     if (onSearch) {
       onSearch(newSearchTerm);
@@ -114,12 +116,12 @@ export function SearchableSelect({
   // Get display value
   const getDisplayValue = () => {
     if (!value) return placeholder;
-    
+
     if (renderValue) {
       return renderValue(value, options);
     }
-    
-    const selectedOption = options.find(option => option.value === value);
+
+    const selectedOption = options.find((option) => option.value === value);
     return selectedOption?.label || value;
   };
 

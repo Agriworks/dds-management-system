@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { SearchableSelect, SearchableSelectOption } from "@/components/ui/searchable-select";
+import {
+  SearchableSelect,
+  SearchableSelectOption,
+} from "@/components/ui/searchable-select";
 import { Customer } from "@/types/api";
 import { getCustomers } from "@/lib/api-client";
 import { useDebouncedCallback } from "@/hooks/use-debounce";
@@ -25,30 +28,33 @@ export function CustomerDropdown({
 
   // Debounced search function
   const debouncedSearch = useDebouncedCallback(
-    useCallback(async (search: string) => {
-      if (!mandalId || !villageId) {
-        setCustomers([]);
-        return;
-      }
+    useCallback(
+      async (search: string) => {
+        if (!mandalId || !villageId) {
+          setCustomers([]);
+          return;
+        }
 
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const data = await getCustomers({
-          mandalId,
-          villageId,
-          search: search.trim() || undefined,
-        });
-        setCustomers(data.customers);
-      } catch {
-        setError("Failed to load customers");
-        setCustomers([]);
-      } finally {
-        setLoading(false);
-      }
-    }, [mandalId, villageId]),
-    300 // 300ms delay
+        setLoading(true);
+        setError(null);
+
+        try {
+          const data = await getCustomers({
+            mandalId,
+            villageId,
+            search: search.trim() || undefined,
+          });
+          setCustomers(data.customers);
+        } catch {
+          setError("Failed to load customers");
+          setCustomers([]);
+        } finally {
+          setLoading(false);
+        }
+      },
+      [mandalId, villageId],
+    ),
+    300, // 300ms delay
   );
 
   // Initial load when mandalId or villageId changes
@@ -57,7 +63,7 @@ export function CustomerDropdown({
       setCustomers([]);
       return;
     }
-    
+
     // Load initial data
     debouncedSearch("");
   }, [mandalId, villageId, debouncedSearch]);
