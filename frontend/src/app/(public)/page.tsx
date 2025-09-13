@@ -60,6 +60,12 @@ export default function Page() {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Footer */}
+      <footer className="mt-8 text-center text-sm text-muted-foreground">
+        Powered by{" "}
+        <span className="font-medium text-foreground">Aegion Dynamic</span>
+      </footer>
     </div>
   );
 }

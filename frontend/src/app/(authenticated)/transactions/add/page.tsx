@@ -168,7 +168,10 @@ export default function AddTransactionForm() {
         </div>
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="h-full flex flex-col space-y-6 p-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="h-full flex flex-col space-y-6 p-6"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
@@ -265,7 +268,7 @@ export default function AddTransactionForm() {
                       <FormItem>
                         <FormLabel>Comments (కామెంట్స్)</FormLabel>
                         <FormControl>
-                        <Textarea
+                          <Textarea
                             placeholder="Any additional comments"
                             {...field}
                             value={field.value || ""}
@@ -295,7 +298,10 @@ export default function AddTransactionForm() {
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
-                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                          <Popover
+                            open={calendarOpen}
+                            onOpenChange={setCalendarOpen}
+                          >
                             <PopoverTrigger asChild>
                               <Button
                                 variant="outline"
@@ -312,10 +318,17 @@ export default function AddTransactionForm() {
                                 <CalendarIcon className="h-4 w-4 opacity-50 ml-auto" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
                               <Calendar
                                 mode="single"
-                                selected={field.value ? new Date(field.value) : undefined}
+                                selected={
+                                  field.value
+                                    ? new Date(field.value)
+                                    : undefined
+                                }
                                 onSelect={(date) => {
                                   if (date) {
                                     field.onChange(date);
@@ -377,10 +390,16 @@ export default function AddTransactionForm() {
                               <SelectValue placeholder="Select transaction type" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="DEPOSIT">Deposit</SelectItem>
-                              <SelectItem value="WITHDRAWL">Withdrawal</SelectItem>
-                              <SelectItem value="LOAN">Loan</SelectItem>
-                              <SelectItem value="PAYBACK">Payback</SelectItem>
+                              <SelectItem value="DEPOSIT">
+                                Deposit (డిపాజిట్)
+                              </SelectItem>
+                              <SelectItem value="WITHDRAWL">
+                                Withdrawal (విత్డ్రావల్)
+                              </SelectItem>
+                              <SelectItem value="LOAN">Loan (లోన్)</SelectItem>
+                              <SelectItem value="PAYBACK">
+                                Payback (పేబ్యాక్)
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -410,9 +429,15 @@ export default function AddTransactionForm() {
                                 <SelectValue placeholder="Select loan type" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="LIVESTOCK">Livestock</SelectItem>
-                                <SelectItem value="INDIVIDUAL">Individual</SelectItem>
-                                <SelectItem value="LAAGODI">Laagodi</SelectItem>
+                                <SelectItem value="LIVESTOCK">
+                                  Livestock (లివ్‌స్టాక్)
+                                </SelectItem>
+                                <SelectItem value="INDIVIDUAL">
+                                  Individual (ఇండివిజువల్)
+                                </SelectItem>
+                                <SelectItem value="LAAGODI">
+                                  Laagodi (లాగోడి)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>
@@ -443,8 +468,12 @@ export default function AddTransactionForm() {
                                 <SelectValue placeholder="Select fund type" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="DDS_FUNDS">DDS Funds</SelectItem>
-                                <SelectItem value="PROJECT_FUNDS">Project Funds</SelectItem>
+                                <SelectItem value="DDS_FUNDS">
+                                  DDS Funds (డిడిఎస్ ఫండ్స్)
+                                </SelectItem>
+                                <SelectItem value="PROJECT_FUNDS">
+                                  Project Funds (ప్రాజెక్ట్ ఫండ్స్)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>
@@ -456,8 +485,8 @@ export default function AddTransactionForm() {
                 )}
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >

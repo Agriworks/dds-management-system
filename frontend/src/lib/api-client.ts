@@ -150,9 +150,7 @@ export async function getTransactions(params: {
       obj.pagination !== null
     );
   }
-  function isLegacyShape(
-    resp: unknown,
-  ): resp is {
+  function isLegacyShape(resp: unknown): resp is {
     data: {
       items: TransactionWithNames[];
       pagination: GetTransactionsApiResponse["pagination"];
