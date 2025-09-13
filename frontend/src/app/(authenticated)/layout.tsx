@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: 'DDS App',
-  description: 'dds-management-system',
+  title: "DDS App",
+  description: "dds-management-system",
 };
 
 // const inter = Inter({ subsets: ["latin"] });

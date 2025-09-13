@@ -390,12 +390,16 @@ export default function AddTransactionForm() {
                               <SelectValue placeholder="Select transaction type" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="DEPOSIT">Deposit (డిపాజిట్)</SelectItem>
+                              <SelectItem value="DEPOSIT">
+                                Deposit (డిపాజిట్)
+                              </SelectItem>
                               <SelectItem value="WITHDRAWL">
                                 Withdrawal (విత్డ్రావల్)
                               </SelectItem>
                               <SelectItem value="LOAN">Loan (లోన్)</SelectItem>
-                              <SelectItem value="PAYBACK">Payback (పేబ్యాక్)</SelectItem>
+                              <SelectItem value="PAYBACK">
+                                Payback (పేబ్యాక్)
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -431,7 +435,9 @@ export default function AddTransactionForm() {
                                 <SelectItem value="INDIVIDUAL">
                                   Individual (ఇండివిజువల్)
                                 </SelectItem>
-                                <SelectItem value="LAAGODI">Laagodi (లాగోడి)</SelectItem>
+                                <SelectItem value="LAAGODI">
+                                  Laagodi (లాగోడి)
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>
