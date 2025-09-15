@@ -95,12 +95,7 @@ export function SearchableSelect({
   // Handle select open
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
-    if (open) {
-      // Focus search input when opening
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    } else {
+    if (!open) {
       // Clear search when closing
       setSearchTerm("");
     }
@@ -160,6 +155,7 @@ export function SearchableSelect({
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
+              onClick={() => searchInputRef.current?.focus()}
               className="w-full pl-8 pr-8 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
             {searchTerm && (
