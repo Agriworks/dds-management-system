@@ -89,7 +89,7 @@ export function SearchableSelect({
     if (onSearch) {
       onSearch("");
     }
-    searchInputRef.current?.focus();
+    searchInputRef.current?.focus({ preventScroll: true });
   };
 
   // Handle select open
@@ -144,7 +144,15 @@ export function SearchableSelect({
           )}
         </SelectValue>
       </SelectTrigger>
-      <SelectContent className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none" side="top" align="start">
+      <SelectContent
+        className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none"
+        side="bottom"
+        align="start"
+        position="popper"
+        sideOffset={8}
+        avoidCollisions
+        collisionPadding={16}
+      >
         {/* Search Input */}
         <div className="p-2 border-b">
           <div className="relative">
@@ -155,8 +163,12 @@ export function SearchableSelect({
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
-              onClick={() => searchInputRef.current?.focus()}
-              className="w-full pl-8 pr-8 py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              inputMode="search"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              enterKeyHint="search"
+              className="w-full pl-8 pr-8 py-2 text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
             />
             {searchTerm && (
               <button
