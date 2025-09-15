@@ -57,6 +57,7 @@ export function SearchableSelect({
   const [filteredOptions, setFilteredOptions] =
     React.useState<SearchableSelectOption[]>(options);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
+  const searchContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Filter options based on search term
   React.useEffect(() => {
@@ -152,9 +153,17 @@ export function SearchableSelect({
         sideOffset={8}
         avoidCollisions
         collisionPadding={16}
+        onPointerDownOutside={(event) => {
+          if (
+            searchContainerRef.current &&
+            searchContainerRef.current.contains(event.target as Node)
+          ) {
+            event.preventDefault();
+          }
+        }}
       >
         {/* Search Input */}
-        <div className="p-2 border-b">
+        <div ref={searchContainerRef} className="p-2 border-b">
           <div className="relative">
             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
