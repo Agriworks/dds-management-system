@@ -20,6 +20,171 @@ enum "fund_type_enum" {
   values = ["DDS_FUNDS", "PROJECT_FUNDS"]
 }
 
+table "users" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "name" {
+    type = text
+    null = false
+  }
+
+  column "email" {
+    type = text
+    null = false
+  }
+
+  unique "users_email_key" {
+    columns = [column.email]
+  }
+
+  column "external_id" {
+    type = text
+    null = false
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+table "roles" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "name" {
+    type = text
+    null = false
+  }
+
+  column "description" {
+    type = text
+    null = true
+  }
+
+  column "is_active" {
+    type = boolean
+    null = false
+    default = true
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+table "user_roles_mapping" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+
+  column "role_id" {
+    type = uuid
+    null = false
+  }
+
+  column "assigned_by" {
+    type = uuid
+    null = true
+  }
+
+  column "assigned_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "is_active" {
+    type = boolean
+    null = false
+    default = true
+  }
+
+  column "expires_at" {
+    type = timestamp
+    null = true
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  foreign_key "fk_user_roles_user" {
+    columns = [column.user_id]
+    ref_columns = [table.users.column.id]
+    on_delete = "CASCADE"
+  }
+
+  foreign_key "fk_user_roles_role" {
+    columns = [column.role_id]
+    ref_columns = [table.roles.column.id]
+    on_delete = "CASCADE"
+  }
+
+  foreign_key "fk_user_roles_assigned_by" {
+    columns = [column.assigned_by]
+    ref_columns = [table.users.column.id]
+    on_delete = "SET NULL"
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+
+  unique "user_role_unique" {
+    columns = [column.user_id, column.role_id]
+  }
+}
+
+
 table "supervisors" {
   schema = schema.public
 
