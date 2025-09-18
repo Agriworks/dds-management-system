@@ -120,6 +120,36 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UsersScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  external_id: 'external_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.RolesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.User_roles_mappingScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  role_id: 'role_id',
+  assigned_by: 'assigned_by',
+  assigned_at: 'assigned_at',
+  is_active: 'is_active',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.MandalsScalarFieldEnum = {
   id: 'id',
   label_english: 'label_english',
@@ -204,6 +234,9 @@ exports.fund_type_enum = exports.$Enums.fund_type_enum = {
 };
 
 exports.Prisma.ModelName = {
+  users: 'users',
+  roles: 'roles',
+  user_roles_mapping: 'user_roles_mapping',
   mandals: 'mandals',
   members: 'members',
   supervisors: 'supervisors',
