@@ -240,7 +240,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Customer (కస్టమర్)
+                          Member (మెంబర్)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
