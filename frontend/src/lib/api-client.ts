@@ -5,6 +5,8 @@ import {
   GetMandalsResponse,
   GetVillagesResponse,
   GetCustomersResponse,
+  GetRolesResponse,
+  GetUsersResponse,
   VillageQueryParams,
   CustomerQueryParams,
 } from "@/types/api";
@@ -70,6 +72,51 @@ export async function getVillages(
     `/villages?${searchParams}`,
   );
   return response.data;
+}
+
+/**
+ * Fetch active roles
+ */
+export async function getRoles(): Promise<Array<{ id: string; name: string; description: string | null; is_active: boolean }>> {
+  const response = await apiRequest<GetRolesResponse>(`/roles`);
+  return response.data;
+}
+
+/**
+ * Fetch all users with their roles
+ */
+export async function getUsers(): Promise<Array<{ id: string; name: string; email: string; roles: string[]; created_at: string; updated_at: string }>> {
+  const response = await apiRequest<GetUsersResponse>(`/users`);
+  return response.data;
+}
+
+/**
+ * Update user roles
+ */
+export async function updateUserRoles(userId: string, roles: string[]): Promise<{ message: string }> {
+  const response = await fetch(`${API_BASE_URL}/users/${userId}/roles`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ roles }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to update user roles");
+  }
+
+  return data.data;
 }
 
 /**
