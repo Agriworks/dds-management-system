@@ -41,7 +41,7 @@ export function getMenuList(): Group[] {
         },
         {
           href: "/customers",
-          label: "Customers",
+          label: "Roles Management",
           icon: Users,
         },
       ],
