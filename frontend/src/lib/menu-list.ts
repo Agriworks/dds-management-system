@@ -1,4 +1,4 @@
-import { Group, LucideIcon, CreditCard, Users } from "lucide-react";
+import { Group, LucideIcon, CreditCard, Users, UserPlus } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -43,6 +43,11 @@ export function getMenuList(): Group[] {
           href: "/customers",
           label: "Roles Management",
           icon: Users,
+        },
+        {
+          href: "/members",
+          label: "Add Members",
+          icon: UserPlus,
         },
       ],
     },
