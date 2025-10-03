@@ -13,8 +13,6 @@ import {
 import {
   CreateTransactionRequest,
   TransactionType,
-  LoanType,
-  FundType,
   GetTransactionsApiResponse,
 } from "@/types/transaction";
 import type { TransactionWithNames } from "@/types/transaction";
@@ -230,9 +228,7 @@ export async function getTransactions(params: {
   return {
     transactions: items.map((t) => ({
       ...t,
-      type: t.type as TransactionType,
-      loan_type: t.loan_type as LoanType | null,
-      fund_type: t.fund_type as FundType | null,
+      type: t.type as TransactionType, // Type is now derived from subtype relationship
     })),
     pagination,
   };

@@ -1,8 +1,6 @@
 // Transaction related types based on the database schema
 
 export type TransactionType = "DEPOSIT" | "WITHDRAWL" | "LOAN" | "PAYBACK";
-export type LoanType = "LIVESTOCK" | "INDIVIDUAL" | "LAAGODI";
-export type FundType = "DDS_FUNDS" | "PROJECT_FUNDS";
 
 export interface TransactionFormData {
   mandal: string;
@@ -11,19 +9,16 @@ export interface TransactionFormData {
   transactionDate: Date;
   amount: string; // String in form, will be converted to number
   transactionType: TransactionType;
-  loanType: LoanType | null;
-  fundType: FundType | null;
+  transactionSubtype: string | null;
   comments: string | null;
 }
 
 export interface CreateTransactionRequest {
   supervised_by: string; // UUID of supervisor
   member: string; // UUID of member (customer)
-  type: TransactionType;
   amount: number; // Integer amount in database
   comments: string | null;
-  loan_type: LoanType | null;
-  fund_type: FundType | null;
+  transaction_type_id: string; // UUID of transaction type (points to deepest level)
   // created_at and updated_at are handled by database
 }
 
@@ -31,13 +26,13 @@ export interface Transaction {
   id: string;
   supervised_by: string;
   member: string;
-  type: TransactionType;
   amount: number;
   comments: string | null;
-  loan_type: LoanType | null;
-  fund_type: FundType | null;
+  transaction_type_id: string;
   created_at: string;
   updated_at: string;
+  // Type information for display
+  type?: TransactionType; // Optional for API responses that include type
 }
 
 // Response types for transaction API
@@ -104,8 +99,12 @@ export interface Supervisor {
 export interface TransactionWithNames extends Transaction {
   member_name: string;
   supervisor_name: string;
-  recipet_number: string;
+  receipt_number: string;
   transaction_date: string;
+  // Type information for display
+  type_name?: string;
+  type_label_english?: string;
+  type_label_telugu?: string;
 }
 
 // API response type for getTransactions
