@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Dialog from "@/components/dialog";
-import { 
+import {
   MultiSelector,
   MultiSelectorTrigger,
   MultiSelectorInput,
@@ -75,7 +75,9 @@ function RolesEditor({
         <MultiSelector
           values={localRoles}
           onValuesChange={setLocalRoles}
-          displayValues={Object.fromEntries(allRoles.map(r => [r.name, r.name]))}
+          displayValues={Object.fromEntries(
+            allRoles.map((r) => [r.name, r.name]),
+          )}
         >
           <MultiSelectorTrigger>
             <MultiSelectorInput placeholder="Search roles..." />
@@ -169,13 +171,15 @@ function ActionsCell({
 }
 
 export function createColumns(
-  onUpdateRoles: (id: string, roles: string[]) => void
+  onUpdateRoles: (id: string, roles: string[]) => void,
 ): ColumnDef<UserRow>[] {
   return [
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+      cell: ({ row }) => (
+        <span className="font-medium">{row.original.name}</span>
+      ),
     },
     {
       accessorKey: "email",

@@ -58,7 +58,7 @@ const authOptions: AuthOptions = {
 
             // Assign default "user" role to new users
             const userRole = await prisma.roles.findUnique({
-              where: { name: 'user' }
+              where: { name: "user" },
             });
 
             if (userRole) {

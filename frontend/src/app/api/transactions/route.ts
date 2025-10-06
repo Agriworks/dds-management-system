@@ -4,22 +4,21 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 // Validation schema for creating transactions
-const createTransactionSchema = z
-  .object({
-    supervised_by: z.string().uuid("Supervisor ID must be a valid UUID"),
-    member: z.string().uuid("Member ID must be a valid UUID"),
-    amount: z.number().int().positive("Amount must be a positive integer"),
-    transaction_date: z
-      .string()
-      .datetime()
-      .optional()
-      .default(() => new Date().toISOString()),
-    comments: z.string().nullable().optional(),
-    transaction_type_id: z.string().uuid("Transaction type ID must be a valid UUID"),
-    receipt_number: z.string().optional(),
-  })
-;
-
+const createTransactionSchema = z.object({
+  supervised_by: z.string().uuid("Supervisor ID must be a valid UUID"),
+  member: z.string().uuid("Member ID must be a valid UUID"),
+  amount: z.number().int().positive("Amount must be a positive integer"),
+  transaction_date: z
+    .string()
+    .datetime()
+    .optional()
+    .default(() => new Date().toISOString()),
+  comments: z.string().nullable().optional(),
+  transaction_type_id: z
+    .string()
+    .uuid("Transaction type ID must be a valid UUID"),
+  receipt_number: z.string().optional(),
+});
 /**
  * POST /api/transactions
  * Creates a new transaction
@@ -79,7 +78,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         404,
       );
     }
-
 
     // Generate a unique receipt number if not provided
     const receiptNumber =

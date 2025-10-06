@@ -75,7 +75,14 @@ export async function getVillages(
 /**
  * Fetch active roles
  */
-export async function getRoles(): Promise<Array<{ id: string; name: string; description: string | null; is_active: boolean }>> {
+export async function getRoles(): Promise<
+  Array<{
+    id: string;
+    name: string;
+    description: string | null;
+    is_active: boolean;
+  }>
+> {
   const response = await apiRequest<GetRolesResponse>(`/roles`);
   return response.data;
 }
@@ -83,7 +90,16 @@ export async function getRoles(): Promise<Array<{ id: string; name: string; desc
 /**
  * Fetch all users with their roles
  */
-export async function getUsers(): Promise<Array<{ id: string; name: string; email: string; roles: string[]; created_at: string; updated_at: string }>> {
+export async function getUsers(): Promise<
+  Array<{
+    id: string;
+    name: string;
+    email: string;
+    roles: string[];
+    created_at: string;
+    updated_at: string;
+  }>
+> {
   const response = await apiRequest<GetUsersResponse>(`/users`);
   return response.data;
 }
@@ -91,7 +107,10 @@ export async function getUsers(): Promise<Array<{ id: string; name: string; emai
 /**
  * Update user roles
  */
-export async function updateUserRoles(userId: string, roles: string[]): Promise<{ message: string }> {
+export async function updateUserRoles(
+  userId: string,
+  roles: string[],
+): Promise<{ message: string }> {
   const response = await fetch(`${API_BASE_URL}/users/${userId}/roles`, {
     method: "PUT",
     headers: {

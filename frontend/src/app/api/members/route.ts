@@ -15,14 +15,26 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body: CreateMemberRequest = await request.json();
     console.log("Request body:", body);
-    const { full_name_english, village_id, house_number, phone_number, husband_or_father_name } = body;
+    const {
+      full_name_english,
+      village_id,
+      house_number,
+      phone_number,
+      husband_or_father_name,
+    } = body;
 
     // Validate required fields
-    if (!full_name_english || !village_id || !house_number || !phone_number || !husband_or_father_name) {
+    if (
+      !full_name_english ||
+      !village_id ||
+      !house_number ||
+      !phone_number ||
+      !husband_or_father_name
+    ) {
       return createErrorResponse(
         "VALIDATION_ERROR",
         "All fields are required",
-        400
+        400,
       );
     }
 
@@ -32,7 +44,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return createErrorResponse(
         "VALIDATION_ERROR",
         "Phone number must be exactly 10 digits",
-        400
+        400,
       );
     }
 
@@ -47,7 +59,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return createErrorResponse(
         "VALIDATION_ERROR",
         "Selected village not found",
-        400
+        400,
       );
     }
 
@@ -62,7 +74,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return createErrorResponse(
         "VALIDATION_ERROR",
         "Member with this phone number already exists",
-        409
+        409,
       );
     }
 
@@ -106,7 +118,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           created_at: newMember.created_at,
         },
       },
-      "Member created successfully"
+      "Member created successfully",
     );
   } catch (error) {
     console.error("Error creating member:", error);
@@ -114,7 +126,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       "INTERNAL_ERROR",
       "Failed to create member",
       500,
-      { error: error instanceof Error ? error.message : "Unknown error" }
+      { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }

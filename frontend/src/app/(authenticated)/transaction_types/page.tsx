@@ -5,13 +5,24 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Save, X, Loader2 } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 import Dialog from "@/components/dialog";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
@@ -43,8 +54,14 @@ interface TransactionTypesResponse {
 // Form validation schema
 const transactionTypeSchema = z.object({
   name: z.string().min(1, "Name is required").max(255, "Name too long"),
-  label_english: z.string().min(1, "English label is required").max(255, "English label too long"),
-  label_telugu: z.string().min(1, "Telugu label is required").max(255, "Telugu label too long"),
+  label_english: z
+    .string()
+    .min(1, "English label is required")
+    .max(255, "English label too long"),
+  label_telugu: z
+    .string()
+    .min(1, "Telugu label is required")
+    .max(255, "Telugu label too long"),
   description: z.string().optional(),
   parent_id: z.string().optional().nullable(),
   is_active: z.boolean(),
@@ -54,10 +71,13 @@ type TransactionTypeFormData = z.infer<typeof transactionTypeSchema>;
 
 export default function TransactionTypesAdminPage() {
   const { toast } = useToast();
-  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([]);
+  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedParentType, setSelectedParentType] = useState<TransactionType | null>(null);
+  const [selectedParentType, setSelectedParentType] =
+    useState<TransactionType | null>(null);
 
   const form = useForm<TransactionTypeFormData>({
     resolver: zodResolver(transactionTypeSchema),
@@ -77,7 +97,7 @@ export default function TransactionTypesAdminPage() {
       setLoading(true);
       const response = await fetch("/api/transaction-types/admin");
       const data: TransactionTypesResponse = await response.json();
-      
+
       if (data.success) {
         setTransactionTypes(data.data.allTypes);
       } else {
@@ -117,7 +137,6 @@ export default function TransactionTypesAdminPage() {
     }
   }, [isDialogOpen, selectedParentType, form]);
 
-
   // Handle form submission
   const onSubmit = async (data: TransactionTypeFormData) => {
     try {
@@ -128,7 +147,7 @@ export default function TransactionTypesAdminPage() {
         },
         body: JSON.stringify({
           ...data,
-          parent_id: selectedParentType?.id || null
+          parent_id: selectedParentType?.id || null,
         }),
       });
 
@@ -139,7 +158,7 @@ export default function TransactionTypesAdminPage() {
           title: "Success",
           description: "Transaction type created successfully",
         });
-        
+
         setIsDialogOpen(false);
         setSelectedParentType(null);
         form.reset();
@@ -147,7 +166,8 @@ export default function TransactionTypesAdminPage() {
       } else {
         toast({
           title: "Error",
-          description: result.error?.message || "Failed to save transaction type",
+          description:
+            result.error?.message || "Failed to save transaction type",
           variant: "destructive",
         });
       }
@@ -160,8 +180,6 @@ export default function TransactionTypesAdminPage() {
       });
     }
   };
-
-
 
   // Handle new main type
   const handleNewType = () => {
@@ -185,8 +203,8 @@ export default function TransactionTypesAdminPage() {
   // Component for individual transaction type with collapsible content
   const TransactionTypeCard = ({ type }: { type: TransactionType }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const subtypes = transactionTypes.filter(t => t.parent_id === type.id);
-    
+    const subtypes = transactionTypes.filter((t) => t.parent_id === type.id);
+
     return (
       <Collapsible
         open={isOpen}
@@ -208,8 +226,11 @@ export default function TransactionTypesAdminPage() {
           {type.name}
         </div>
         <CollapsibleContent className="flex flex-col gap-2">
-          {subtypes.map(subtype => (
-            <div key={subtype.id} className="rounded-md border px-4 py-2 font-mono text-sm">
+          {subtypes.map((subtype) => (
+            <div
+              key={subtype.id}
+              className="rounded-md border px-4 py-2 font-mono text-sm"
+            >
               {subtype.label_english} ({subtype.label_telugu})
             </div>
           ))}
@@ -229,8 +250,8 @@ export default function TransactionTypesAdminPage() {
 
   // Render transaction types with collapsible sections
   const renderTransactionTypesCollapsible = () => {
-    const mainTypes = transactionTypes.filter(type => !type.parent_id);
-    
+    const mainTypes = transactionTypes.filter((type) => !type.parent_id);
+
     return (
       <div className="space-y-6">
         {mainTypes.map((type) => (
@@ -249,11 +270,13 @@ export default function TransactionTypesAdminPage() {
             Add Transaction Type
           </Button>
         </div>
-        
+
         <Dialog
           isOpen={isDialogOpen}
           onClose={handleDialogClose}
-          dialogTitle={selectedParentType ? "Add Subtype" : "Add New Transaction Type"}
+          dialogTitle={
+            selectedParentType ? "Add Subtype" : "Add New Transaction Type"
+          }
           dialogDescription={
             selectedParentType
               ? `Create a new subtype under "${selectedParentType.label_english}".`
@@ -279,9 +302,8 @@ export default function TransactionTypesAdminPage() {
                     </FormItem>
                   )}
                 />
-                
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -299,7 +321,7 @@ export default function TransactionTypesAdminPage() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="label_telugu"
@@ -317,7 +339,7 @@ export default function TransactionTypesAdminPage() {
                   )}
                 />
               </div>
-              
+
               <FormField
                 control={form.control}
                 name="description"
@@ -325,16 +347,16 @@ export default function TransactionTypesAdminPage() {
                   <FormItem>
                     <FormLabel>Description (Optional)</FormLabel>
                     <FormControl>
-                      <Textarea 
+                      <Textarea
                         placeholder="Brief description of this transaction type..."
-                        {...field} 
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="is_active"
@@ -343,7 +365,8 @@ export default function TransactionTypesAdminPage() {
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Active Status</FormLabel>
                       <div className="text-sm text-muted-foreground">
-                        Whether this transaction type is active and available for use
+                        Whether this transaction type is active and available
+                        for use
                       </div>
                     </div>
                     <FormControl>
@@ -355,16 +378,20 @@ export default function TransactionTypesAdminPage() {
                   </FormItem>
                 )}
               />
-              
+
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={handleDialogClose}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleDialogClose}
+                >
                   <X className="h-4 w-4 mr-2" />
                   Cancel
                 </Button>
-                  <Button type="submit">
-                    <Save className="h-4 w-4 mr-2" />
-                    Create
-                  </Button>
+                <Button type="submit">
+                  <Save className="h-4 w-4 mr-2" />
+                  Create
+                </Button>
               </div>
             </form>
           </Form>
@@ -374,11 +401,15 @@ export default function TransactionTypesAdminPage() {
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="ml-2 text-muted-foreground">Loading transaction types...</span>
+            <span className="ml-2 text-muted-foreground">
+              Loading transaction types...
+            </span>
           </div>
         ) : transactionTypes.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-muted-foreground mb-4">No transaction types found.</p>
+            <p className="text-muted-foreground mb-4">
+              No transaction types found.
+            </p>
             <Button onClick={handleNewType}>
               <Plus className="h-4 w-4 mr-2" />
               Add Your First Transaction Type
@@ -387,7 +418,6 @@ export default function TransactionTypesAdminPage() {
         ) : (
           renderTransactionTypesCollapsible()
         )}
-
       </div>
     </ContentLayout>
   );

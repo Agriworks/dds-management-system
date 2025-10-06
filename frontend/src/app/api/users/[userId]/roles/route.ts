@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: Promise<{ userId: string }> },
 ): Promise<NextResponse> {
   try {
     const { userId } = await params;
@@ -19,7 +19,7 @@ export async function PUT(
       return createErrorResponse(
         "VALIDATION_ERROR",
         "Roles must be an array",
-        400
+        400,
       );
     }
 
@@ -36,7 +36,7 @@ export async function PUT(
       return createErrorResponse(
         "VALIDATION_ERROR",
         "One or more roles not found",
-        400
+        400,
       );
     }
 
@@ -51,18 +51,22 @@ export async function PUT(
         select: { role_id: true, role: { select: { name: true } } },
       });
 
-      const currentRoleNames = currentRoles.map(ur => ur.role.name);
+      const currentRoleNames = currentRoles.map((ur) => ur.role.name);
 
       // Find roles to add and remove
-      const rolesToAdd = roles.filter(role => !currentRoleNames.includes(role));
-      const rolesToRemove = currentRoleNames.filter(role => !roles.includes(role));
+      const rolesToAdd = roles.filter(
+        (role) => !currentRoleNames.includes(role),
+      );
+      const rolesToRemove = currentRoleNames.filter(
+        (role) => !roles.includes(role),
+      );
 
       // Remove roles that are no longer needed
       if (rolesToRemove.length > 0) {
         // Get role IDs for roles to remove from current user roles
         const roleIdsToRemove = currentRoles
-          .filter(ur => rolesToRemove.includes(ur.role.name))
-          .map(ur => ur.role_id);
+          .filter((ur) => rolesToRemove.includes(ur.role.name))
+          .map((ur) => ur.role_id);
 
         await tx.user_roles_mapping.updateMany({
           where: {
@@ -78,8 +82,8 @@ export async function PUT(
       // Add new roles
       if (rolesToAdd.length > 0) {
         const roleIdsToAdd = roleRecords
-          .filter(role => rolesToAdd.includes(role.name))
-          .map(role => role.id);
+          .filter((role) => rolesToAdd.includes(role.name))
+          .map((role) => role.id);
 
         // Check for existing inactive mappings and reactivate them instead of creating new ones
         for (const roleId of roleIdsToAdd) {
@@ -118,7 +122,7 @@ export async function PUT(
 
     return createSuccessResponse(
       { message: "User roles updated successfully" },
-      "Roles updated successfully"
+      "Roles updated successfully",
     );
   } catch (error) {
     console.error("Error updating user roles:", error);
@@ -126,7 +130,7 @@ export async function PUT(
       "INTERNAL_ERROR",
       "Failed to update user roles",
       500,
-      { error: error instanceof Error ? error.message : "Unknown error" }
+      { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }

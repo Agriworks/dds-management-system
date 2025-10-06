@@ -1,4 +1,12 @@
-import { Group, LucideIcon, CreditCard, Users, UserPlus, Settings, LayoutDashboard } from "lucide-react";
+import {
+  Group,
+  LucideIcon,
+  CreditCard,
+  Users,
+  UserPlus,
+  Settings,
+  LayoutDashboard,
+} from "lucide-react";
 
 type Submenu = {
   href: string;

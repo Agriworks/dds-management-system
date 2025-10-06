@@ -51,8 +51,12 @@ const formSchema = z
       .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
         message: "Amount must be a positive number",
       }),
-    transactionType: z.string().min(1, { message: "Please select a transaction type" }),
-    transactionTypeId: z.string().min(1, { message: "Please select a transaction type" }),
+    transactionType: z
+      .string()
+      .min(1, { message: "Please select a transaction type" }),
+    transactionTypeId: z
+      .string()
+      .min(1, { message: "Please select a transaction type" }),
     transactionSubtype: z.string().optional(),
     transactionSubtypeId: z.string().optional(),
     childSubtype: z.string().optional(),
@@ -76,7 +80,14 @@ export default function AddTransactionForm() {
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   // Backend-driven types
-  type TransactionType = { id: string; name: string; label_english: string; label_telugu: string; parent_id?: string | null; description?: string };
+  type TransactionType = {
+    id: string;
+    name: string;
+    label_english: string;
+    label_telugu: string;
+    parent_id?: string | null;
+    description?: string;
+  };
   const [mainTypes, setMainTypes] = useState<TransactionType[]>([]);
   const [subtypes, setSubtypes] = useState<TransactionType[]>([]);
   const [childSubtypes, setChildSubtypes] = useState<TransactionType[]>([]);
@@ -137,9 +148,13 @@ export default function AddTransactionForm() {
   useEffect(() => {
     const fetchTransactionSubtypes = async () => {
       try {
-        const selectedType = mainTypes.find((t) => t.name === selectedTransactionType);
+        const selectedType = mainTypes.find(
+          (t) => t.name === selectedTransactionType,
+        );
         if (selectedType?.id) {
-          const subRes = await fetch(`/api/transaction-types/subtypes?parentId=${selectedType.id}`);
+          const subRes = await fetch(
+            `/api/transaction-types/subtypes?parentId=${selectedType.id}`,
+          );
           if (subRes.ok) {
             const subData = await subRes.json();
             const subs: TransactionType[] = subData?.data?.subtypes ?? [];
@@ -167,9 +182,13 @@ export default function AddTransactionForm() {
   useEffect(() => {
     const fetchChildSubtypes = async () => {
       try {
-        const selectedSubtype = subtypes.find((s) => s.name === selectedTransactionSubtype);
+        const selectedSubtype = subtypes.find(
+          (s) => s.name === selectedTransactionSubtype,
+        );
         if (selectedSubtype?.id) {
-          const subRes = await fetch(`/api/transaction-types/subtypes?parentId=${selectedSubtype.id}`);
+          const subRes = await fetch(
+            `/api/transaction-types/subtypes?parentId=${selectedSubtype.id}`,
+          );
           if (subRes.ok) {
             const subData = await subRes.json();
             const childs: TransactionType[] = subData?.data?.subtypes ?? [];
@@ -186,7 +205,6 @@ export default function AddTransactionForm() {
     }
   }, [selectedTransactionSubtype, subtypes]);
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
@@ -195,7 +213,10 @@ export default function AddTransactionForm() {
       const defaultSupervisorId = "d7e868c6-a19b-4680-b846-575a1d9c2c06";
 
       // Use the deepest subtype (child subtype if available, otherwise parent subtype, otherwise main type)
-      const finalTypeId = values.childSubtypeId || values.transactionSubtypeId || values.transactionTypeId;
+      const finalTypeId =
+        values.childSubtypeId ||
+        values.transactionSubtypeId ||
+        values.transactionTypeId;
 
       // Format the data for API submission
       const transactionData = {
@@ -458,20 +479,32 @@ export default function AddTransactionForm() {
                         <FormControl>
                           <Select
                             onValueChange={(value) => {
-                              const selectedType = mainTypes.find(t => t.name === value);
+                              const selectedType = mainTypes.find(
+                                (t) => t.name === value,
+                              );
                               field.onChange(value);
-                              form.setValue("transactionTypeId", selectedType?.id || "");
+                              form.setValue(
+                                "transactionTypeId",
+                                selectedType?.id || "",
+                              );
                             }}
                             value={field.value || undefined}
                             disabled={loadingTypes}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder={loadingTypes ? "Loading transaction types..." : "Select transaction type"} />
+                              <SelectValue
+                                placeholder={
+                                  loadingTypes
+                                    ? "Loading transaction types..."
+                                    : "Select transaction type"
+                                }
+                              />
                             </SelectTrigger>
                             <SelectContent>
                               {loadingTypes ? (
                                 <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                  <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+                                  <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                  Loading...
                                 </div>
                               ) : (
                                 mainTypes.map((t) => (
@@ -503,20 +536,32 @@ export default function AddTransactionForm() {
                           <FormControl>
                             <Select
                               onValueChange={(value) => {
-                                const selectedSubtype = subtypes.find(s => s.name === value);
+                                const selectedSubtype = subtypes.find(
+                                  (s) => s.name === value,
+                                );
                                 field.onChange(value);
-                                form.setValue("transactionSubtypeId", selectedSubtype?.id || "");
+                                form.setValue(
+                                  "transactionSubtypeId",
+                                  selectedSubtype?.id || "",
+                                );
                               }}
                               value={field.value || undefined}
                               disabled={loadingTypes}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingTypes ? "Loading subtypes..." : "Select transaction subtype"} />
+                                <SelectValue
+                                  placeholder={
+                                    loadingTypes
+                                      ? "Loading subtypes..."
+                                      : "Select transaction subtype"
+                                  }
+                                />
                               </SelectTrigger>
                               <SelectContent>
                                 {loadingTypes ? (
                                   <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                    Loading...
                                   </div>
                                 ) : (
                                   subtypes.map((s) => (
@@ -535,7 +580,6 @@ export default function AddTransactionForm() {
                   </div>
                 )}
 
-
                 {childSubtypes.length > 0 && (
                   <div className="space-y-2">
                     <FormField
@@ -550,20 +594,32 @@ export default function AddTransactionForm() {
                           <FormControl>
                             <Select
                               onValueChange={(value) => {
-                                const selectedChild = childSubtypes.find(s => s.name === value);
+                                const selectedChild = childSubtypes.find(
+                                  (s) => s.name === value,
+                                );
                                 field.onChange(value);
-                                form.setValue("childSubtypeId", selectedChild?.id || undefined);
+                                form.setValue(
+                                  "childSubtypeId",
+                                  selectedChild?.id || undefined,
+                                );
                               }}
                               value={field.value || undefined}
                               disabled={loadingTypes}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder={loadingTypes ? "Loading subtypes..." : "Select subtype detail"} />
+                                <SelectValue
+                                  placeholder={
+                                    loadingTypes
+                                      ? "Loading subtypes..."
+                                      : "Select subtype detail"
+                                  }
+                                />
                               </SelectTrigger>
                               <SelectContent>
                                 {loadingTypes ? (
                                   <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                    Loading...
                                   </div>
                                 ) : (
                                   childSubtypes.map((s) => (
@@ -581,7 +637,6 @@ export default function AddTransactionForm() {
                     />
                   </div>
                 )}
-
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button

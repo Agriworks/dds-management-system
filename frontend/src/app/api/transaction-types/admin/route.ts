@@ -56,8 +56,8 @@ export async function GET() {
     });
 
     // Separate main types (no parent) and subtypes
-    const mainTypes = allTypes.filter(type => !type.parent_id);
-    const subtypes = allTypes.filter(type => type.parent_id);
+    const mainTypes = allTypes.filter((type) => !type.parent_id);
+    const subtypes = allTypes.filter((type) => type.parent_id);
 
     return NextResponse.json({
       success: true,
@@ -80,7 +80,7 @@ export async function GET() {
         },
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

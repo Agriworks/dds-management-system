@@ -1,10 +1,7 @@
 import { type Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -16,7 +13,8 @@ export function DataTablePagination<TData>({
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-sm text-muted-foreground">
-        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        Page {table.getState().pagination.pageIndex + 1} of{" "}
+        {table.getPageCount()}
       </div>
       <div className="flex items-center space-x-2">
         <Button

@@ -7,12 +7,17 @@ const prisma = new PrismaClient();
 // Validation schema for creating transaction types
 const createTransactionTypeSchema = z.object({
   name: z.string().min(1, "Name is required").max(255, "Name too long"),
-  label_english: z.string().min(1, "English label is required").max(255, "English label too long"),
-  label_telugu: z.string().min(1, "Telugu label is required").max(255, "Telugu label too long"),
+  label_english: z
+    .string()
+    .min(1, "English label is required")
+    .max(255, "English label too long"),
+  label_telugu: z
+    .string()
+    .min(1, "Telugu label is required")
+    .max(255, "Telugu label too long"),
   description: z.string().optional(),
   parent_id: z.string().uuid().optional().nullable(),
 });
-
 
 // Get main transaction types (Level 1 - no parent_id)
 export async function GET() {
@@ -54,7 +59,7 @@ export async function GET() {
         },
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -63,15 +68,15 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate input
     const validatedData = createTransactionTypeSchema.parse(body);
-    
+
     // Check if name already exists
     const existingType = await prisma.transaction_types.findUnique({
       where: { name: validatedData.name },
     });
-    
+
     if (existingType) {
       return NextResponse.json(
         {
@@ -82,16 +87,16 @@ export async function POST(request: NextRequest) {
           },
           timestamp: new Date().toISOString(),
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
-    
+
     // Validate parent_id if provided
     if (validatedData.parent_id) {
       const parentExists = await prisma.transaction_types.findUnique({
         where: { id: validatedData.parent_id },
       });
-      
+
       if (!parentExists) {
         return NextResponse.json(
           {
@@ -102,11 +107,11 @@ export async function POST(request: NextRequest) {
             },
             timestamp: new Date().toISOString(),
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
-    
+
     // Create the transaction type
     const newType = await prisma.transaction_types.create({
       data: {
@@ -129,7 +134,7 @@ export async function POST(request: NextRequest) {
         updated_at: true,
       },
     });
-    
+
     return NextResponse.json({
       success: true,
       data: {
@@ -139,7 +144,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating transaction type:", error);
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
@@ -151,10 +156,10 @@ export async function POST(request: NextRequest) {
           },
           timestamp: new Date().toISOString(),
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
-    
+
     return NextResponse.json(
       {
         success: false,
@@ -164,8 +169,7 @@ export async function POST(request: NextRequest) {
         },
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

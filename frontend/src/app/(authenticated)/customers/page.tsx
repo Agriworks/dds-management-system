@@ -14,7 +14,6 @@ type UserRow = {
   roles: string[];
 };
 
-
 export default function CustomersPage() {
   const [data, setData] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +89,7 @@ export default function CustomersPage() {
                 setPageIndex(nextPageIndex);
                 setPageSize(nextPageSize);
               }}
-            hideToolbar={true}
+              hideToolbar={true}
             />
           )}
         </div>

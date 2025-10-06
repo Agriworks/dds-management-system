@@ -72,8 +72,24 @@ export interface PaginatedResponse<T> {
 export type GetMandalsResponse = ApiResponse<Mandal[]>;
 export type GetVillagesResponse = ApiResponse<Village[]>;
 export type GetCustomersResponse = ApiResponse<PaginatedResponse<Customer>>;
-export type GetRolesResponse = ApiResponse<Array<{ id: string; name: string; description: string | null; is_active: boolean }>>;
-export type GetUsersResponse = ApiResponse<Array<{ id: string; name: string; email: string; roles: string[]; created_at: string; updated_at: string }>>;
+export type GetRolesResponse = ApiResponse<
+  Array<{
+    id: string;
+    name: string;
+    description: string | null;
+    is_active: boolean;
+  }>
+>;
+export type GetUsersResponse = ApiResponse<
+  Array<{
+    id: string;
+    name: string;
+    email: string;
+    roles: string[];
+    created_at: string;
+    updated_at: string;
+  }>
+>;
 
 // Query parameter types for URL search params
 export interface VillageQueryParams {

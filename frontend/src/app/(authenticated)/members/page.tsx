@@ -32,7 +32,9 @@ const formSchema = z.object({
     .refine((val) => /^[0-9]{10}$/.test(val.replace(/\D/g, "")), {
       message: "Please enter a valid 10-digit phone number",
     }),
-  husband_or_father_name: z.string().min(1, { message: "Husband/Father name is required" }),
+  husband_or_father_name: z
+    .string()
+    .min(1, { message: "Husband/Father name is required" }),
 });
 
 export default function AddMemberPage() {
@@ -72,12 +74,16 @@ export default function AddMemberPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        
+
         // Check if it's a phone number conflict
-        if (response.status === 409 && errorData.error?.message?.includes("phone number already exists")) {
+        if (
+          response.status === 409 &&
+          errorData.error?.message?.includes("phone number already exists")
+        ) {
           theToast.toast({
             title: "Phone number already exists",
-            description: "A member with this phone number already exists. Please use a different phone number.",
+            description:
+              "A member with this phone number already exists. Please use a different phone number.",
             variant: "destructive",
             duration: 5000,
           });
@@ -85,7 +91,7 @@ export default function AddMemberPage() {
           form.reset();
           return;
         }
-        
+
         throw new Error(errorData.error?.message || "Failed to create member");
       }
 
@@ -102,7 +108,10 @@ export default function AddMemberPage() {
       console.error("Form submission error", error);
       theToast.toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create member. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to create member. Please try again.",
         variant: "destructive",
         duration: 5000,
       });
