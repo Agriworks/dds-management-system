@@ -9,6 +9,8 @@ declare module "next-auth" {
     user: {
       id: string;
       accessToken: string;
+      email?: string;
+      name?: string;
     };
   }
 }
@@ -87,6 +89,8 @@ const authOptions: AuthOptions = {
       if (account && user) {
         token.accessToken = account.access_token;
         token.sub = user.id;
+        token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
@@ -95,6 +99,8 @@ const authOptions: AuthOptions = {
       if (session.user) {
         session.user.id = token.sub as string;
         session.user.accessToken = token.accessToken as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
       }
       return session;
     },

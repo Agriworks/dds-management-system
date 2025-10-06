@@ -89,7 +89,7 @@ export default function AddMemberPage() {
         throw new Error(errorData.error?.message || "Failed to create member");
       }
 
-      const result = await response.json();
+      await response.json();
 
       theToast.toast({
         title: "Member created successfully!",

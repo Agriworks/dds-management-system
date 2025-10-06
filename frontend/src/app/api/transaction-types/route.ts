@@ -21,7 +21,7 @@ export async function GET() {
       where: {
         parent_id: null,
         is_active: true,
-      } as any,
+      },
       select: {
         id: true,
         name: true,
@@ -29,7 +29,7 @@ export async function GET() {
         label_telugu: true,
         description: true,
         parent_id: true,
-      } as any,
+      },
       orderBy: {
         label_english: "asc",
       },
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
         description: validatedData.description || null,
         parent_id: validatedData.parent_id || null,
         is_active: true,
-      } as any,
+      },
       select: {
         id: true,
         name: true,
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
         is_active: true,
         created_at: true,
         updated_at: true,
-      } as any,
+      },
     });
     
     return NextResponse.json({
