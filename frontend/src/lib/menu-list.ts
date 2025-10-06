@@ -1,4 +1,4 @@
-import { Group, LucideIcon, CreditCard, Users, UserPlus, Settings } from "lucide-react";
+import { Group, LucideIcon, CreditCard, Users, UserPlus, Settings, LayoutDashboard } from "lucide-react";
 
 type Submenu = {
   href: string;
@@ -24,6 +24,11 @@ export function getMenuList(): Group[] {
     {
       groupLabel: "",
       menus: [
+        {
+          href: "/dashboard",
+          label: "Dashboard",
+          icon: LayoutDashboard,
+        },
         {
           href: "/transactions/browse",
           label: "Transactions",
