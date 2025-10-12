@@ -136,6 +136,20 @@ model transaction_types {
   @@index([parent_id], map: "idx_types_parent")
 }
 
+model endpointaccess {
+  id           BigInt   @id @default(autoincrement())
+  role         String
+  endpoint     String
+  viewer       Boolean?
+  contributor  Boolean?
+  admin        Boolean?
+  created_time DateTime @default(now()) @db.Timestamp(6)
+
+  @@unique([role, endpoint], map: "role_endpoint_unique")
+  @@index([endpoint], map: "idx_endpointaccess_endpoint")
+  @@index([role], map: "idx_endpointaccess_role")
+}
+
 enum fund_type_enum {
   DDS_FUNDS
   PROJECT_FUNDS
