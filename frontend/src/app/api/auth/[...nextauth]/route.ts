@@ -1,16 +1,16 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { AuthOptions } from "next-auth";
-import { prisma } from "@/lib/prisma";
-import { v4 as uuidv4 } from "uuid";
 
+// Extend NextAuth types
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      accessToken: string;
       email?: string;
       name?: string;
+      image?: string;
+      accessToken: string;
     };
   }
 }
@@ -22,9 +22,10 @@ const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
+
   callbacks: {
     async redirect({ url }: { url: string }): Promise<string> {
-      // If the url is the callback URL, redirect to transactions
+      // If the url is the callback URL, redirect to transactions browse
       if (url.includes("/api/auth/callback/google")) {
         return `${process.env.NEXTAUTH_URL}/transactions/browse`;
       }
@@ -37,45 +38,47 @@ const authOptions: AuthOptions = {
         ? url
         : process.env.NEXTAUTH_URL!;
     },
+
     async signIn({ user, account }) {
       if (account?.provider === "google" && user.email && user.name) {
         try {
-          // Check if user exists in database
-          let dbUser = await prisma.users.findUnique({
-            where: { email: user.email },
-          });
+          const payload = {
+            first_name: user.name?.split(" ")[0] || null,
+            last_name: user.name?.split(" ").slice(1).join(" ") || null,
+            email: user.email || null,
+            phone: null,
+            external_id: user.id,
+            access_token: account.access_token,
+          };
 
-          if (!dbUser) {
-            // Create new user in database
-            dbUser = await prisma.users.create({
-              data: {
-                id: uuidv4(),
-                email: user.email,
-                name: user.name,
-                external_id: user.id, // Google user ID
+          const response = await fetch(
+            `${process.env.NEXTAUTH_URL}/api/users/oauth/sync`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${account.access_token}`,
               },
-            });
+              body: JSON.stringify(payload),
+            },
+          );
 
-            // Assign default "user" role to new users
-            const userRole = await prisma.roles.findUnique({
-              where: { name: "user" },
-            });
-
-            if (userRole) {
-              await prisma.user_roles_mapping.create({
-                data: {
-                  id: uuidv4(),
-                  user_id: dbUser.id,
-                  role_id: userRole.id,
-                  assigned_by: dbUser.id, // Self-assigned for new users
-                  is_active: true,
-                },
-              });
-            }
+          if (!response.ok) {
+            console.error(
+              "Failed to sync user during sign-in:",
+              response.statusText,
+            );
+            return false;
           }
 
-          // Add database user ID to the user object
-          user.id = dbUser.id;
+          const syncedUser = await response.json();
+          user.id = syncedUser.id;
+          console.log(
+            "User synced successfully:",
+            user.email,
+            "with ID:",
+            user.id,
+          );
           return true;
         } catch (error) {
           console.error("Error during sign in:", error);
@@ -84,6 +87,7 @@ const authOptions: AuthOptions = {
       }
       return true;
     },
+
     async jwt({ token, user, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account && user) {
@@ -94,11 +98,13 @@ const authOptions: AuthOptions = {
       }
       return token;
     },
+
     async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider
       if (session.user) {
         session.user.id = token.sub as string;
         session.user.accessToken = token.accessToken as string;
+        // Preserve Google OAuth user properties
         session.user.email = token.email as string;
         session.user.name = token.name as string;
       }
