@@ -146,7 +146,7 @@ export function SearchableSelect({
         </SelectValue>
       </SelectTrigger>
       <SelectContent
-        className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none"
+        className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none z-[100000]"
         side="bottom"
         align="start"
         position="popper"

@@ -4,43 +4,21 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 // Validation schema for creating transactions
-const createTransactionSchema = z
-  .object({
-    supervised_by: z.string().uuid("Supervisor ID must be a valid UUID"),
-    member: z.string().uuid("Member ID must be a valid UUID"),
-    type: z.enum(["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"]),
-    amount: z.number().int().positive("Amount must be a positive integer"),
-    transaction_date: z
-      .string()
-      .datetime()
-      .optional()
-      .default(() => new Date().toISOString()),
-    comments: z.string().nullable().optional(),
-    loan_type: z
-      .enum(["LIVESTOCK", "INDIVIDUAL", "LAAGODI"])
-      .nullable()
-      .optional(),
-    fund_type: z.enum(["DDS_FUNDS", "PROJECT_FUNDS"]).nullable().optional(),
-    recipet_number: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      // If transaction type is LOAN, loan_type is required
-      if (data.type === "LOAN" && !data.loan_type) {
-        return false;
-      }
-      // If loan_type is LAAGODI, fund_type is required
-      if (data.loan_type === "LAAGODI" && !data.fund_type) {
-        return false;
-      }
-      return true;
-    },
-    {
-      message:
-        "Loan type is required for LOAN transactions, and fund type is required for LAAGODI loans",
-    },
-  );
-
+const createTransactionSchema = z.object({
+  supervised_by: z.string().uuid("Supervisor ID must be a valid UUID"),
+  member: z.string().uuid("Member ID must be a valid UUID"),
+  amount: z.number().int().positive("Amount must be a positive integer"),
+  transaction_date: z
+    .string()
+    .datetime()
+    .optional()
+    .default(() => new Date().toISOString()),
+  comments: z.string().nullable().optional(),
+  transaction_type_id: z
+    .string()
+    .uuid("Transaction type ID must be a valid UUID"),
+  receipt_number: z.string().optional(),
+});
 /**
  * POST /api/transactions
  * Creates a new transaction
@@ -88,9 +66,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
+    // Validate that the transaction type exists and is active
+    const transactionType = await prisma.transaction_types.findUnique({
+      where: { id: data.transaction_type_id },
+    });
+
+    if (!transactionType || !transactionType.is_active) {
+      return createErrorResponse(
+        "NOT_FOUND",
+        `Transaction type with ID ${data.transaction_type_id} not found or inactive`,
+        404,
+      );
+    }
+
     // Generate a unique receipt number if not provided
-    const recipetNumber =
-      data.recipet_number ||
+    const receiptNumber =
+      data.receipt_number ||
       `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     // Create the transaction
@@ -99,13 +90,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         id: crypto.randomUUID(),
         supervised_by: data.supervised_by,
         member: data.member,
-        type: data.type,
         amount: data.amount,
         transaction_date: new Date(data.transaction_date),
         comments: data.comments || null,
-        loan_type: data.loan_type,
-        fund_type: data.fund_type,
-        recipet_number: recipetNumber,
+        transaction_type_id: data.transaction_type_id,
+        receipt_number: receiptNumber,
       },
       include: {
         members: {
@@ -119,6 +108,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             full_name_english: true,
           },
         },
+        transaction_type: true,
       },
     });
 
@@ -127,17 +117,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       id: transaction.id,
       supervised_by: transaction.supervised_by,
       member: transaction.member,
-      type: transaction.type,
       amount: transaction.amount,
       comments: transaction.comments,
-      loan_type: transaction.loan_type,
-      fund_type: transaction.fund_type,
+      transaction_type_id: transaction.transaction_type_id,
       transaction_date: transaction.transaction_date.toISOString(),
-      recipet_number: transaction.recipet_number,
+      receipt_number: transaction.receipt_number,
       created_at: transaction.created_at.toISOString(),
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,
       supervisor_name: transaction.supervisors.full_name_english,
+      type: transaction.transaction_type?.name,
+      type_name: transaction.transaction_type?.name,
+      type_label_english: transaction.transaction_type?.label_english,
+      type_label_telugu: transaction.transaction_type?.label_telugu,
     };
 
     return createSuccessResponse(
@@ -192,7 +184,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const whereConditions: {
       member?: string;
       supervised_by?: string;
-      type?: "DEPOSIT" | "WITHDRAWL" | "LOAN" | "PAYBACK";
+      transaction_type?: {
+        name: string;
+      };
     } = {};
 
     if (memberId) {
@@ -203,12 +197,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       whereConditions.supervised_by = supervisorId;
     }
 
-    if (type && ["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"].includes(type)) {
-      whereConditions.type = type as
-        | "DEPOSIT"
-        | "WITHDRAWL"
-        | "LOAN"
-        | "PAYBACK";
+    if (type && ["DEPOSIT", "WITHDRAWAL", "LOAN", "PAYBACK"].includes(type)) {
+      whereConditions.transaction_type = {
+        name: type,
+      };
     }
 
     // Fetch transactions from the database with pagination
@@ -227,6 +219,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
               full_name_english: true,
             },
           },
+          transaction_type: true,
         },
         orderBy: {
           created_at: "desc",
@@ -244,13 +237,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       id: transaction.id,
       supervised_by: transaction.supervised_by,
       member: transaction.member,
-      type: transaction.type,
       amount: transaction.amount,
       comments: transaction.comments,
-      loan_type: transaction.loan_type,
-      fund_type: transaction.fund_type,
+      transaction_type_id: transaction.transaction_type_id,
       transaction_date: transaction.transaction_date.toISOString(),
-      recipet_number: transaction.recipet_number,
+      receipt_number: transaction.receipt_number,
       created_at: transaction.created_at.toISOString(),
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,

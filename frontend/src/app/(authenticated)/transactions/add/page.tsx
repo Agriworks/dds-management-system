@@ -51,28 +51,27 @@ const formSchema = z
       .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
         message: "Amount must be a positive number",
       }),
-    transactionType: z.enum(["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"], {
-      message: "Please select a transaction type",
-    }),
-    loanType: z.enum(["LIVESTOCK", "INDIVIDUAL", "LAAGODI"]).nullable(),
-    fundType: z.enum(["DDS_FUNDS", "PROJECT_FUNDS"]).nullable(),
+    transactionType: z
+      .string()
+      .min(1, { message: "Please select a transaction type" }),
+    transactionTypeId: z
+      .string()
+      .min(1, { message: "Please select a transaction type" }),
+    transactionSubtype: z.string().optional(),
+    transactionSubtypeId: z.string().optional(),
+    childSubtype: z.string().optional(),
+    childSubtypeId: z.string().optional(),
     comments: z.string().nullable(),
   })
   .refine(
-    (data) => {
-      // Make loanType required when transactionType is LOAN
-      if (data.transactionType === "LOAN" && !data.loanType) {
-        return false;
-      }
-      // Make fundType required when loanType is LAAGODI
-      if (data.loanType === "LAAGODI" && !data.fundType) {
-        return false;
-      }
+    () => {
+      // If there are child subtypes available, child subtype is required
+      // This will be checked dynamically in the component
       return true;
     },
     {
-      message: "Please complete all required fields",
-      path: ["loanType"], // This will show the error on the loanType field
+      message: "Please select all required subtype details",
+      path: ["childSubtype"],
     },
   );
 
@@ -80,6 +79,19 @@ export default function AddTransactionForm() {
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  // Backend-driven types
+  type TransactionType = {
+    id: string;
+    name: string;
+    label_english: string;
+    label_telugu: string;
+    parent_id?: string | null;
+    description?: string;
+  };
+  const [mainTypes, setMainTypes] = useState<TransactionType[]>([]);
+  const [subtypes, setSubtypes] = useState<TransactionType[]>([]);
+  const [childSubtypes, setChildSubtypes] = useState<TransactionType[]>([]);
+  const [loadingTypes, setLoadingTypes] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,31 +100,110 @@ export default function AddTransactionForm() {
       village: "",
       customer: "",
       amount: "",
-      transactionType: undefined,
-      loanType: null,
-      fundType: null,
+      transactionType: "",
+      transactionTypeId: "",
+      transactionSubtype: "",
+      transactionSubtypeId: "",
+      childSubtype: undefined,
+      childSubtypeId: undefined,
       comments: null,
     },
   });
 
   // Watch form values for dependent loading
   const selectedTransactionType = form.watch("transactionType");
-  const selectedLoanType = form.watch("loanType");
+  const selectedTransactionSubtype = form.watch("transactionSubtype");
 
-  // Reset loan type when transaction type changes (if not LOAN)
+  // Load main transaction types from backend
   useEffect(() => {
-    if (selectedTransactionType !== "LOAN") {
-      form.setValue("loanType", null);
-      form.setValue("fundType", null);
-    }
+    const loadMainTypes = async () => {
+      try {
+        setLoadingTypes(true);
+        const typesRes = await fetch("/api/transaction-types");
+        if (typesRes.ok) {
+          const typesData = await typesRes.json();
+          const types: TransactionType[] = typesData?.data?.mainTypes ?? [];
+          setMainTypes(types);
+        }
+      } catch (e) {
+        console.error("Failed loading main transaction types", e);
+      } finally {
+        setLoadingTypes(false);
+      }
+    };
+    loadMainTypes();
+  }, []);
+
+  // Reset subtypes when transaction type changes
+  useEffect(() => {
+    form.setValue("transactionSubtype", undefined);
+    form.setValue("transactionSubtypeId", undefined);
+    form.setValue("childSubtype", undefined);
+    form.setValue("childSubtypeId", undefined);
+    setSubtypes([]);
+    setChildSubtypes([]);
   }, [selectedTransactionType, form]);
 
-  // Reset fund type when loan type changes (if not LAAGODI)
+  // When user selects a transaction type, fetch subtypes from backend
   useEffect(() => {
-    if (selectedLoanType !== "LAAGODI") {
-      form.setValue("fundType", null);
+    const fetchTransactionSubtypes = async () => {
+      try {
+        const selectedType = mainTypes.find(
+          (t) => t.name === selectedTransactionType,
+        );
+        if (selectedType?.id) {
+          const subRes = await fetch(
+            `/api/transaction-types/subtypes?parentId=${selectedType.id}`,
+          );
+          if (subRes.ok) {
+            const subData = await subRes.json();
+            const subs: TransactionType[] = subData?.data?.subtypes ?? [];
+            setSubtypes(subs);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch transaction subtypes", e);
+      }
+    };
+
+    if (selectedTransactionType && mainTypes.length > 0) {
+      fetchTransactionSubtypes();
     }
-  }, [selectedLoanType, form]);
+  }, [selectedTransactionType, mainTypes]);
+
+  // Reset child subtypes when parent subtype changes
+  useEffect(() => {
+    form.setValue("childSubtype", undefined);
+    form.setValue("childSubtypeId", undefined);
+    setChildSubtypes([]);
+  }, [selectedTransactionSubtype, form]);
+
+  // When user selects a transaction subtype, check if it has child subtypes
+  useEffect(() => {
+    const fetchChildSubtypes = async () => {
+      try {
+        const selectedSubtype = subtypes.find(
+          (s) => s.name === selectedTransactionSubtype,
+        );
+        if (selectedSubtype?.id) {
+          const subRes = await fetch(
+            `/api/transaction-types/subtypes?parentId=${selectedSubtype.id}`,
+          );
+          if (subRes.ok) {
+            const subData = await subRes.json();
+            const childs: TransactionType[] = subData?.data?.subtypes ?? [];
+            setChildSubtypes(childs);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch child subtypes", e);
+      }
+    };
+
+    if (selectedTransactionSubtype && subtypes.length > 0) {
+      fetchChildSubtypes();
+    }
+  }, [selectedTransactionSubtype, subtypes]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -121,16 +212,20 @@ export default function AddTransactionForm() {
       // In a real app, this would come from the logged-in user's session
       const defaultSupervisorId = "d7e868c6-a19b-4680-b846-575a1d9c2c06";
 
+      // Use the deepest subtype (child subtype if available, otherwise parent subtype, otherwise main type)
+      const finalTypeId =
+        values.childSubtypeId ||
+        values.transactionSubtypeId ||
+        values.transactionTypeId;
+
       // Format the data for API submission
       const transactionData = {
         supervised_by: defaultSupervisorId,
         member: values.customer,
-        type: values.transactionType,
         amount: parseInt(values.amount, 10),
         transaction_date: values.transactionDate.toISOString(),
         comments: values.comments || null,
-        loan_type: values.loanType || null,
-        fund_type: values.fundType || null,
+        transaction_type_id: finalTypeId,
       };
 
       console.log("Submitting transaction:", transactionData);
@@ -240,7 +335,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Customer (కస్టమర్)
+                          Member (మెంబర్)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -383,23 +478,41 @@ export default function AddTransactionForm() {
                         </FormLabel>
                         <FormControl>
                           <Select
-                            onValueChange={field.onChange}
-                            value={field.value ?? ""}
+                            onValueChange={(value) => {
+                              const selectedType = mainTypes.find(
+                                (t) => t.name === value,
+                              );
+                              field.onChange(value);
+                              form.setValue(
+                                "transactionTypeId",
+                                selectedType?.id || "",
+                              );
+                            }}
+                            value={field.value || undefined}
+                            disabled={loadingTypes}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select transaction type" />
+                              <SelectValue
+                                placeholder={
+                                  loadingTypes
+                                    ? "Loading transaction types..."
+                                    : "Select transaction type"
+                                }
+                              />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="DEPOSIT">
-                                Deposit (డిపాజిట్)
-                              </SelectItem>
-                              <SelectItem value="WITHDRAWL">
-                                Withdrawal (విత్డ్రావల్)
-                              </SelectItem>
-                              <SelectItem value="LOAN">Loan (లోన్)</SelectItem>
-                              <SelectItem value="PAYBACK">
-                                Payback (పేబ్యాక్)
-                              </SelectItem>
+                              {loadingTypes ? (
+                                <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
+                                  <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                  Loading...
+                                </div>
+                              ) : (
+                                mainTypes.map((t) => (
+                                  <SelectItem key={t.id} value={t.name}>
+                                    {t.label_english} ({t.label_telugu})
+                                  </SelectItem>
+                                ))
+                              )}
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -409,35 +522,54 @@ export default function AddTransactionForm() {
                   />
                 </div>
 
-                {selectedTransactionType === "LOAN" && (
+                {subtypes.length > 0 && (
                   <div className="space-y-2">
                     <FormField
                       control={form.control}
-                      name="loanType"
+                      name="transactionSubtype"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Loan Type (లోన్ టైప్)
+                            Transaction Subtype (ట్రాన్సాక్షన్ సబ్‌టైప్)
                             <span className="text-destructive">*</span>
                           </FormLabel>
                           <FormControl>
                             <Select
-                              onValueChange={field.onChange}
+                              onValueChange={(value) => {
+                                const selectedSubtype = subtypes.find(
+                                  (s) => s.name === value,
+                                );
+                                field.onChange(value);
+                                form.setValue(
+                                  "transactionSubtypeId",
+                                  selectedSubtype?.id || "",
+                                );
+                              }}
                               value={field.value || undefined}
+                              disabled={loadingTypes}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select loan type" />
+                                <SelectValue
+                                  placeholder={
+                                    loadingTypes
+                                      ? "Loading subtypes..."
+                                      : "Select transaction subtype"
+                                  }
+                                />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="LIVESTOCK">
-                                  Livestock (లివ్‌స్టాక్)
-                                </SelectItem>
-                                <SelectItem value="INDIVIDUAL">
-                                  Individual (ఇండివిజువల్)
-                                </SelectItem>
-                                <SelectItem value="LAAGODI">
-                                  Laagodi (లాగోడి)
-                                </SelectItem>
+                                {loadingTypes ? (
+                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                    Loading...
+                                  </div>
+                                ) : (
+                                  subtypes.map((s) => (
+                                    <SelectItem key={s.id} value={s.name}>
+                                      {s.label_english} ({s.label_telugu})
+                                    </SelectItem>
+                                  ))
+                                )}
                               </SelectContent>
                             </Select>
                           </FormControl>
@@ -448,32 +580,54 @@ export default function AddTransactionForm() {
                   </div>
                 )}
 
-                {selectedLoanType === "LAAGODI" && (
+                {childSubtypes.length > 0 && (
                   <div className="space-y-2">
                     <FormField
                       control={form.control}
-                      name="fundType"
+                      name="childSubtype"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Fund Type (ఫండ్ టైప్)
+                            Subtype Detail (సబ్‌టైప్ వివరాలు)
                             <span className="text-destructive">*</span>
                           </FormLabel>
                           <FormControl>
                             <Select
-                              onValueChange={field.onChange}
+                              onValueChange={(value) => {
+                                const selectedChild = childSubtypes.find(
+                                  (s) => s.name === value,
+                                );
+                                field.onChange(value);
+                                form.setValue(
+                                  "childSubtypeId",
+                                  selectedChild?.id || undefined,
+                                );
+                              }}
                               value={field.value || undefined}
+                              disabled={loadingTypes}
                             >
                               <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select fund type" />
+                                <SelectValue
+                                  placeholder={
+                                    loadingTypes
+                                      ? "Loading subtypes..."
+                                      : "Select subtype detail"
+                                  }
+                                />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="DDS_FUNDS">
-                                  DDS Funds (డిడిఎస్ ఫండ్స్)
-                                </SelectItem>
-                                <SelectItem value="PROJECT_FUNDS">
-                                  Project Funds (ప్రాజెక్ట్ ఫండ్స్)
-                                </SelectItem>
+                                {loadingTypes ? (
+                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
+                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
+                                    Loading...
+                                  </div>
+                                ) : (
+                                  childSubtypes.map((s) => (
+                                    <SelectItem key={s.id} value={s.name}>
+                                      {s.label_english} ({s.label_telugu})
+                                    </SelectItem>
+                                  ))
+                                )}
                               </SelectContent>
                             </Select>
                           </FormControl>
