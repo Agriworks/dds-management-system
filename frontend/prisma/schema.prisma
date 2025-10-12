@@ -16,6 +16,7 @@ model users {
   external_id    String
   created_at     DateTime             @default(now()) @db.Timestamp(6)
   updated_at     DateTime             @default(now()) @db.Timestamp(6)
+  transactions   transactions[]
   assigned_roles user_roles_mapping[] @relation("AssignedBy")
   user_roles     user_roles_mapping[]
 
@@ -77,15 +78,6 @@ model members {
   transactions           transactions[]
 }
 
-model supervisors {
-  id                String         @id @db.Uuid
-  full_name_english String
-  full_name_telugu  String
-  created_at        DateTime       @default(now()) @db.Timestamp(6)
-  updated_at        DateTime       @default(now()) @db.Timestamp(6)
-  transactions      transactions[]
-}
-
 model transactions {
   id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   supervised_by       String            @db.Uuid
@@ -98,12 +90,12 @@ model transactions {
   updated_at          DateTime          @default(now()) @db.Timestamp(6)
   transaction_type_id String            @db.Uuid
   members             members           @relation(fields: [member], references: [id], onUpdate: NoAction, map: "fk_transactions_member")
-  supervisors         supervisors       @relation(fields: [supervised_by], references: [id], onUpdate: NoAction, map: "fk_transactions_supervisor")
   transaction_type    transaction_types @relation(fields: [transaction_type_id], references: [id], onUpdate: NoAction, map: "fk_transactions_type")
+  users               users             @relation(fields: [supervised_by], references: [id], onUpdate: NoAction, map: "fk_transactions_user")
 
   @@index([transaction_date], map: "idx_transactions_date")
   @@index([member], map: "idx_transactions_member")
-  @@index([supervised_by], map: "idx_transactions_supervisor")
+  @@index([supervised_by], map: "idx_transactions_user")
   @@index([transaction_type_id], map: "idx_transactions_type")
 }
 

@@ -46,8 +46,8 @@ export async function POST(
     const roleNames = userRoles.map((ur) => ur.role.name);
     console.log("User roles:", roleNames);
 
-    // Get endpoint access permissions for user's roles
-    const endpointAccess = await prisma.endpointaccess.findFirst({
+    // Get endpoint access permissions for ALL user's roles
+    const endpointAccessList = await prisma.endpointaccess.findMany({
       where: {
         endpoint: endpoint,
         role: {
@@ -56,15 +56,17 @@ export async function POST(
       },
     });
 
-    if (!endpointAccess) {
+    if (!endpointAccessList || endpointAccessList.length === 0) {
       console.log("No endpoint access found for endpoint:", endpoint);
       return NextResponse.json(null);
     }
 
+    // Combine permissions from all roles - user gets the highest level of access
     const permissions = {
-      viewer: endpointAccess.viewer || false,
-      contributor: endpointAccess.contributor || false,
-      admin: endpointAccess.admin || false,
+      viewer: endpointAccessList.some((access) => access.viewer) || false,
+      contributor:
+        endpointAccessList.some((access) => access.contributor) || false,
+      admin: endpointAccessList.some((access) => access.admin) || false,
     };
 
     console.log("Endpoint permissions:", permissions);

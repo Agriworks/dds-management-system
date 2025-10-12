@@ -40,15 +40,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const data = validationResult.data;
 
-    // Validate that the supervisor exists
-    const supervisor = await prisma.supervisors.findUnique({
+    // Validate that the user exists
+    const user = await prisma.users.findUnique({
       where: { id: data.supervised_by },
     });
 
-    if (!supervisor) {
+    if (!user) {
       return createErrorResponse(
         "NOT_FOUND",
-        `Supervisor with ID ${data.supervised_by} not found`,
+        `User with ID ${data.supervised_by} not found`,
         404,
       );
     }
@@ -103,12 +103,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             phone_number: true,
           },
         },
-        supervisors: {
+        users: {
           select: {
-            full_name_english: true,
+            name: true,
           },
         },
-        transaction_type: true,
+        transaction_type: {
+          include: {
+            parent: true,
+          },
+        },
       },
     });
 
@@ -125,11 +129,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       created_at: transaction.created_at.toISOString(),
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,
-      supervisor_name: transaction.supervisors.full_name_english,
-      type: transaction.transaction_type?.name,
-      type_name: transaction.transaction_type?.name,
-      type_label_english: transaction.transaction_type?.label_english,
-      type_label_telugu: transaction.transaction_type?.label_telugu,
+      supervisor_name: transaction.users.name,
+      type:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name,
+      type_name:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name,
+      type_label_english:
+        transaction.transaction_type?.parent?.label_english ||
+        transaction.transaction_type?.label_english,
+      type_label_telugu:
+        transaction.transaction_type?.parent?.label_telugu ||
+        transaction.transaction_type?.label_telugu,
+      loan_type: transaction.transaction_type?.parent
+        ? transaction.transaction_type?.name
+        : null,
     };
 
     return createSuccessResponse(
@@ -214,12 +229,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
               phone_number: true,
             },
           },
-          supervisors: {
+          users: {
             select: {
-              full_name_english: true,
+              name: true,
             },
           },
-          transaction_type: true,
+          transaction_type: {
+            include: {
+              parent: true,
+            },
+          },
         },
         orderBy: {
           created_at: "desc",
@@ -245,7 +264,26 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       created_at: transaction.created_at.toISOString(),
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,
-      supervisor_name: transaction.supervisors.full_name_english,
+      supervisor_name: transaction.users.name,
+      type:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name ||
+        null,
+      type_name:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name ||
+        null,
+      type_label_english:
+        transaction.transaction_type?.parent?.label_english ||
+        transaction.transaction_type?.label_english ||
+        null,
+      type_label_telugu:
+        transaction.transaction_type?.parent?.label_telugu ||
+        transaction.transaction_type?.label_telugu ||
+        null,
+      loan_type: transaction.transaction_type?.parent
+        ? transaction.transaction_type?.name
+        : null, // Subtype is the child type when parent exists
     }));
 
     const paginatedResponse = {

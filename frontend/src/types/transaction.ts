@@ -87,21 +87,12 @@ export interface Mandal {
   updated_at: string;
 }
 
-export interface Supervisor {
-  id: string;
-  full_name_english: string;
-  full_name_telugu: string;
-  created_at: string;
-  updated_at: string;
-}
-
 // Transaction with extra fields from API
 export interface TransactionWithNames extends Transaction {
   member_name: string;
   supervisor_name: string;
   receipt_number: string;
   transaction_date: string;
-  // Type information for display
   type_name?: string;
   type_label_english?: string;
   type_label_telugu?: string;

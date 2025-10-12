@@ -39,11 +39,6 @@ export type mandals = $Result.DefaultSelection<Prisma.$mandalsPayload>
  */
 export type members = $Result.DefaultSelection<Prisma.$membersPayload>
 /**
- * Model supervisors
- * 
- */
-export type supervisors = $Result.DefaultSelection<Prisma.$supervisorsPayload>
-/**
  * Model transactions
  * 
  */
@@ -282,16 +277,6 @@ export class PrismaClient<
     * ```
     */
   get members(): Prisma.membersDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.supervisors`: Exposes CRUD operations for the **supervisors** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Supervisors
-    * const supervisors = await prisma.supervisors.findMany()
-    * ```
-    */
-  get supervisors(): Prisma.supervisorsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.transactions`: Exposes CRUD operations for the **transactions** model.
@@ -777,7 +762,6 @@ export namespace Prisma {
     user_roles_mapping: 'user_roles_mapping',
     mandals: 'mandals',
     members: 'members',
-    supervisors: 'supervisors',
     transactions: 'transactions',
     villages: 'villages',
     transaction_types: 'transaction_types',
@@ -800,7 +784,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "supervisors" | "transactions" | "villages" | "transaction_types" | "endpointaccess"
+      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "transactions" | "villages" | "transaction_types" | "endpointaccess"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1171,80 +1155,6 @@ export namespace Prisma {
           count: {
             args: Prisma.membersCountArgs<ExtArgs>
             result: $Utils.Optional<MembersCountAggregateOutputType> | number
-          }
-        }
-      }
-      supervisors: {
-        payload: Prisma.$supervisorsPayload<ExtArgs>
-        fields: Prisma.supervisorsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.supervisorsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.supervisorsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          findFirst: {
-            args: Prisma.supervisorsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.supervisorsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          findMany: {
-            args: Prisma.supervisorsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>[]
-          }
-          create: {
-            args: Prisma.supervisorsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          createMany: {
-            args: Prisma.supervisorsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.supervisorsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>[]
-          }
-          delete: {
-            args: Prisma.supervisorsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          update: {
-            args: Prisma.supervisorsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          deleteMany: {
-            args: Prisma.supervisorsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.supervisorsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.supervisorsUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>[]
-          }
-          upsert: {
-            args: Prisma.supervisorsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$supervisorsPayload>
-          }
-          aggregate: {
-            args: Prisma.SupervisorsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSupervisors>
-          }
-          groupBy: {
-            args: Prisma.supervisorsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SupervisorsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.supervisorsCountArgs<ExtArgs>
-            result: $Utils.Optional<SupervisorsCountAggregateOutputType> | number
           }
         }
       }
@@ -1633,7 +1543,6 @@ export namespace Prisma {
     user_roles_mapping?: user_roles_mappingOmit
     mandals?: mandalsOmit
     members?: membersOmit
-    supervisors?: supervisorsOmit
     transactions?: transactionsOmit
     villages?: villagesOmit
     transaction_types?: transaction_typesOmit
@@ -1732,11 +1641,13 @@ export namespace Prisma {
    */
 
   export type UsersCountOutputType = {
+    transactions: number
     assigned_roles: number
     user_roles: number
   }
 
   export type UsersCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transactions?: boolean | UsersCountOutputTypeCountTransactionsArgs
     assigned_roles?: boolean | UsersCountOutputTypeCountAssigned_rolesArgs
     user_roles?: boolean | UsersCountOutputTypeCountUser_rolesArgs
   }
@@ -1750,6 +1661,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UsersCountOutputType
      */
     select?: UsersCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UsersCountOutputType without action
+   */
+  export type UsersCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: transactionsWhereInput
   }
 
   /**
@@ -1856,37 +1774,6 @@ export namespace Prisma {
    * MembersCountOutputType without action
    */
   export type MembersCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: transactionsWhereInput
-  }
-
-
-  /**
-   * Count Type SupervisorsCountOutputType
-   */
-
-  export type SupervisorsCountOutputType = {
-    transactions: number
-  }
-
-  export type SupervisorsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transactions?: boolean | SupervisorsCountOutputTypeCountTransactionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * SupervisorsCountOutputType without action
-   */
-  export type SupervisorsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SupervisorsCountOutputType
-     */
-    select?: SupervisorsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * SupervisorsCountOutputType without action
-   */
-  export type SupervisorsCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: transactionsWhereInput
   }
 
@@ -2138,6 +2025,7 @@ export namespace Prisma {
     external_id?: boolean
     created_at?: boolean
     updated_at?: boolean
+    transactions?: boolean | users$transactionsArgs<ExtArgs>
     assigned_roles?: boolean | users$assigned_rolesArgs<ExtArgs>
     user_roles?: boolean | users$user_rolesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -2172,6 +2060,7 @@ export namespace Prisma {
 
   export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "external_id" | "created_at" | "updated_at", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transactions?: boolean | users$transactionsArgs<ExtArgs>
     assigned_roles?: boolean | users$assigned_rolesArgs<ExtArgs>
     user_roles?: boolean | users$user_rolesArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -2182,6 +2071,7 @@ export namespace Prisma {
   export type $usersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "users"
     objects: {
+      transactions: Prisma.$transactionsPayload<ExtArgs>[]
       assigned_roles: Prisma.$user_roles_mappingPayload<ExtArgs>[]
       user_roles: Prisma.$user_roles_mappingPayload<ExtArgs>[]
     }
@@ -2586,6 +2476,7 @@ export namespace Prisma {
    */
   export interface Prisma__usersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    transactions<T extends users$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, users$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assigned_roles<T extends users$assigned_rolesArgs<ExtArgs> = {}>(args?: Subset<T, users$assigned_rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_roles_mappingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user_roles<T extends users$user_rolesArgs<ExtArgs> = {}>(args?: Subset<T, users$user_rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_roles_mappingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3008,6 +2899,30 @@ export namespace Prisma {
      * Limit how many users to delete.
      */
     limit?: number
+  }
+
+  /**
+   * users.transactions
+   */
+  export type users$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the transactions
+     */
+    select?: transactionsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the transactions
+     */
+    omit?: transactionsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: transactionsInclude<ExtArgs> | null
+    where?: transactionsWhereInput
+    orderBy?: transactionsOrderByWithRelationInput | transactionsOrderByWithRelationInput[]
+    cursor?: transactionsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionsScalarFieldEnum | TransactionsScalarFieldEnum[]
   }
 
   /**
@@ -7503,1076 +7418,6 @@ export namespace Prisma {
 
 
   /**
-   * Model supervisors
-   */
-
-  export type AggregateSupervisors = {
-    _count: SupervisorsCountAggregateOutputType | null
-    _min: SupervisorsMinAggregateOutputType | null
-    _max: SupervisorsMaxAggregateOutputType | null
-  }
-
-  export type SupervisorsMinAggregateOutputType = {
-    id: string | null
-    full_name_english: string | null
-    full_name_telugu: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type SupervisorsMaxAggregateOutputType = {
-    id: string | null
-    full_name_english: string | null
-    full_name_telugu: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type SupervisorsCountAggregateOutputType = {
-    id: number
-    full_name_english: number
-    full_name_telugu: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type SupervisorsMinAggregateInputType = {
-    id?: true
-    full_name_english?: true
-    full_name_telugu?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type SupervisorsMaxAggregateInputType = {
-    id?: true
-    full_name_english?: true
-    full_name_telugu?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type SupervisorsCountAggregateInputType = {
-    id?: true
-    full_name_english?: true
-    full_name_telugu?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type SupervisorsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which supervisors to aggregate.
-     */
-    where?: supervisorsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of supervisors to fetch.
-     */
-    orderBy?: supervisorsOrderByWithRelationInput | supervisorsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: supervisorsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` supervisors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` supervisors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned supervisors
-    **/
-    _count?: true | SupervisorsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: SupervisorsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: SupervisorsMaxAggregateInputType
-  }
-
-  export type GetSupervisorsAggregateType<T extends SupervisorsAggregateArgs> = {
-        [P in keyof T & keyof AggregateSupervisors]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSupervisors[P]>
-      : GetScalarType<T[P], AggregateSupervisors[P]>
-  }
-
-
-
-
-  export type supervisorsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: supervisorsWhereInput
-    orderBy?: supervisorsOrderByWithAggregationInput | supervisorsOrderByWithAggregationInput[]
-    by: SupervisorsScalarFieldEnum[] | SupervisorsScalarFieldEnum
-    having?: supervisorsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: SupervisorsCountAggregateInputType | true
-    _min?: SupervisorsMinAggregateInputType
-    _max?: SupervisorsMaxAggregateInputType
-  }
-
-  export type SupervisorsGroupByOutputType = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at: Date
-    updated_at: Date
-    _count: SupervisorsCountAggregateOutputType | null
-    _min: SupervisorsMinAggregateOutputType | null
-    _max: SupervisorsMaxAggregateOutputType | null
-  }
-
-  type GetSupervisorsGroupByPayload<T extends supervisorsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<SupervisorsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SupervisorsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SupervisorsGroupByOutputType[P]>
-            : GetScalarType<T[P], SupervisorsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type supervisorsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    full_name_english?: boolean
-    full_name_telugu?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    transactions?: boolean | supervisors$transactionsArgs<ExtArgs>
-    _count?: boolean | SupervisorsCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["supervisors"]>
-
-  export type supervisorsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    full_name_english?: boolean
-    full_name_telugu?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }, ExtArgs["result"]["supervisors"]>
-
-  export type supervisorsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    full_name_english?: boolean
-    full_name_telugu?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }, ExtArgs["result"]["supervisors"]>
-
-  export type supervisorsSelectScalar = {
-    id?: boolean
-    full_name_english?: boolean
-    full_name_telugu?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type supervisorsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name_english" | "full_name_telugu" | "created_at" | "updated_at", ExtArgs["result"]["supervisors"]>
-  export type supervisorsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transactions?: boolean | supervisors$transactionsArgs<ExtArgs>
-    _count?: boolean | SupervisorsCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type supervisorsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type supervisorsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $supervisorsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "supervisors"
-    objects: {
-      transactions: Prisma.$transactionsPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      full_name_english: string
-      full_name_telugu: string
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["supervisors"]>
-    composites: {}
-  }
-
-  type supervisorsGetPayload<S extends boolean | null | undefined | supervisorsDefaultArgs> = $Result.GetResult<Prisma.$supervisorsPayload, S>
-
-  type supervisorsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<supervisorsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: SupervisorsCountAggregateInputType | true
-    }
-
-  export interface supervisorsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['supervisors'], meta: { name: 'supervisors' } }
-    /**
-     * Find zero or one Supervisors that matches the filter.
-     * @param {supervisorsFindUniqueArgs} args - Arguments to find a Supervisors
-     * @example
-     * // Get one Supervisors
-     * const supervisors = await prisma.supervisors.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends supervisorsFindUniqueArgs>(args: SelectSubset<T, supervisorsFindUniqueArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Supervisors that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {supervisorsFindUniqueOrThrowArgs} args - Arguments to find a Supervisors
-     * @example
-     * // Get one Supervisors
-     * const supervisors = await prisma.supervisors.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends supervisorsFindUniqueOrThrowArgs>(args: SelectSubset<T, supervisorsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Supervisors that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsFindFirstArgs} args - Arguments to find a Supervisors
-     * @example
-     * // Get one Supervisors
-     * const supervisors = await prisma.supervisors.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends supervisorsFindFirstArgs>(args?: SelectSubset<T, supervisorsFindFirstArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Supervisors that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsFindFirstOrThrowArgs} args - Arguments to find a Supervisors
-     * @example
-     * // Get one Supervisors
-     * const supervisors = await prisma.supervisors.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends supervisorsFindFirstOrThrowArgs>(args?: SelectSubset<T, supervisorsFindFirstOrThrowArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Supervisors that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Supervisors
-     * const supervisors = await prisma.supervisors.findMany()
-     * 
-     * // Get first 10 Supervisors
-     * const supervisors = await prisma.supervisors.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const supervisorsWithIdOnly = await prisma.supervisors.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends supervisorsFindManyArgs>(args?: SelectSubset<T, supervisorsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Supervisors.
-     * @param {supervisorsCreateArgs} args - Arguments to create a Supervisors.
-     * @example
-     * // Create one Supervisors
-     * const Supervisors = await prisma.supervisors.create({
-     *   data: {
-     *     // ... data to create a Supervisors
-     *   }
-     * })
-     * 
-     */
-    create<T extends supervisorsCreateArgs>(args: SelectSubset<T, supervisorsCreateArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Supervisors.
-     * @param {supervisorsCreateManyArgs} args - Arguments to create many Supervisors.
-     * @example
-     * // Create many Supervisors
-     * const supervisors = await prisma.supervisors.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends supervisorsCreateManyArgs>(args?: SelectSubset<T, supervisorsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Supervisors and returns the data saved in the database.
-     * @param {supervisorsCreateManyAndReturnArgs} args - Arguments to create many Supervisors.
-     * @example
-     * // Create many Supervisors
-     * const supervisors = await prisma.supervisors.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Supervisors and only return the `id`
-     * const supervisorsWithIdOnly = await prisma.supervisors.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends supervisorsCreateManyAndReturnArgs>(args?: SelectSubset<T, supervisorsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Supervisors.
-     * @param {supervisorsDeleteArgs} args - Arguments to delete one Supervisors.
-     * @example
-     * // Delete one Supervisors
-     * const Supervisors = await prisma.supervisors.delete({
-     *   where: {
-     *     // ... filter to delete one Supervisors
-     *   }
-     * })
-     * 
-     */
-    delete<T extends supervisorsDeleteArgs>(args: SelectSubset<T, supervisorsDeleteArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Supervisors.
-     * @param {supervisorsUpdateArgs} args - Arguments to update one Supervisors.
-     * @example
-     * // Update one Supervisors
-     * const supervisors = await prisma.supervisors.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends supervisorsUpdateArgs>(args: SelectSubset<T, supervisorsUpdateArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Supervisors.
-     * @param {supervisorsDeleteManyArgs} args - Arguments to filter Supervisors to delete.
-     * @example
-     * // Delete a few Supervisors
-     * const { count } = await prisma.supervisors.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends supervisorsDeleteManyArgs>(args?: SelectSubset<T, supervisorsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Supervisors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Supervisors
-     * const supervisors = await prisma.supervisors.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends supervisorsUpdateManyArgs>(args: SelectSubset<T, supervisorsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Supervisors and returns the data updated in the database.
-     * @param {supervisorsUpdateManyAndReturnArgs} args - Arguments to update many Supervisors.
-     * @example
-     * // Update many Supervisors
-     * const supervisors = await prisma.supervisors.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Supervisors and only return the `id`
-     * const supervisorsWithIdOnly = await prisma.supervisors.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends supervisorsUpdateManyAndReturnArgs>(args: SelectSubset<T, supervisorsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Supervisors.
-     * @param {supervisorsUpsertArgs} args - Arguments to update or create a Supervisors.
-     * @example
-     * // Update or create a Supervisors
-     * const supervisors = await prisma.supervisors.upsert({
-     *   create: {
-     *     // ... data to create a Supervisors
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Supervisors we want to update
-     *   }
-     * })
-     */
-    upsert<T extends supervisorsUpsertArgs>(args: SelectSubset<T, supervisorsUpsertArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Supervisors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsCountArgs} args - Arguments to filter Supervisors to count.
-     * @example
-     * // Count the number of Supervisors
-     * const count = await prisma.supervisors.count({
-     *   where: {
-     *     // ... the filter for the Supervisors we want to count
-     *   }
-     * })
-    **/
-    count<T extends supervisorsCountArgs>(
-      args?: Subset<T, supervisorsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SupervisorsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Supervisors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SupervisorsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends SupervisorsAggregateArgs>(args: Subset<T, SupervisorsAggregateArgs>): Prisma.PrismaPromise<GetSupervisorsAggregateType<T>>
-
-    /**
-     * Group by Supervisors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {supervisorsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends supervisorsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: supervisorsGroupByArgs['orderBy'] }
-        : { orderBy?: supervisorsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, supervisorsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSupervisorsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the supervisors model
-   */
-  readonly fields: supervisorsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for supervisors.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__supervisorsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    transactions<T extends supervisors$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, supervisors$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the supervisors model
-   */
-  interface supervisorsFieldRefs {
-    readonly id: FieldRef<"supervisors", 'String'>
-    readonly full_name_english: FieldRef<"supervisors", 'String'>
-    readonly full_name_telugu: FieldRef<"supervisors", 'String'>
-    readonly created_at: FieldRef<"supervisors", 'DateTime'>
-    readonly updated_at: FieldRef<"supervisors", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * supervisors findUnique
-   */
-  export type supervisorsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter, which supervisors to fetch.
-     */
-    where: supervisorsWhereUniqueInput
-  }
-
-  /**
-   * supervisors findUniqueOrThrow
-   */
-  export type supervisorsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter, which supervisors to fetch.
-     */
-    where: supervisorsWhereUniqueInput
-  }
-
-  /**
-   * supervisors findFirst
-   */
-  export type supervisorsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter, which supervisors to fetch.
-     */
-    where?: supervisorsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of supervisors to fetch.
-     */
-    orderBy?: supervisorsOrderByWithRelationInput | supervisorsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for supervisors.
-     */
-    cursor?: supervisorsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` supervisors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` supervisors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of supervisors.
-     */
-    distinct?: SupervisorsScalarFieldEnum | SupervisorsScalarFieldEnum[]
-  }
-
-  /**
-   * supervisors findFirstOrThrow
-   */
-  export type supervisorsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter, which supervisors to fetch.
-     */
-    where?: supervisorsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of supervisors to fetch.
-     */
-    orderBy?: supervisorsOrderByWithRelationInput | supervisorsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for supervisors.
-     */
-    cursor?: supervisorsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` supervisors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` supervisors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of supervisors.
-     */
-    distinct?: SupervisorsScalarFieldEnum | SupervisorsScalarFieldEnum[]
-  }
-
-  /**
-   * supervisors findMany
-   */
-  export type supervisorsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter, which supervisors to fetch.
-     */
-    where?: supervisorsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of supervisors to fetch.
-     */
-    orderBy?: supervisorsOrderByWithRelationInput | supervisorsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing supervisors.
-     */
-    cursor?: supervisorsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` supervisors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` supervisors.
-     */
-    skip?: number
-    distinct?: SupervisorsScalarFieldEnum | SupervisorsScalarFieldEnum[]
-  }
-
-  /**
-   * supervisors create
-   */
-  export type supervisorsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a supervisors.
-     */
-    data: XOR<supervisorsCreateInput, supervisorsUncheckedCreateInput>
-  }
-
-  /**
-   * supervisors createMany
-   */
-  export type supervisorsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many supervisors.
-     */
-    data: supervisorsCreateManyInput | supervisorsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * supervisors createManyAndReturn
-   */
-  export type supervisorsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * The data used to create many supervisors.
-     */
-    data: supervisorsCreateManyInput | supervisorsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * supervisors update
-   */
-  export type supervisorsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a supervisors.
-     */
-    data: XOR<supervisorsUpdateInput, supervisorsUncheckedUpdateInput>
-    /**
-     * Choose, which supervisors to update.
-     */
-    where: supervisorsWhereUniqueInput
-  }
-
-  /**
-   * supervisors updateMany
-   */
-  export type supervisorsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update supervisors.
-     */
-    data: XOR<supervisorsUpdateManyMutationInput, supervisorsUncheckedUpdateManyInput>
-    /**
-     * Filter which supervisors to update
-     */
-    where?: supervisorsWhereInput
-    /**
-     * Limit how many supervisors to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * supervisors updateManyAndReturn
-   */
-  export type supervisorsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * The data used to update supervisors.
-     */
-    data: XOR<supervisorsUpdateManyMutationInput, supervisorsUncheckedUpdateManyInput>
-    /**
-     * Filter which supervisors to update
-     */
-    where?: supervisorsWhereInput
-    /**
-     * Limit how many supervisors to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * supervisors upsert
-   */
-  export type supervisorsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the supervisors to update in case it exists.
-     */
-    where: supervisorsWhereUniqueInput
-    /**
-     * In case the supervisors found by the `where` argument doesn't exist, create a new supervisors with this data.
-     */
-    create: XOR<supervisorsCreateInput, supervisorsUncheckedCreateInput>
-    /**
-     * In case the supervisors was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<supervisorsUpdateInput, supervisorsUncheckedUpdateInput>
-  }
-
-  /**
-   * supervisors delete
-   */
-  export type supervisorsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-    /**
-     * Filter which supervisors to delete.
-     */
-    where: supervisorsWhereUniqueInput
-  }
-
-  /**
-   * supervisors deleteMany
-   */
-  export type supervisorsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which supervisors to delete
-     */
-    where?: supervisorsWhereInput
-    /**
-     * Limit how many supervisors to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * supervisors.transactions
-   */
-  export type supervisors$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transactions
-     */
-    select?: transactionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transactions
-     */
-    omit?: transactionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transactionsInclude<ExtArgs> | null
-    where?: transactionsWhereInput
-    orderBy?: transactionsOrderByWithRelationInput | transactionsOrderByWithRelationInput[]
-    cursor?: transactionsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TransactionsScalarFieldEnum | TransactionsScalarFieldEnum[]
-  }
-
-  /**
-   * supervisors without action
-   */
-  export type supervisorsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the supervisors
-     */
-    select?: supervisorsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the supervisors
-     */
-    omit?: supervisorsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: supervisorsInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model transactions
    */
 
@@ -8811,8 +7656,8 @@ export namespace Prisma {
     updated_at?: boolean
     transaction_type_id?: boolean
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
   export type transactionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8827,8 +7672,8 @@ export namespace Prisma {
     updated_at?: boolean
     transaction_type_id?: boolean
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
   export type transactionsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8843,8 +7688,8 @@ export namespace Prisma {
     updated_at?: boolean
     transaction_type_id?: boolean
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
   export type transactionsSelectScalar = {
@@ -8863,26 +7708,26 @@ export namespace Prisma {
   export type transactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "supervised_by" | "member" | "amount" | "comments" | "transaction_date" | "receipt_number" | "created_at" | "updated_at" | "transaction_type_id", ExtArgs["result"]["transactions"]>
   export type transactionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type transactionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type transactionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | membersDefaultArgs<ExtArgs>
-    supervisors?: boolean | supervisorsDefaultArgs<ExtArgs>
     transaction_type?: boolean | transaction_typesDefaultArgs<ExtArgs>
+    users?: boolean | usersDefaultArgs<ExtArgs>
   }
 
   export type $transactionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "transactions"
     objects: {
       members: Prisma.$membersPayload<ExtArgs>
-      supervisors: Prisma.$supervisorsPayload<ExtArgs>
       transaction_type: Prisma.$transaction_typesPayload<ExtArgs>
+      users: Prisma.$usersPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9290,8 +8135,8 @@ export namespace Prisma {
   export interface Prisma__transactionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     members<T extends membersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, membersDefaultArgs<ExtArgs>>): Prisma__membersClient<$Result.GetResult<Prisma.$membersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    supervisors<T extends supervisorsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, supervisorsDefaultArgs<ExtArgs>>): Prisma__supervisorsClient<$Result.GetResult<Prisma.$supervisorsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     transaction_type<T extends transaction_typesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, transaction_typesDefaultArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13166,17 +12011,6 @@ export namespace Prisma {
   export type MembersScalarFieldEnum = (typeof MembersScalarFieldEnum)[keyof typeof MembersScalarFieldEnum]
 
 
-  export const SupervisorsScalarFieldEnum: {
-    id: 'id',
-    full_name_english: 'full_name_english',
-    full_name_telugu: 'full_name_telugu',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type SupervisorsScalarFieldEnum = (typeof SupervisorsScalarFieldEnum)[keyof typeof SupervisorsScalarFieldEnum]
-
-
   export const TransactionsScalarFieldEnum: {
     id: 'id',
     supervised_by: 'supervised_by',
@@ -13352,6 +12186,7 @@ export namespace Prisma {
     external_id?: StringFilter<"users"> | string
     created_at?: DateTimeFilter<"users"> | Date | string
     updated_at?: DateTimeFilter<"users"> | Date | string
+    transactions?: TransactionsListRelationFilter
     assigned_roles?: User_roles_mappingListRelationFilter
     user_roles?: User_roles_mappingListRelationFilter
   }
@@ -13363,6 +12198,7 @@ export namespace Prisma {
     external_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    transactions?: transactionsOrderByRelationAggregateInput
     assigned_roles?: user_roles_mappingOrderByRelationAggregateInput
     user_roles?: user_roles_mappingOrderByRelationAggregateInput
   }
@@ -13377,6 +12213,7 @@ export namespace Prisma {
     external_id?: StringFilter<"users"> | string
     created_at?: DateTimeFilter<"users"> | Date | string
     updated_at?: DateTimeFilter<"users"> | Date | string
+    transactions?: TransactionsListRelationFilter
     assigned_roles?: User_roles_mappingListRelationFilter
     user_roles?: User_roles_mappingListRelationFilter
   }, "id" | "email">
@@ -13675,61 +12512,6 @@ export namespace Prisma {
     updated_at?: DateTimeWithAggregatesFilter<"members"> | Date | string
   }
 
-  export type supervisorsWhereInput = {
-    AND?: supervisorsWhereInput | supervisorsWhereInput[]
-    OR?: supervisorsWhereInput[]
-    NOT?: supervisorsWhereInput | supervisorsWhereInput[]
-    id?: UuidFilter<"supervisors"> | string
-    full_name_english?: StringFilter<"supervisors"> | string
-    full_name_telugu?: StringFilter<"supervisors"> | string
-    created_at?: DateTimeFilter<"supervisors"> | Date | string
-    updated_at?: DateTimeFilter<"supervisors"> | Date | string
-    transactions?: TransactionsListRelationFilter
-  }
-
-  export type supervisorsOrderByWithRelationInput = {
-    id?: SortOrder
-    full_name_english?: SortOrder
-    full_name_telugu?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    transactions?: transactionsOrderByRelationAggregateInput
-  }
-
-  export type supervisorsWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: supervisorsWhereInput | supervisorsWhereInput[]
-    OR?: supervisorsWhereInput[]
-    NOT?: supervisorsWhereInput | supervisorsWhereInput[]
-    full_name_english?: StringFilter<"supervisors"> | string
-    full_name_telugu?: StringFilter<"supervisors"> | string
-    created_at?: DateTimeFilter<"supervisors"> | Date | string
-    updated_at?: DateTimeFilter<"supervisors"> | Date | string
-    transactions?: TransactionsListRelationFilter
-  }, "id">
-
-  export type supervisorsOrderByWithAggregationInput = {
-    id?: SortOrder
-    full_name_english?: SortOrder
-    full_name_telugu?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: supervisorsCountOrderByAggregateInput
-    _max?: supervisorsMaxOrderByAggregateInput
-    _min?: supervisorsMinOrderByAggregateInput
-  }
-
-  export type supervisorsScalarWhereWithAggregatesInput = {
-    AND?: supervisorsScalarWhereWithAggregatesInput | supervisorsScalarWhereWithAggregatesInput[]
-    OR?: supervisorsScalarWhereWithAggregatesInput[]
-    NOT?: supervisorsScalarWhereWithAggregatesInput | supervisorsScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"supervisors"> | string
-    full_name_english?: StringWithAggregatesFilter<"supervisors"> | string
-    full_name_telugu?: StringWithAggregatesFilter<"supervisors"> | string
-    created_at?: DateTimeWithAggregatesFilter<"supervisors"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"supervisors"> | Date | string
-  }
-
   export type transactionsWhereInput = {
     AND?: transactionsWhereInput | transactionsWhereInput[]
     OR?: transactionsWhereInput[]
@@ -13745,8 +12527,8 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"transactions"> | Date | string
     transaction_type_id?: UuidFilter<"transactions"> | string
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
-    supervisors?: XOR<SupervisorsScalarRelationFilter, supervisorsWhereInput>
     transaction_type?: XOR<Transaction_typesScalarRelationFilter, transaction_typesWhereInput>
+    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
   export type transactionsOrderByWithRelationInput = {
@@ -13761,8 +12543,8 @@ export namespace Prisma {
     updated_at?: SortOrder
     transaction_type_id?: SortOrder
     members?: membersOrderByWithRelationInput
-    supervisors?: supervisorsOrderByWithRelationInput
     transaction_type?: transaction_typesOrderByWithRelationInput
+    users?: usersOrderByWithRelationInput
   }
 
   export type transactionsWhereUniqueInput = Prisma.AtLeast<{
@@ -13780,8 +12562,8 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"transactions"> | Date | string
     transaction_type_id?: UuidFilter<"transactions"> | string
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
-    supervisors?: XOR<SupervisorsScalarRelationFilter, supervisorsWhereInput>
     transaction_type?: XOR<Transaction_typesScalarRelationFilter, transaction_typesWhereInput>
+    users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }, "id">
 
   export type transactionsOrderByWithAggregationInput = {
@@ -14034,6 +12816,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsCreateNestedManyWithoutUsersInput
     assigned_roles?: user_roles_mappingCreateNestedManyWithoutAssigned_by_userInput
     user_roles?: user_roles_mappingCreateNestedManyWithoutUserInput
   }
@@ -14045,6 +12828,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsUncheckedCreateNestedManyWithoutUsersInput
     assigned_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutAssigned_by_userInput
     user_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutUserInput
   }
@@ -14056,6 +12840,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUpdateManyWithoutUsersNestedInput
     assigned_roles?: user_roles_mappingUpdateManyWithoutAssigned_by_userNestedInput
     user_roles?: user_roles_mappingUpdateManyWithoutUserNestedInput
   }
@@ -14067,6 +12852,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUncheckedUpdateManyWithoutUsersNestedInput
     assigned_roles?: user_roles_mappingUncheckedUpdateManyWithoutAssigned_by_userNestedInput
     user_roles?: user_roles_mappingUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -14386,66 +13172,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type supervisorsCreateInput = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    transactions?: transactionsCreateNestedManyWithoutSupervisorsInput
-  }
-
-  export type supervisorsUncheckedCreateInput = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    transactions?: transactionsUncheckedCreateNestedManyWithoutSupervisorsInput
-  }
-
-  export type supervisorsUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transactions?: transactionsUpdateManyWithoutSupervisorsNestedInput
-  }
-
-  export type supervisorsUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transactions?: transactionsUncheckedUpdateManyWithoutSupervisorsNestedInput
-  }
-
-  export type supervisorsCreateManyInput = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type supervisorsUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type supervisorsUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type transactionsCreateInput = {
     id?: string
     amount: number
@@ -14455,8 +13181,8 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members: membersCreateNestedOneWithoutTransactionsInput
-    supervisors: supervisorsCreateNestedOneWithoutTransactionsInput
     transaction_type: transaction_typesCreateNestedOneWithoutTransactionsInput
+    users: usersCreateNestedOneWithoutTransactionsInput
   }
 
   export type transactionsUncheckedCreateInput = {
@@ -14481,8 +13207,8 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    supervisors?: supervisorsUpdateOneRequiredWithoutTransactionsNestedInput
     transaction_type?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
+    users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
   export type transactionsUncheckedUpdateInput = {
@@ -14799,10 +13525,20 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type TransactionsListRelationFilter = {
+    every?: transactionsWhereInput
+    some?: transactionsWhereInput
+    none?: transactionsWhereInput
+  }
+
   export type User_roles_mappingListRelationFilter = {
     every?: user_roles_mappingWhereInput
     some?: user_roles_mappingWhereInput
     none?: user_roles_mappingWhereInput
+  }
+
+  export type transactionsOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type user_roles_mappingOrderByRelationAggregateInput = {
@@ -15108,16 +13844,6 @@ export namespace Prisma {
     isNot?: villagesWhereInput
   }
 
-  export type TransactionsListRelationFilter = {
-    every?: transactionsWhereInput
-    some?: transactionsWhereInput
-    none?: transactionsWhereInput
-  }
-
-  export type transactionsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type membersCountOrderByAggregateInput = {
     id?: SortOrder
     full_name_english?: SortOrder
@@ -15151,30 +13877,6 @@ export namespace Prisma {
     updated_at?: SortOrder
   }
 
-  export type supervisorsCountOrderByAggregateInput = {
-    id?: SortOrder
-    full_name_english?: SortOrder
-    full_name_telugu?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type supervisorsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    full_name_english?: SortOrder
-    full_name_telugu?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type supervisorsMinOrderByAggregateInput = {
-    id?: SortOrder
-    full_name_english?: SortOrder
-    full_name_telugu?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -15189,11 +13891,6 @@ export namespace Prisma {
   export type MembersScalarRelationFilter = {
     is?: membersWhereInput
     isNot?: membersWhereInput
-  }
-
-  export type SupervisorsScalarRelationFilter = {
-    is?: supervisorsWhereInput
-    isNot?: supervisorsWhereInput
   }
 
   export type Transaction_typesScalarRelationFilter = {
@@ -15440,6 +14137,13 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
+  export type transactionsCreateNestedManyWithoutUsersInput = {
+    create?: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput> | transactionsCreateWithoutUsersInput[] | transactionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: transactionsCreateOrConnectWithoutUsersInput | transactionsCreateOrConnectWithoutUsersInput[]
+    createMany?: transactionsCreateManyUsersInputEnvelope
+    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+  }
+
   export type user_roles_mappingCreateNestedManyWithoutAssigned_by_userInput = {
     create?: XOR<user_roles_mappingCreateWithoutAssigned_by_userInput, user_roles_mappingUncheckedCreateWithoutAssigned_by_userInput> | user_roles_mappingCreateWithoutAssigned_by_userInput[] | user_roles_mappingUncheckedCreateWithoutAssigned_by_userInput[]
     connectOrCreate?: user_roles_mappingCreateOrConnectWithoutAssigned_by_userInput | user_roles_mappingCreateOrConnectWithoutAssigned_by_userInput[]
@@ -15452,6 +14156,13 @@ export namespace Prisma {
     connectOrCreate?: user_roles_mappingCreateOrConnectWithoutUserInput | user_roles_mappingCreateOrConnectWithoutUserInput[]
     createMany?: user_roles_mappingCreateManyUserInputEnvelope
     connect?: user_roles_mappingWhereUniqueInput | user_roles_mappingWhereUniqueInput[]
+  }
+
+  export type transactionsUncheckedCreateNestedManyWithoutUsersInput = {
+    create?: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput> | transactionsCreateWithoutUsersInput[] | transactionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: transactionsCreateOrConnectWithoutUsersInput | transactionsCreateOrConnectWithoutUsersInput[]
+    createMany?: transactionsCreateManyUsersInputEnvelope
+    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
   }
 
   export type user_roles_mappingUncheckedCreateNestedManyWithoutAssigned_by_userInput = {
@@ -15474,6 +14185,20 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type transactionsUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput> | transactionsCreateWithoutUsersInput[] | transactionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: transactionsCreateOrConnectWithoutUsersInput | transactionsCreateOrConnectWithoutUsersInput[]
+    upsert?: transactionsUpsertWithWhereUniqueWithoutUsersInput | transactionsUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: transactionsCreateManyUsersInputEnvelope
+    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    update?: transactionsUpdateWithWhereUniqueWithoutUsersInput | transactionsUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: transactionsUpdateManyWithWhereWithoutUsersInput | transactionsUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
   export type user_roles_mappingUpdateManyWithoutAssigned_by_userNestedInput = {
@@ -15502,6 +14227,20 @@ export namespace Prisma {
     update?: user_roles_mappingUpdateWithWhereUniqueWithoutUserInput | user_roles_mappingUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: user_roles_mappingUpdateManyWithWhereWithoutUserInput | user_roles_mappingUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: user_roles_mappingScalarWhereInput | user_roles_mappingScalarWhereInput[]
+  }
+
+  export type transactionsUncheckedUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput> | transactionsCreateWithoutUsersInput[] | transactionsUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: transactionsCreateOrConnectWithoutUsersInput | transactionsCreateOrConnectWithoutUsersInput[]
+    upsert?: transactionsUpsertWithWhereUniqueWithoutUsersInput | transactionsUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: transactionsCreateManyUsersInputEnvelope
+    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
+    update?: transactionsUpdateWithWhereUniqueWithoutUsersInput | transactionsUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: transactionsUpdateManyWithWhereWithoutUsersInput | transactionsUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
   export type user_roles_mappingUncheckedUpdateManyWithoutAssigned_by_userNestedInput = {
@@ -15728,64 +14467,22 @@ export namespace Prisma {
     deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
-  export type transactionsCreateNestedManyWithoutSupervisorsInput = {
-    create?: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput> | transactionsCreateWithoutSupervisorsInput[] | transactionsUncheckedCreateWithoutSupervisorsInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutSupervisorsInput | transactionsCreateOrConnectWithoutSupervisorsInput[]
-    createMany?: transactionsCreateManySupervisorsInputEnvelope
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-  }
-
-  export type transactionsUncheckedCreateNestedManyWithoutSupervisorsInput = {
-    create?: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput> | transactionsCreateWithoutSupervisorsInput[] | transactionsUncheckedCreateWithoutSupervisorsInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutSupervisorsInput | transactionsCreateOrConnectWithoutSupervisorsInput[]
-    createMany?: transactionsCreateManySupervisorsInputEnvelope
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-  }
-
-  export type transactionsUpdateManyWithoutSupervisorsNestedInput = {
-    create?: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput> | transactionsCreateWithoutSupervisorsInput[] | transactionsUncheckedCreateWithoutSupervisorsInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutSupervisorsInput | transactionsCreateOrConnectWithoutSupervisorsInput[]
-    upsert?: transactionsUpsertWithWhereUniqueWithoutSupervisorsInput | transactionsUpsertWithWhereUniqueWithoutSupervisorsInput[]
-    createMany?: transactionsCreateManySupervisorsInputEnvelope
-    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    update?: transactionsUpdateWithWhereUniqueWithoutSupervisorsInput | transactionsUpdateWithWhereUniqueWithoutSupervisorsInput[]
-    updateMany?: transactionsUpdateManyWithWhereWithoutSupervisorsInput | transactionsUpdateManyWithWhereWithoutSupervisorsInput[]
-    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
-  }
-
-  export type transactionsUncheckedUpdateManyWithoutSupervisorsNestedInput = {
-    create?: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput> | transactionsCreateWithoutSupervisorsInput[] | transactionsUncheckedCreateWithoutSupervisorsInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutSupervisorsInput | transactionsCreateOrConnectWithoutSupervisorsInput[]
-    upsert?: transactionsUpsertWithWhereUniqueWithoutSupervisorsInput | transactionsUpsertWithWhereUniqueWithoutSupervisorsInput[]
-    createMany?: transactionsCreateManySupervisorsInputEnvelope
-    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    update?: transactionsUpdateWithWhereUniqueWithoutSupervisorsInput | transactionsUpdateWithWhereUniqueWithoutSupervisorsInput[]
-    updateMany?: transactionsUpdateManyWithWhereWithoutSupervisorsInput | transactionsUpdateManyWithWhereWithoutSupervisorsInput[]
-    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
-  }
-
   export type membersCreateNestedOneWithoutTransactionsInput = {
     create?: XOR<membersCreateWithoutTransactionsInput, membersUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: membersCreateOrConnectWithoutTransactionsInput
     connect?: membersWhereUniqueInput
   }
 
-  export type supervisorsCreateNestedOneWithoutTransactionsInput = {
-    create?: XOR<supervisorsCreateWithoutTransactionsInput, supervisorsUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: supervisorsCreateOrConnectWithoutTransactionsInput
-    connect?: supervisorsWhereUniqueInput
-  }
-
   export type transaction_typesCreateNestedOneWithoutTransactionsInput = {
     create?: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: transaction_typesCreateOrConnectWithoutTransactionsInput
     connect?: transaction_typesWhereUniqueInput
+  }
+
+  export type usersCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: usersCreateOrConnectWithoutTransactionsInput
+    connect?: usersWhereUniqueInput
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -15804,20 +14501,20 @@ export namespace Prisma {
     update?: XOR<XOR<membersUpdateToOneWithWhereWithoutTransactionsInput, membersUpdateWithoutTransactionsInput>, membersUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type supervisorsUpdateOneRequiredWithoutTransactionsNestedInput = {
-    create?: XOR<supervisorsCreateWithoutTransactionsInput, supervisorsUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: supervisorsCreateOrConnectWithoutTransactionsInput
-    upsert?: supervisorsUpsertWithoutTransactionsInput
-    connect?: supervisorsWhereUniqueInput
-    update?: XOR<XOR<supervisorsUpdateToOneWithWhereWithoutTransactionsInput, supervisorsUpdateWithoutTransactionsInput>, supervisorsUncheckedUpdateWithoutTransactionsInput>
-  }
-
   export type transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput = {
     create?: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: transaction_typesCreateOrConnectWithoutTransactionsInput
     upsert?: transaction_typesUpsertWithoutTransactionsInput
     connect?: transaction_typesWhereUniqueInput
     update?: XOR<XOR<transaction_typesUpdateToOneWithWhereWithoutTransactionsInput, transaction_typesUpdateWithoutTransactionsInput>, transaction_typesUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type usersUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: usersCreateOrConnectWithoutTransactionsInput
+    upsert?: usersUpsertWithoutTransactionsInput
+    connect?: usersWhereUniqueInput
+    update?: XOR<XOR<usersUpdateToOneWithWhereWithoutTransactionsInput, usersUpdateWithoutTransactionsInput>, usersUncheckedUpdateWithoutTransactionsInput>
   }
 
   export type membersCreateNestedManyWithoutVillagesInput = {
@@ -16252,6 +14949,40 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
+  export type transactionsCreateWithoutUsersInput = {
+    id?: string
+    amount: number
+    comments?: string | null
+    transaction_date: Date | string
+    receipt_number: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    members: membersCreateNestedOneWithoutTransactionsInput
+    transaction_type: transaction_typesCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type transactionsUncheckedCreateWithoutUsersInput = {
+    id?: string
+    member: string
+    amount: number
+    comments?: string | null
+    transaction_date: Date | string
+    receipt_number: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transaction_type_id: string
+  }
+
+  export type transactionsCreateOrConnectWithoutUsersInput = {
+    where: transactionsWhereUniqueInput
+    create: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput>
+  }
+
+  export type transactionsCreateManyUsersInputEnvelope = {
+    data: transactionsCreateManyUsersInput | transactionsCreateManyUsersInput[]
+    skipDuplicates?: boolean
+  }
+
   export type user_roles_mappingCreateWithoutAssigned_by_userInput = {
     id?: string
     assigned_at?: Date | string
@@ -16314,6 +15045,38 @@ export namespace Prisma {
   export type user_roles_mappingCreateManyUserInputEnvelope = {
     data: user_roles_mappingCreateManyUserInput | user_roles_mappingCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type transactionsUpsertWithWhereUniqueWithoutUsersInput = {
+    where: transactionsWhereUniqueInput
+    update: XOR<transactionsUpdateWithoutUsersInput, transactionsUncheckedUpdateWithoutUsersInput>
+    create: XOR<transactionsCreateWithoutUsersInput, transactionsUncheckedCreateWithoutUsersInput>
+  }
+
+  export type transactionsUpdateWithWhereUniqueWithoutUsersInput = {
+    where: transactionsWhereUniqueInput
+    data: XOR<transactionsUpdateWithoutUsersInput, transactionsUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type transactionsUpdateManyWithWhereWithoutUsersInput = {
+    where: transactionsScalarWhereInput
+    data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutUsersInput>
+  }
+
+  export type transactionsScalarWhereInput = {
+    AND?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
+    OR?: transactionsScalarWhereInput[]
+    NOT?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
+    id?: UuidFilter<"transactions"> | string
+    supervised_by?: UuidFilter<"transactions"> | string
+    member?: UuidFilter<"transactions"> | string
+    amount?: IntFilter<"transactions"> | number
+    comments?: StringNullableFilter<"transactions"> | string | null
+    transaction_date?: DateTimeFilter<"transactions"> | Date | string
+    receipt_number?: StringFilter<"transactions"> | string
+    created_at?: DateTimeFilter<"transactions"> | Date | string
+    updated_at?: DateTimeFilter<"transactions"> | Date | string
+    transaction_type_id?: UuidFilter<"transactions"> | string
   }
 
   export type user_roles_mappingUpsertWithWhereUniqueWithoutAssigned_by_userInput = {
@@ -16418,6 +15181,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsCreateNestedManyWithoutUsersInput
     user_roles?: user_roles_mappingCreateNestedManyWithoutUserInput
   }
 
@@ -16428,6 +15192,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsUncheckedCreateNestedManyWithoutUsersInput
     user_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16466,6 +15231,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsCreateNestedManyWithoutUsersInput
     assigned_roles?: user_roles_mappingCreateNestedManyWithoutAssigned_by_userInput
   }
 
@@ -16476,6 +15242,7 @@ export namespace Prisma {
     external_id: string
     created_at?: Date | string
     updated_at?: Date | string
+    transactions?: transactionsUncheckedCreateNestedManyWithoutUsersInput
     assigned_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutAssigned_by_userInput
   }
 
@@ -16502,6 +15269,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUpdateManyWithoutUsersNestedInput
     user_roles?: user_roles_mappingUpdateManyWithoutUserNestedInput
   }
 
@@ -16512,6 +15280,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUncheckedUpdateManyWithoutUsersNestedInput
     user_roles?: user_roles_mappingUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16562,6 +15331,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUpdateManyWithoutUsersNestedInput
     assigned_roles?: user_roles_mappingUpdateManyWithoutAssigned_by_userNestedInput
   }
 
@@ -16572,6 +15342,7 @@ export namespace Prisma {
     external_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactions?: transactionsUncheckedUpdateManyWithoutUsersNestedInput
     assigned_roles?: user_roles_mappingUncheckedUpdateManyWithoutAssigned_by_userNestedInput
   }
 
@@ -16662,8 +15433,8 @@ export namespace Prisma {
     receipt_number: string
     created_at?: Date | string
     updated_at?: Date | string
-    supervisors: supervisorsCreateNestedOneWithoutTransactionsInput
     transaction_type: transaction_typesCreateNestedOneWithoutTransactionsInput
+    users: usersCreateNestedOneWithoutTransactionsInput
   }
 
   export type transactionsUncheckedCreateWithoutMembersInput = {
@@ -16733,72 +15504,6 @@ export namespace Prisma {
     data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutMembersInput>
   }
 
-  export type transactionsScalarWhereInput = {
-    AND?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
-    OR?: transactionsScalarWhereInput[]
-    NOT?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
-    id?: UuidFilter<"transactions"> | string
-    supervised_by?: UuidFilter<"transactions"> | string
-    member?: UuidFilter<"transactions"> | string
-    amount?: IntFilter<"transactions"> | number
-    comments?: StringNullableFilter<"transactions"> | string | null
-    transaction_date?: DateTimeFilter<"transactions"> | Date | string
-    receipt_number?: StringFilter<"transactions"> | string
-    created_at?: DateTimeFilter<"transactions"> | Date | string
-    updated_at?: DateTimeFilter<"transactions"> | Date | string
-    transaction_type_id?: UuidFilter<"transactions"> | string
-  }
-
-  export type transactionsCreateWithoutSupervisorsInput = {
-    id?: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    members: membersCreateNestedOneWithoutTransactionsInput
-    transaction_type: transaction_typesCreateNestedOneWithoutTransactionsInput
-  }
-
-  export type transactionsUncheckedCreateWithoutSupervisorsInput = {
-    id?: string
-    member: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    transaction_type_id: string
-  }
-
-  export type transactionsCreateOrConnectWithoutSupervisorsInput = {
-    where: transactionsWhereUniqueInput
-    create: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput>
-  }
-
-  export type transactionsCreateManySupervisorsInputEnvelope = {
-    data: transactionsCreateManySupervisorsInput | transactionsCreateManySupervisorsInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type transactionsUpsertWithWhereUniqueWithoutSupervisorsInput = {
-    where: transactionsWhereUniqueInput
-    update: XOR<transactionsUpdateWithoutSupervisorsInput, transactionsUncheckedUpdateWithoutSupervisorsInput>
-    create: XOR<transactionsCreateWithoutSupervisorsInput, transactionsUncheckedCreateWithoutSupervisorsInput>
-  }
-
-  export type transactionsUpdateWithWhereUniqueWithoutSupervisorsInput = {
-    where: transactionsWhereUniqueInput
-    data: XOR<transactionsUpdateWithoutSupervisorsInput, transactionsUncheckedUpdateWithoutSupervisorsInput>
-  }
-
-  export type transactionsUpdateManyWithWhereWithoutSupervisorsInput = {
-    where: transactionsScalarWhereInput
-    data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutSupervisorsInput>
-  }
-
   export type membersCreateWithoutTransactionsInput = {
     id: string
     full_name_english: string
@@ -16824,27 +15529,6 @@ export namespace Prisma {
   export type membersCreateOrConnectWithoutTransactionsInput = {
     where: membersWhereUniqueInput
     create: XOR<membersCreateWithoutTransactionsInput, membersUncheckedCreateWithoutTransactionsInput>
-  }
-
-  export type supervisorsCreateWithoutTransactionsInput = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type supervisorsUncheckedCreateWithoutTransactionsInput = {
-    id: string
-    full_name_english: string
-    full_name_telugu: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type supervisorsCreateOrConnectWithoutTransactionsInput = {
-    where: supervisorsWhereUniqueInput
-    create: XOR<supervisorsCreateWithoutTransactionsInput, supervisorsUncheckedCreateWithoutTransactionsInput>
   }
 
   export type transaction_typesCreateWithoutTransactionsInput = {
@@ -16878,6 +15562,33 @@ export namespace Prisma {
     create: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
   }
 
+  export type usersCreateWithoutTransactionsInput = {
+    id: string
+    name: string
+    email: string
+    external_id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    assigned_roles?: user_roles_mappingCreateNestedManyWithoutAssigned_by_userInput
+    user_roles?: user_roles_mappingCreateNestedManyWithoutUserInput
+  }
+
+  export type usersUncheckedCreateWithoutTransactionsInput = {
+    id: string
+    name: string
+    email: string
+    external_id: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    assigned_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutAssigned_by_userInput
+    user_roles?: user_roles_mappingUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type usersCreateOrConnectWithoutTransactionsInput = {
+    where: usersWhereUniqueInput
+    create: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
+  }
+
   export type membersUpsertWithoutTransactionsInput = {
     update: XOR<membersUpdateWithoutTransactionsInput, membersUncheckedUpdateWithoutTransactionsInput>
     create: XOR<membersCreateWithoutTransactionsInput, membersUncheckedCreateWithoutTransactionsInput>
@@ -16907,33 +15618,6 @@ export namespace Prisma {
     house_number?: StringFieldUpdateOperationsInput | string
     phone_number?: StringFieldUpdateOperationsInput | string
     husband_or_father_name?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type supervisorsUpsertWithoutTransactionsInput = {
-    update: XOR<supervisorsUpdateWithoutTransactionsInput, supervisorsUncheckedUpdateWithoutTransactionsInput>
-    create: XOR<supervisorsCreateWithoutTransactionsInput, supervisorsUncheckedCreateWithoutTransactionsInput>
-    where?: supervisorsWhereInput
-  }
-
-  export type supervisorsUpdateToOneWithWhereWithoutTransactionsInput = {
-    where?: supervisorsWhereInput
-    data: XOR<supervisorsUpdateWithoutTransactionsInput, supervisorsUncheckedUpdateWithoutTransactionsInput>
-  }
-
-  export type supervisorsUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type supervisorsUncheckedUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    full_name_english?: StringFieldUpdateOperationsInput | string
-    full_name_telugu?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16973,6 +15657,39 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
     children?: transaction_typesUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type usersUpsertWithoutTransactionsInput = {
+    update: XOR<usersUpdateWithoutTransactionsInput, usersUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
+    where?: usersWhereInput
+  }
+
+  export type usersUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: usersWhereInput
+    data: XOR<usersUpdateWithoutTransactionsInput, usersUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type usersUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    external_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    assigned_roles?: user_roles_mappingUpdateManyWithoutAssigned_by_userNestedInput
+    user_roles?: user_roles_mappingUpdateManyWithoutUserNestedInput
+  }
+
+  export type usersUncheckedUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    external_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    assigned_roles?: user_roles_mappingUncheckedUpdateManyWithoutAssigned_by_userNestedInput
+    user_roles?: user_roles_mappingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type membersCreateWithoutVillagesInput = {
@@ -17161,7 +15878,7 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members: membersCreateNestedOneWithoutTransactionsInput
-    supervisors: supervisorsCreateNestedOneWithoutTransactionsInput
+    users: usersCreateNestedOneWithoutTransactionsInput
   }
 
   export type transactionsUncheckedCreateWithoutTransaction_typeInput = {
@@ -17270,6 +15987,18 @@ export namespace Prisma {
     data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutTransaction_typeInput>
   }
 
+  export type transactionsCreateManyUsersInput = {
+    id?: string
+    member: string
+    amount: number
+    comments?: string | null
+    transaction_date: Date | string
+    receipt_number: string
+    created_at?: Date | string
+    updated_at?: Date | string
+    transaction_type_id: string
+  }
+
   export type user_roles_mappingCreateManyAssigned_by_userInput = {
     id?: string
     user_id: string
@@ -17290,6 +16019,42 @@ export namespace Prisma {
     expires_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+  }
+
+  export type transactionsUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt_number?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
+    transaction_type?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type transactionsUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    member?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt_number?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transaction_type_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type transactionsUncheckedUpdateManyWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    member?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    comments?: NullableStringFieldUpdateOperationsInput | string | null
+    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    receipt_number?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    transaction_type_id?: StringFieldUpdateOperationsInput | string
   }
 
   export type user_roles_mappingUpdateWithoutAssigned_by_userInput = {
@@ -17456,8 +16221,8 @@ export namespace Prisma {
     receipt_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    supervisors?: supervisorsUpdateOneRequiredWithoutTransactionsNestedInput
     transaction_type?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
+    users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
   export type transactionsUncheckedUpdateWithoutMembersInput = {
@@ -17475,54 +16240,6 @@ export namespace Prisma {
   export type transactionsUncheckedUpdateManyWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     supervised_by?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type transactionsCreateManySupervisorsInput = {
-    id?: string
-    member: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    transaction_type_id: string
-  }
-
-  export type transactionsUpdateWithoutSupervisorsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    transaction_type?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
-  }
-
-  export type transactionsUncheckedUpdateWithoutSupervisorsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    member?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type transactionsUncheckedUpdateManyWithoutSupervisorsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    member?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17643,7 +16360,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    supervisors?: supervisorsUpdateOneRequiredWithoutTransactionsNestedInput
+    users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
   export type transactionsUncheckedUpdateWithoutTransaction_typeInput = {

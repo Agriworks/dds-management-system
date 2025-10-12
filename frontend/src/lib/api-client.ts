@@ -110,11 +110,13 @@ export async function getUsers(): Promise<
 export async function updateUserRoles(
   userId: string,
   roles: string[],
+  accessToken: string,
 ): Promise<{ message: string }> {
   const response = await fetch(`${API_BASE_URL}/users/${userId}/roles`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({ roles }),
   });
