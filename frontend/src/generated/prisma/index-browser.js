@@ -211,6 +211,16 @@ exports.Prisma.Transaction_typesScalarFieldEnum = {
   parent_id: 'parent_id'
 };
 
+exports.Prisma.EndpointaccessScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  endpoint: 'endpoint',
+  viewer: 'viewer',
+  contributor: 'contributor',
+  admin: 'admin',
+  created_time: 'created_time'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -236,7 +246,8 @@ exports.Prisma.ModelName = {
   supervisors: 'supervisors',
   transactions: 'transactions',
   villages: 'villages',
-  transaction_types: 'transaction_types'
+  transaction_types: 'transaction_types',
+  endpointaccess: 'endpointaccess'
 };
 
 /**

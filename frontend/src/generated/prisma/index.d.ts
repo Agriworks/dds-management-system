@@ -58,6 +58,11 @@ export type villages = $Result.DefaultSelection<Prisma.$villagesPayload>
  * 
  */
 export type transaction_types = $Result.DefaultSelection<Prisma.$transaction_typesPayload>
+/**
+ * Model endpointaccess
+ * 
+ */
+export type endpointaccess = $Result.DefaultSelection<Prisma.$endpointaccessPayload>
 
 /**
  * Enums
@@ -317,6 +322,16 @@ export class PrismaClient<
     * ```
     */
   get transaction_types(): Prisma.transaction_typesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.endpointaccess`: Exposes CRUD operations for the **endpointaccess** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Endpointaccesses
+    * const endpointaccesses = await prisma.endpointaccess.findMany()
+    * ```
+    */
+  get endpointaccess(): Prisma.endpointaccessDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -765,7 +780,8 @@ export namespace Prisma {
     supervisors: 'supervisors',
     transactions: 'transactions',
     villages: 'villages',
-    transaction_types: 'transaction_types'
+    transaction_types: 'transaction_types',
+    endpointaccess: 'endpointaccess'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -784,7 +800,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "supervisors" | "transactions" | "villages" | "transaction_types"
+      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "supervisors" | "transactions" | "villages" | "transaction_types" | "endpointaccess"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1454,6 +1470,80 @@ export namespace Prisma {
           }
         }
       }
+      endpointaccess: {
+        payload: Prisma.$endpointaccessPayload<ExtArgs>
+        fields: Prisma.endpointaccessFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.endpointaccessFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.endpointaccessFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          findFirst: {
+            args: Prisma.endpointaccessFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.endpointaccessFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          findMany: {
+            args: Prisma.endpointaccessFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>[]
+          }
+          create: {
+            args: Prisma.endpointaccessCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          createMany: {
+            args: Prisma.endpointaccessCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.endpointaccessCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>[]
+          }
+          delete: {
+            args: Prisma.endpointaccessDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          update: {
+            args: Prisma.endpointaccessUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          deleteMany: {
+            args: Prisma.endpointaccessDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.endpointaccessUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.endpointaccessUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>[]
+          }
+          upsert: {
+            args: Prisma.endpointaccessUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$endpointaccessPayload>
+          }
+          aggregate: {
+            args: Prisma.EndpointaccessAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEndpointaccess>
+          }
+          groupBy: {
+            args: Prisma.endpointaccessGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EndpointaccessGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.endpointaccessCountArgs<ExtArgs>
+            result: $Utils.Optional<EndpointaccessCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1547,6 +1637,7 @@ export namespace Prisma {
     transactions?: transactionsOmit
     villages?: villagesOmit
     transaction_types?: transaction_typesOmit
+    endpointaccess?: endpointaccessOmit
   }
 
   /* Types for Logging */
@@ -11943,6 +12034,1061 @@ export namespace Prisma {
 
 
   /**
+   * Model endpointaccess
+   */
+
+  export type AggregateEndpointaccess = {
+    _count: EndpointaccessCountAggregateOutputType | null
+    _avg: EndpointaccessAvgAggregateOutputType | null
+    _sum: EndpointaccessSumAggregateOutputType | null
+    _min: EndpointaccessMinAggregateOutputType | null
+    _max: EndpointaccessMaxAggregateOutputType | null
+  }
+
+  export type EndpointaccessAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type EndpointaccessSumAggregateOutputType = {
+    id: bigint | null
+  }
+
+  export type EndpointaccessMinAggregateOutputType = {
+    id: bigint | null
+    role: string | null
+    endpoint: string | null
+    viewer: boolean | null
+    contributor: boolean | null
+    admin: boolean | null
+    created_time: Date | null
+  }
+
+  export type EndpointaccessMaxAggregateOutputType = {
+    id: bigint | null
+    role: string | null
+    endpoint: string | null
+    viewer: boolean | null
+    contributor: boolean | null
+    admin: boolean | null
+    created_time: Date | null
+  }
+
+  export type EndpointaccessCountAggregateOutputType = {
+    id: number
+    role: number
+    endpoint: number
+    viewer: number
+    contributor: number
+    admin: number
+    created_time: number
+    _all: number
+  }
+
+
+  export type EndpointaccessAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type EndpointaccessSumAggregateInputType = {
+    id?: true
+  }
+
+  export type EndpointaccessMinAggregateInputType = {
+    id?: true
+    role?: true
+    endpoint?: true
+    viewer?: true
+    contributor?: true
+    admin?: true
+    created_time?: true
+  }
+
+  export type EndpointaccessMaxAggregateInputType = {
+    id?: true
+    role?: true
+    endpoint?: true
+    viewer?: true
+    contributor?: true
+    admin?: true
+    created_time?: true
+  }
+
+  export type EndpointaccessCountAggregateInputType = {
+    id?: true
+    role?: true
+    endpoint?: true
+    viewer?: true
+    contributor?: true
+    admin?: true
+    created_time?: true
+    _all?: true
+  }
+
+  export type EndpointaccessAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which endpointaccess to aggregate.
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of endpointaccesses to fetch.
+     */
+    orderBy?: endpointaccessOrderByWithRelationInput | endpointaccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: endpointaccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` endpointaccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` endpointaccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned endpointaccesses
+    **/
+    _count?: true | EndpointaccessCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EndpointaccessAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EndpointaccessSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EndpointaccessMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EndpointaccessMaxAggregateInputType
+  }
+
+  export type GetEndpointaccessAggregateType<T extends EndpointaccessAggregateArgs> = {
+        [P in keyof T & keyof AggregateEndpointaccess]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEndpointaccess[P]>
+      : GetScalarType<T[P], AggregateEndpointaccess[P]>
+  }
+
+
+
+
+  export type endpointaccessGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: endpointaccessWhereInput
+    orderBy?: endpointaccessOrderByWithAggregationInput | endpointaccessOrderByWithAggregationInput[]
+    by: EndpointaccessScalarFieldEnum[] | EndpointaccessScalarFieldEnum
+    having?: endpointaccessScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EndpointaccessCountAggregateInputType | true
+    _avg?: EndpointaccessAvgAggregateInputType
+    _sum?: EndpointaccessSumAggregateInputType
+    _min?: EndpointaccessMinAggregateInputType
+    _max?: EndpointaccessMaxAggregateInputType
+  }
+
+  export type EndpointaccessGroupByOutputType = {
+    id: bigint
+    role: string
+    endpoint: string
+    viewer: boolean | null
+    contributor: boolean | null
+    admin: boolean | null
+    created_time: Date
+    _count: EndpointaccessCountAggregateOutputType | null
+    _avg: EndpointaccessAvgAggregateOutputType | null
+    _sum: EndpointaccessSumAggregateOutputType | null
+    _min: EndpointaccessMinAggregateOutputType | null
+    _max: EndpointaccessMaxAggregateOutputType | null
+  }
+
+  type GetEndpointaccessGroupByPayload<T extends endpointaccessGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EndpointaccessGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EndpointaccessGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EndpointaccessGroupByOutputType[P]>
+            : GetScalarType<T[P], EndpointaccessGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type endpointaccessSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    role?: boolean
+    endpoint?: boolean
+    viewer?: boolean
+    contributor?: boolean
+    admin?: boolean
+    created_time?: boolean
+  }, ExtArgs["result"]["endpointaccess"]>
+
+  export type endpointaccessSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    role?: boolean
+    endpoint?: boolean
+    viewer?: boolean
+    contributor?: boolean
+    admin?: boolean
+    created_time?: boolean
+  }, ExtArgs["result"]["endpointaccess"]>
+
+  export type endpointaccessSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    role?: boolean
+    endpoint?: boolean
+    viewer?: boolean
+    contributor?: boolean
+    admin?: boolean
+    created_time?: boolean
+  }, ExtArgs["result"]["endpointaccess"]>
+
+  export type endpointaccessSelectScalar = {
+    id?: boolean
+    role?: boolean
+    endpoint?: boolean
+    viewer?: boolean
+    contributor?: boolean
+    admin?: boolean
+    created_time?: boolean
+  }
+
+  export type endpointaccessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "role" | "endpoint" | "viewer" | "contributor" | "admin" | "created_time", ExtArgs["result"]["endpointaccess"]>
+
+  export type $endpointaccessPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "endpointaccess"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      role: string
+      endpoint: string
+      viewer: boolean | null
+      contributor: boolean | null
+      admin: boolean | null
+      created_time: Date
+    }, ExtArgs["result"]["endpointaccess"]>
+    composites: {}
+  }
+
+  type endpointaccessGetPayload<S extends boolean | null | undefined | endpointaccessDefaultArgs> = $Result.GetResult<Prisma.$endpointaccessPayload, S>
+
+  type endpointaccessCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<endpointaccessFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EndpointaccessCountAggregateInputType | true
+    }
+
+  export interface endpointaccessDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['endpointaccess'], meta: { name: 'endpointaccess' } }
+    /**
+     * Find zero or one Endpointaccess that matches the filter.
+     * @param {endpointaccessFindUniqueArgs} args - Arguments to find a Endpointaccess
+     * @example
+     * // Get one Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends endpointaccessFindUniqueArgs>(args: SelectSubset<T, endpointaccessFindUniqueArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Endpointaccess that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {endpointaccessFindUniqueOrThrowArgs} args - Arguments to find a Endpointaccess
+     * @example
+     * // Get one Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends endpointaccessFindUniqueOrThrowArgs>(args: SelectSubset<T, endpointaccessFindUniqueOrThrowArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Endpointaccess that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessFindFirstArgs} args - Arguments to find a Endpointaccess
+     * @example
+     * // Get one Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends endpointaccessFindFirstArgs>(args?: SelectSubset<T, endpointaccessFindFirstArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Endpointaccess that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessFindFirstOrThrowArgs} args - Arguments to find a Endpointaccess
+     * @example
+     * // Get one Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends endpointaccessFindFirstOrThrowArgs>(args?: SelectSubset<T, endpointaccessFindFirstOrThrowArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Endpointaccesses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Endpointaccesses
+     * const endpointaccesses = await prisma.endpointaccess.findMany()
+     * 
+     * // Get first 10 Endpointaccesses
+     * const endpointaccesses = await prisma.endpointaccess.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const endpointaccessWithIdOnly = await prisma.endpointaccess.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends endpointaccessFindManyArgs>(args?: SelectSubset<T, endpointaccessFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Endpointaccess.
+     * @param {endpointaccessCreateArgs} args - Arguments to create a Endpointaccess.
+     * @example
+     * // Create one Endpointaccess
+     * const Endpointaccess = await prisma.endpointaccess.create({
+     *   data: {
+     *     // ... data to create a Endpointaccess
+     *   }
+     * })
+     * 
+     */
+    create<T extends endpointaccessCreateArgs>(args: SelectSubset<T, endpointaccessCreateArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Endpointaccesses.
+     * @param {endpointaccessCreateManyArgs} args - Arguments to create many Endpointaccesses.
+     * @example
+     * // Create many Endpointaccesses
+     * const endpointaccess = await prisma.endpointaccess.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends endpointaccessCreateManyArgs>(args?: SelectSubset<T, endpointaccessCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Endpointaccesses and returns the data saved in the database.
+     * @param {endpointaccessCreateManyAndReturnArgs} args - Arguments to create many Endpointaccesses.
+     * @example
+     * // Create many Endpointaccesses
+     * const endpointaccess = await prisma.endpointaccess.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Endpointaccesses and only return the `id`
+     * const endpointaccessWithIdOnly = await prisma.endpointaccess.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends endpointaccessCreateManyAndReturnArgs>(args?: SelectSubset<T, endpointaccessCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Endpointaccess.
+     * @param {endpointaccessDeleteArgs} args - Arguments to delete one Endpointaccess.
+     * @example
+     * // Delete one Endpointaccess
+     * const Endpointaccess = await prisma.endpointaccess.delete({
+     *   where: {
+     *     // ... filter to delete one Endpointaccess
+     *   }
+     * })
+     * 
+     */
+    delete<T extends endpointaccessDeleteArgs>(args: SelectSubset<T, endpointaccessDeleteArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Endpointaccess.
+     * @param {endpointaccessUpdateArgs} args - Arguments to update one Endpointaccess.
+     * @example
+     * // Update one Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends endpointaccessUpdateArgs>(args: SelectSubset<T, endpointaccessUpdateArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Endpointaccesses.
+     * @param {endpointaccessDeleteManyArgs} args - Arguments to filter Endpointaccesses to delete.
+     * @example
+     * // Delete a few Endpointaccesses
+     * const { count } = await prisma.endpointaccess.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends endpointaccessDeleteManyArgs>(args?: SelectSubset<T, endpointaccessDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Endpointaccesses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Endpointaccesses
+     * const endpointaccess = await prisma.endpointaccess.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends endpointaccessUpdateManyArgs>(args: SelectSubset<T, endpointaccessUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Endpointaccesses and returns the data updated in the database.
+     * @param {endpointaccessUpdateManyAndReturnArgs} args - Arguments to update many Endpointaccesses.
+     * @example
+     * // Update many Endpointaccesses
+     * const endpointaccess = await prisma.endpointaccess.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Endpointaccesses and only return the `id`
+     * const endpointaccessWithIdOnly = await prisma.endpointaccess.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends endpointaccessUpdateManyAndReturnArgs>(args: SelectSubset<T, endpointaccessUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Endpointaccess.
+     * @param {endpointaccessUpsertArgs} args - Arguments to update or create a Endpointaccess.
+     * @example
+     * // Update or create a Endpointaccess
+     * const endpointaccess = await prisma.endpointaccess.upsert({
+     *   create: {
+     *     // ... data to create a Endpointaccess
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Endpointaccess we want to update
+     *   }
+     * })
+     */
+    upsert<T extends endpointaccessUpsertArgs>(args: SelectSubset<T, endpointaccessUpsertArgs<ExtArgs>>): Prisma__endpointaccessClient<$Result.GetResult<Prisma.$endpointaccessPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Endpointaccesses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessCountArgs} args - Arguments to filter Endpointaccesses to count.
+     * @example
+     * // Count the number of Endpointaccesses
+     * const count = await prisma.endpointaccess.count({
+     *   where: {
+     *     // ... the filter for the Endpointaccesses we want to count
+     *   }
+     * })
+    **/
+    count<T extends endpointaccessCountArgs>(
+      args?: Subset<T, endpointaccessCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EndpointaccessCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Endpointaccess.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EndpointaccessAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EndpointaccessAggregateArgs>(args: Subset<T, EndpointaccessAggregateArgs>): Prisma.PrismaPromise<GetEndpointaccessAggregateType<T>>
+
+    /**
+     * Group by Endpointaccess.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {endpointaccessGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends endpointaccessGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: endpointaccessGroupByArgs['orderBy'] }
+        : { orderBy?: endpointaccessGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, endpointaccessGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEndpointaccessGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the endpointaccess model
+   */
+  readonly fields: endpointaccessFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for endpointaccess.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__endpointaccessClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the endpointaccess model
+   */
+  interface endpointaccessFieldRefs {
+    readonly id: FieldRef<"endpointaccess", 'BigInt'>
+    readonly role: FieldRef<"endpointaccess", 'String'>
+    readonly endpoint: FieldRef<"endpointaccess", 'String'>
+    readonly viewer: FieldRef<"endpointaccess", 'Boolean'>
+    readonly contributor: FieldRef<"endpointaccess", 'Boolean'>
+    readonly admin: FieldRef<"endpointaccess", 'Boolean'>
+    readonly created_time: FieldRef<"endpointaccess", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * endpointaccess findUnique
+   */
+  export type endpointaccessFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter, which endpointaccess to fetch.
+     */
+    where: endpointaccessWhereUniqueInput
+  }
+
+  /**
+   * endpointaccess findUniqueOrThrow
+   */
+  export type endpointaccessFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter, which endpointaccess to fetch.
+     */
+    where: endpointaccessWhereUniqueInput
+  }
+
+  /**
+   * endpointaccess findFirst
+   */
+  export type endpointaccessFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter, which endpointaccess to fetch.
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of endpointaccesses to fetch.
+     */
+    orderBy?: endpointaccessOrderByWithRelationInput | endpointaccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for endpointaccesses.
+     */
+    cursor?: endpointaccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` endpointaccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` endpointaccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of endpointaccesses.
+     */
+    distinct?: EndpointaccessScalarFieldEnum | EndpointaccessScalarFieldEnum[]
+  }
+
+  /**
+   * endpointaccess findFirstOrThrow
+   */
+  export type endpointaccessFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter, which endpointaccess to fetch.
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of endpointaccesses to fetch.
+     */
+    orderBy?: endpointaccessOrderByWithRelationInput | endpointaccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for endpointaccesses.
+     */
+    cursor?: endpointaccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` endpointaccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` endpointaccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of endpointaccesses.
+     */
+    distinct?: EndpointaccessScalarFieldEnum | EndpointaccessScalarFieldEnum[]
+  }
+
+  /**
+   * endpointaccess findMany
+   */
+  export type endpointaccessFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter, which endpointaccesses to fetch.
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of endpointaccesses to fetch.
+     */
+    orderBy?: endpointaccessOrderByWithRelationInput | endpointaccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing endpointaccesses.
+     */
+    cursor?: endpointaccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` endpointaccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` endpointaccesses.
+     */
+    skip?: number
+    distinct?: EndpointaccessScalarFieldEnum | EndpointaccessScalarFieldEnum[]
+  }
+
+  /**
+   * endpointaccess create
+   */
+  export type endpointaccessCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * The data needed to create a endpointaccess.
+     */
+    data: XOR<endpointaccessCreateInput, endpointaccessUncheckedCreateInput>
+  }
+
+  /**
+   * endpointaccess createMany
+   */
+  export type endpointaccessCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many endpointaccesses.
+     */
+    data: endpointaccessCreateManyInput | endpointaccessCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * endpointaccess createManyAndReturn
+   */
+  export type endpointaccessCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * The data used to create many endpointaccesses.
+     */
+    data: endpointaccessCreateManyInput | endpointaccessCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * endpointaccess update
+   */
+  export type endpointaccessUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * The data needed to update a endpointaccess.
+     */
+    data: XOR<endpointaccessUpdateInput, endpointaccessUncheckedUpdateInput>
+    /**
+     * Choose, which endpointaccess to update.
+     */
+    where: endpointaccessWhereUniqueInput
+  }
+
+  /**
+   * endpointaccess updateMany
+   */
+  export type endpointaccessUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update endpointaccesses.
+     */
+    data: XOR<endpointaccessUpdateManyMutationInput, endpointaccessUncheckedUpdateManyInput>
+    /**
+     * Filter which endpointaccesses to update
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * Limit how many endpointaccesses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * endpointaccess updateManyAndReturn
+   */
+  export type endpointaccessUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * The data used to update endpointaccesses.
+     */
+    data: XOR<endpointaccessUpdateManyMutationInput, endpointaccessUncheckedUpdateManyInput>
+    /**
+     * Filter which endpointaccesses to update
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * Limit how many endpointaccesses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * endpointaccess upsert
+   */
+  export type endpointaccessUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * The filter to search for the endpointaccess to update in case it exists.
+     */
+    where: endpointaccessWhereUniqueInput
+    /**
+     * In case the endpointaccess found by the `where` argument doesn't exist, create a new endpointaccess with this data.
+     */
+    create: XOR<endpointaccessCreateInput, endpointaccessUncheckedCreateInput>
+    /**
+     * In case the endpointaccess was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<endpointaccessUpdateInput, endpointaccessUncheckedUpdateInput>
+  }
+
+  /**
+   * endpointaccess delete
+   */
+  export type endpointaccessDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+    /**
+     * Filter which endpointaccess to delete.
+     */
+    where: endpointaccessWhereUniqueInput
+  }
+
+  /**
+   * endpointaccess deleteMany
+   */
+  export type endpointaccessDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which endpointaccesses to delete
+     */
+    where?: endpointaccessWhereInput
+    /**
+     * Limit how many endpointaccesses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * endpointaccess without action
+   */
+  export type endpointaccessDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the endpointaccess
+     */
+    select?: endpointaccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the endpointaccess
+     */
+    omit?: endpointaccessOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -12074,6 +13220,19 @@ export namespace Prisma {
   export type Transaction_typesScalarFieldEnum = (typeof Transaction_typesScalarFieldEnum)[keyof typeof Transaction_typesScalarFieldEnum]
 
 
+  export const EndpointaccessScalarFieldEnum: {
+    id: 'id',
+    role: 'role',
+    endpoint: 'endpoint',
+    viewer: 'viewer',
+    contributor: 'contributor',
+    admin: 'admin',
+    created_time: 'created_time'
+  };
+
+  export type EndpointaccessScalarFieldEnum = (typeof EndpointaccessScalarFieldEnum)[keyof typeof EndpointaccessScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -12149,6 +13308,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -12787,6 +13960,71 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"transaction_types"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"transaction_types"> | Date | string
     parent_id?: UuidNullableWithAggregatesFilter<"transaction_types"> | string | null
+  }
+
+  export type endpointaccessWhereInput = {
+    AND?: endpointaccessWhereInput | endpointaccessWhereInput[]
+    OR?: endpointaccessWhereInput[]
+    NOT?: endpointaccessWhereInput | endpointaccessWhereInput[]
+    id?: BigIntFilter<"endpointaccess"> | bigint | number
+    role?: StringFilter<"endpointaccess"> | string
+    endpoint?: StringFilter<"endpointaccess"> | string
+    viewer?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    contributor?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    admin?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    created_time?: DateTimeFilter<"endpointaccess"> | Date | string
+  }
+
+  export type endpointaccessOrderByWithRelationInput = {
+    id?: SortOrder
+    role?: SortOrder
+    endpoint?: SortOrder
+    viewer?: SortOrderInput | SortOrder
+    contributor?: SortOrderInput | SortOrder
+    admin?: SortOrderInput | SortOrder
+    created_time?: SortOrder
+  }
+
+  export type endpointaccessWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    role_endpoint?: endpointaccessRoleEndpointCompoundUniqueInput
+    AND?: endpointaccessWhereInput | endpointaccessWhereInput[]
+    OR?: endpointaccessWhereInput[]
+    NOT?: endpointaccessWhereInput | endpointaccessWhereInput[]
+    role?: StringFilter<"endpointaccess"> | string
+    endpoint?: StringFilter<"endpointaccess"> | string
+    viewer?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    contributor?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    admin?: BoolNullableFilter<"endpointaccess"> | boolean | null
+    created_time?: DateTimeFilter<"endpointaccess"> | Date | string
+  }, "id" | "role_endpoint">
+
+  export type endpointaccessOrderByWithAggregationInput = {
+    id?: SortOrder
+    role?: SortOrder
+    endpoint?: SortOrder
+    viewer?: SortOrderInput | SortOrder
+    contributor?: SortOrderInput | SortOrder
+    admin?: SortOrderInput | SortOrder
+    created_time?: SortOrder
+    _count?: endpointaccessCountOrderByAggregateInput
+    _avg?: endpointaccessAvgOrderByAggregateInput
+    _max?: endpointaccessMaxOrderByAggregateInput
+    _min?: endpointaccessMinOrderByAggregateInput
+    _sum?: endpointaccessSumOrderByAggregateInput
+  }
+
+  export type endpointaccessScalarWhereWithAggregatesInput = {
+    AND?: endpointaccessScalarWhereWithAggregatesInput | endpointaccessScalarWhereWithAggregatesInput[]
+    OR?: endpointaccessScalarWhereWithAggregatesInput[]
+    NOT?: endpointaccessScalarWhereWithAggregatesInput | endpointaccessScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"endpointaccess"> | bigint | number
+    role?: StringWithAggregatesFilter<"endpointaccess"> | string
+    endpoint?: StringWithAggregatesFilter<"endpointaccess"> | string
+    viewer?: BoolNullableWithAggregatesFilter<"endpointaccess"> | boolean | null
+    contributor?: BoolNullableWithAggregatesFilter<"endpointaccess"> | boolean | null
+    admin?: BoolNullableWithAggregatesFilter<"endpointaccess"> | boolean | null
+    created_time?: DateTimeWithAggregatesFilter<"endpointaccess"> | Date | string
   }
 
   export type usersCreateInput = {
@@ -13453,6 +14691,76 @@ export namespace Prisma {
     parent_id?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type endpointaccessCreateInput = {
+    id?: bigint | number
+    role: string
+    endpoint: string
+    viewer?: boolean | null
+    contributor?: boolean | null
+    admin?: boolean | null
+    created_time?: Date | string
+  }
+
+  export type endpointaccessUncheckedCreateInput = {
+    id?: bigint | number
+    role: string
+    endpoint: string
+    viewer?: boolean | null
+    contributor?: boolean | null
+    admin?: boolean | null
+    created_time?: Date | string
+  }
+
+  export type endpointaccessUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    role?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    viewer?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    contributor?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    admin?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type endpointaccessUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    role?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    viewer?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    contributor?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    admin?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type endpointaccessCreateManyInput = {
+    id?: bigint | number
+    role: string
+    endpoint: string
+    viewer?: boolean | null
+    contributor?: boolean | null
+    admin?: boolean | null
+    created_time?: Date | string
+  }
+
+  export type endpointaccessUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    role?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    viewer?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    contributor?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    admin?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type endpointaccessUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    role?: StringFieldUpdateOperationsInput | string
+    endpoint?: StringFieldUpdateOperationsInput | string
+    viewer?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    contributor?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    admin?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_time?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14049,6 +15357,89 @@ export namespace Prisma {
     parent_id?: SortOrder
   }
 
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type endpointaccessRoleEndpointCompoundUniqueInput = {
+    role: string
+    endpoint: string
+  }
+
+  export type endpointaccessCountOrderByAggregateInput = {
+    id?: SortOrder
+    role?: SortOrder
+    endpoint?: SortOrder
+    viewer?: SortOrder
+    contributor?: SortOrder
+    admin?: SortOrder
+    created_time?: SortOrder
+  }
+
+  export type endpointaccessAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type endpointaccessMaxOrderByAggregateInput = {
+    id?: SortOrder
+    role?: SortOrder
+    endpoint?: SortOrder
+    viewer?: SortOrder
+    contributor?: SortOrder
+    admin?: SortOrder
+    created_time?: SortOrder
+  }
+
+  export type endpointaccessMinOrderByAggregateInput = {
+    id?: SortOrder
+    role?: SortOrder
+    endpoint?: SortOrder
+    viewer?: SortOrder
+    contributor?: SortOrder
+    admin?: SortOrder
+    created_time?: SortOrder
+  }
+
+  export type endpointaccessSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type user_roles_mappingCreateNestedManyWithoutAssigned_by_userInput = {
     create?: XOR<user_roles_mappingCreateWithoutAssigned_by_userInput, user_roles_mappingUncheckedCreateWithoutAssigned_by_userInput> | user_roles_mappingCreateWithoutAssigned_by_userInput[] | user_roles_mappingUncheckedCreateWithoutAssigned_by_userInput[]
     connectOrCreate?: user_roles_mappingCreateOrConnectWithoutAssigned_by_userInput | user_roles_mappingCreateOrConnectWithoutAssigned_by_userInput[]
@@ -14585,6 +15976,18 @@ export namespace Prisma {
     deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14807,6 +16210,46 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type user_roles_mappingCreateWithoutAssigned_by_userInput = {
