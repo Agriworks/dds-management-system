@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 
 const formSchema = z
   .object({
@@ -76,6 +77,7 @@ const formSchema = z
   );
 
 export default function AddTransactionForm() {
+  const { data: session } = useSession();
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -208,9 +210,19 @@ export default function AddTransactionForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      // TODO: For now we'll use a default supervisor ID
-      // In a real app, this would come from the logged-in user's session
-      const defaultSupervisorId = "d7e868c6-a19b-4680-b846-575a1d9c2c06";
+      
+      // Get the supervisor ID from the logged-in user's session
+      if (!session?.user?.id) {
+        theToast.toast({
+          title: "Error",
+          description: "User session not found. Please log in again.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
+
+      const supervisorId = session.user.id;
 
       // Use the deepest subtype (child subtype if available, otherwise parent subtype, otherwise main type)
       const finalTypeId =
@@ -220,7 +232,7 @@ export default function AddTransactionForm() {
 
       // Format the data for API submission
       const transactionData = {
-        supervised_by: defaultSupervisorId,
+        supervised_by: supervisorId,
         member: values.customer,
         amount: parseInt(values.amount, 10),
         transaction_date: values.transactionDate.toISOString(),
