@@ -169,14 +169,6 @@ exports.Prisma.MembersScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
-exports.Prisma.SupervisorsScalarFieldEnum = {
-  id: 'id',
-  full_name_english: 'full_name_english',
-  full_name_telugu: 'full_name_telugu',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.TransactionsScalarFieldEnum = {
   id: 'id',
   supervised_by: 'supervised_by',
@@ -243,7 +235,6 @@ exports.Prisma.ModelName = {
   user_roles_mapping: 'user_roles_mapping',
   mandals: 'mandals',
   members: 'members',
-  supervisors: 'supervisors',
   transactions: 'transactions',
   villages: 'villages',
   transaction_types: 'transaction_types',
