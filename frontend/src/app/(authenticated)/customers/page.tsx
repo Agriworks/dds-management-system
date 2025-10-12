@@ -6,6 +6,7 @@ import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { DataTable } from "@/components/TableView/data-table";
 import { getUsers, updateUserRoles } from "@/lib/api-client";
 import { createColumns } from "./columns";
+import { useSession } from "next-auth/react";
 
 type UserRow = {
   id: string;
@@ -15,6 +16,7 @@ type UserRow = {
 };
 
 export default function CustomersPage() {
+  const { data: session } = useSession();
   const [data, setData] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +55,13 @@ export default function CustomersPage() {
   );
 
   const handleUpdateRoles = async (id: string, roles: string[]) => {
+    if (!session?.user?.accessToken) {
+      console.error("No access token available");
+      return;
+    }
+    
     try {
-      await updateUserRoles(id, roles);
+      await updateUserRoles(id, roles, session.user.accessToken);
       // Update local state
       setData((prev) => prev.map((u) => (u.id === id ? { ...u, roles } : u)));
     } catch (error) {
