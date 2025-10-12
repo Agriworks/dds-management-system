@@ -130,11 +130,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,
       supervisor_name: transaction.users.name,
-      type: transaction.transaction_type?.parent?.name || transaction.transaction_type?.name,
-      type_name: transaction.transaction_type?.parent?.name || transaction.transaction_type?.name,
-      type_label_english: transaction.transaction_type?.parent?.label_english || transaction.transaction_type?.label_english,
-      type_label_telugu: transaction.transaction_type?.parent?.label_telugu || transaction.transaction_type?.label_telugu,
-      loan_type: transaction.transaction_type?.parent ? transaction.transaction_type?.name : null,
+      type:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name,
+      type_name:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name,
+      type_label_english:
+        transaction.transaction_type?.parent?.label_english ||
+        transaction.transaction_type?.label_english,
+      type_label_telugu:
+        transaction.transaction_type?.parent?.label_telugu ||
+        transaction.transaction_type?.label_telugu,
+      loan_type: transaction.transaction_type?.parent
+        ? transaction.transaction_type?.name
+        : null,
     };
 
     return createSuccessResponse(
@@ -255,11 +265,25 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       updated_at: transaction.updated_at.toISOString(),
       member_name: transaction.members.full_name_english,
       supervisor_name: transaction.users.name,
-      type: transaction.transaction_type?.parent?.name || transaction.transaction_type?.name || null,
-      type_name: transaction.transaction_type?.parent?.name || transaction.transaction_type?.name || null,
-      type_label_english: transaction.transaction_type?.parent?.label_english || transaction.transaction_type?.label_english || null,
-      type_label_telugu: transaction.transaction_type?.parent?.label_telugu || transaction.transaction_type?.label_telugu || null,
-      loan_type: transaction.transaction_type?.parent ? transaction.transaction_type?.name : null, // Subtype is the child type when parent exists
+      type:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name ||
+        null,
+      type_name:
+        transaction.transaction_type?.parent?.name ||
+        transaction.transaction_type?.name ||
+        null,
+      type_label_english:
+        transaction.transaction_type?.parent?.label_english ||
+        transaction.transaction_type?.label_english ||
+        null,
+      type_label_telugu:
+        transaction.transaction_type?.parent?.label_telugu ||
+        transaction.transaction_type?.label_telugu ||
+        null,
+      loan_type: transaction.transaction_type?.parent
+        ? transaction.transaction_type?.name
+        : null, // Subtype is the child type when parent exists
     }));
 
     const paginatedResponse = {

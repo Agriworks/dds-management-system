@@ -54,12 +54,9 @@ export async function PUT(
     // Validate access token
     const tokenValidation = await validateAccessToken(request as NextRequest);
     if (!tokenValidation.isValid) {
-      return createErrorResponse(
-        "UNAUTHORIZED",
-        "Invalid access token",
-        401,
-        { details: tokenValidation.error },
-      );
+      return createErrorResponse("UNAUTHORIZED", "Invalid access token", 401, {
+        details: tokenValidation.error,
+      });
     }
 
     const { userId } = await params;
@@ -77,7 +74,7 @@ export async function PUT(
 
     if (validRoles.length !== roles.length) {
       const invalidRoles = roles.filter(
-        role => !validRoles.some(vr => vr.name === role)
+        (role) => !validRoles.some((vr) => vr.name === role),
       );
       return createErrorResponse(
         "INVALID_ROLES",
@@ -102,7 +99,7 @@ export async function PUT(
 
       // Then, create new role mappings for the provided roles
       for (const roleName of roles) {
-        const role = validRoles.find(r => r.name === roleName);
+        const role = validRoles.find((r) => r.name === roleName);
         if (role) {
           // Check if a mapping already exists (inactive)
           const existingMapping = await tx.user_roles_mapping.findFirst({
@@ -141,7 +138,7 @@ export async function PUT(
 
     return createSuccessResponse(
       { message: "User roles updated successfully" },
-      "User roles updated successfully"
+      "User roles updated successfully",
     );
   } catch (error) {
     console.error("Error updating user roles:", error);

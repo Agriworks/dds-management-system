@@ -63,9 +63,10 @@ export async function POST(
 
     // Combine permissions from all roles - user gets the highest level of access
     const permissions = {
-      viewer: endpointAccessList.some(access => access.viewer) || false,
-      contributor: endpointAccessList.some(access => access.contributor) || false,
-      admin: endpointAccessList.some(access => access.admin) || false,
+      viewer: endpointAccessList.some((access) => access.viewer) || false,
+      contributor:
+        endpointAccessList.some((access) => access.contributor) || false,
+      admin: endpointAccessList.some((access) => access.admin) || false,
     };
 
     console.log("Endpoint permissions:", permissions);

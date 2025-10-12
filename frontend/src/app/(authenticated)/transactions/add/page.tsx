@@ -210,7 +210,7 @@ export default function AddTransactionForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      
+
       // Get the supervisor ID from the logged-in user's session
       if (!session?.user?.id) {
         theToast.toast({

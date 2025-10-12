@@ -59,7 +59,7 @@ export default function CustomersPage() {
       console.error("No access token available");
       return;
     }
-    
+
     try {
       await updateUserRoles(id, roles, session.user.accessToken);
       // Update local state
