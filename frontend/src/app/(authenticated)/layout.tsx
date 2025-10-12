@@ -19,18 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={notoSans.className} suppressHydrationWarning={true}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AdminPanelLayout>{children}</AdminPanelLayout>
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <div className={notoSans.className}>
+        <AdminPanelLayout>{children}</AdminPanelLayout>
+        <Toaster />
+      </div>
+    </ThemeProvider>
   );
 }
