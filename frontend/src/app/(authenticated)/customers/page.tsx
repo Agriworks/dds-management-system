@@ -7,6 +7,7 @@ import { DataTable } from "@/components/TableView/data-table";
 import { getUsers, updateUserRoles } from "@/lib/api-client";
 import { createColumns } from "./columns";
 import { useSession } from "next-auth/react";
+import { type AccessObject } from "@/lib/roles";
 
 type UserRow = {
   id: string;
@@ -20,9 +21,45 @@ export default function CustomersPage() {
   const [data, setData] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userPermissions, setUserPermissions] = useState<AccessObject | null>(null);
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+
+  // Load user permissions when session is available
+  useEffect(() => {
+    if (!session?.user?.id || !session?.user?.accessToken) return;
+
+    let mounted = true;
+    (async () => {
+      try {
+        const response = await fetch(
+          `/api/users/${session.user.id}/permissions?endpoint=${encodeURIComponent("/customers")}`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${session.user.accessToken}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          console.error("Failed to fetch user permissions:", response.statusText);
+          return;
+        }
+
+        const permissions: AccessObject = await response.json();
+        if (!mounted) return;
+        setUserPermissions(permissions);
+      } catch (err) {
+        if (!mounted) return;
+        console.error("Error loading user permissions:", err);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [session]);
 
   // Load users on mount
   useEffect(() => {
@@ -70,7 +107,7 @@ export default function CustomersPage() {
     }
   };
 
-  const columns = createColumns(handleUpdateRoles);
+  const columns = createColumns(handleUpdateRoles, userPermissions);
 
   return (
     <ContentLayout title="Roles Management">
