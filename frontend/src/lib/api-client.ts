@@ -17,6 +17,16 @@ import {
 } from "@/types/transaction";
 import type { TransactionWithNames } from "@/types/transaction";
 
+// Transaction Type interface for dropdown
+export interface TransactionTypeOption {
+  id: string;
+  name: string;
+  label_english: string;
+  label_telugu: string;
+  description?: string;
+  parent_id?: string | null;
+}
+
 // Base API configuration
 const API_BASE_URL = "/api";
 
@@ -176,6 +186,22 @@ export async function getCustomers(params: CustomerQueryParams): Promise<{
 }
 
 /**
+ * Fetch transaction types for dropdowns
+ */
+export async function getTransactionTypes(): Promise<TransactionTypeOption[]> {
+  const response = await apiRequest<{
+    success: boolean;
+    data: {
+      mainTypes: TransactionTypeOption[];
+      count: number;
+    };
+    timestamp: string;
+  }>("/transaction-types");
+  
+  return response.data.mainTypes;
+}
+
+/**
  * Fetch transactions with pagination and optional filters
  */
 export async function getTransactions(params: {
@@ -183,7 +209,10 @@ export async function getTransactions(params: {
   offset?: number;
   memberId?: string;
   supervisorId?: string;
-  type?: TransactionType;
+  type?: string;
+  amount?: number;
+  startDate?: string;
+  endDate?: string;
 }): Promise<GetTransactionsApiResponse> {
   const searchParams = new URLSearchParams();
 
@@ -202,6 +231,15 @@ export async function getTransactions(params: {
   }
   if (params.type) {
     searchParams.append("type", params.type);
+  }
+  if (params.amount) {
+    searchParams.append("amount", params.amount.toString());
+  }
+  if (params.startDate) {
+    searchParams.append("startDate", params.startDate);
+  }
+  if (params.endDate) {
+    searchParams.append("endDate", params.endDate);
   }
 
   const response = await apiRequest<unknown>(`/transactions?${searchParams}`);
@@ -334,7 +372,10 @@ export type TransactionApiHook = (params: {
   offset?: number;
   memberId?: string;
   supervisorId?: string;
-  type?: "DEPOSIT" | "WITHDRAWL" | "LOAN" | "PAYBACK";
+  type?: string;
+  amount?: number;
+  startDate?: string;
+  endDate?: string;
 }) => {
   transactions:
     | Array<{
