@@ -1,7 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { TransactionWithNames } from "@/types/transaction";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
-import { getTransactionTypeColor, formatDate, formatAmount } from "@/lib/utils";
+import {
+  getTransactionTypeColor,
+  formatDateTime,
+  formatAmount,
+} from "@/lib/utils";
 
 export const columns: ColumnDef<TransactionWithNames>[] = [
   {
@@ -31,9 +35,12 @@ export const columns: ColumnDef<TransactionWithNames>[] = [
   },
   {
     accessorKey: "transaction_date",
-    header: "Date",
+    header: "Transaction Date",
     cell: (info: CellContext<TransactionWithNames, unknown>) =>
-      formatDate(String(info.getValue() ?? "")),
+      formatDateTime(
+        (info.row.original as TransactionWithNames).created_at ||
+          String(info.getValue() ?? ""),
+      ),
   },
   {
     accessorKey: "supervisor_name",

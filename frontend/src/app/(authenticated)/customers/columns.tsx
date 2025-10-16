@@ -19,6 +19,7 @@ import {
   MultiSelectorItem,
 } from "@/components/ui/multi-select";
 import { getRoles } from "@/lib/api-client";
+import { type AccessObject } from "@/lib/roles";
 import React, { useState, useEffect } from "react";
 
 type UserRow = {
@@ -126,11 +127,14 @@ function RolesEditor({
 function ActionsCell({
   row,
   onUpdateRoles,
+  userPermissions,
 }: {
   row: UserRow;
   onUpdateRoles: (id: string, roles: string[]) => void;
+  userPermissions: AccessObject | null;
 }) {
   const [open, setOpen] = useState(false);
+  const canEditRoles = userPermissions?.contributor || userPermissions?.admin;
 
   return (
     <>
@@ -142,9 +146,12 @@ function ActionsCell({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem
+            disabled={!canEditRoles}
             onSelect={(e) => {
               e.preventDefault();
-              setOpen(true);
+              if (canEditRoles) {
+                setOpen(true);
+              }
             }}
           >
             Edit roles
@@ -172,6 +179,7 @@ function ActionsCell({
 
 export function createColumns(
   onUpdateRoles: (id: string, roles: string[]) => void,
+  userPermissions: AccessObject | null,
 ): ColumnDef<UserRow>[] {
   return [
     {
@@ -198,7 +206,11 @@ export function createColumns(
       id: "actions",
       header: "",
       cell: ({ row }) => (
-        <ActionsCell row={row.original} onUpdateRoles={onUpdateRoles} />
+        <ActionsCell
+          row={row.original}
+          onUpdateRoles={onUpdateRoles}
+          userPermissions={userPermissions}
+        />
       ),
       enableHiding: false,
       size: 48,
