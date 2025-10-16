@@ -21,7 +21,9 @@ export default function CustomersPage() {
   const [data, setData] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userPermissions, setUserPermissions] = useState<AccessObject | null>(null);
+  const [userPermissions, setUserPermissions] = useState<AccessObject | null>(
+    null,
+  );
 
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -38,13 +40,16 @@ export default function CustomersPage() {
           {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${session.user.accessToken}`,
+              Authorization: `Bearer ${session.user.accessToken}`,
             },
-          }
+          },
         );
 
         if (!response.ok) {
-          console.error("Failed to fetch user permissions:", response.statusText);
+          console.error(
+            "Failed to fetch user permissions:",
+            response.statusText,
+          );
           return;
         }
 

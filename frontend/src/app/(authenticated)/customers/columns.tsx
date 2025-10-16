@@ -206,9 +206,9 @@ export function createColumns(
       id: "actions",
       header: "",
       cell: ({ row }) => (
-        <ActionsCell 
-          row={row.original} 
-          onUpdateRoles={onUpdateRoles} 
+        <ActionsCell
+          row={row.original}
+          onUpdateRoles={onUpdateRoles}
           userPermissions={userPermissions}
         />
       ),

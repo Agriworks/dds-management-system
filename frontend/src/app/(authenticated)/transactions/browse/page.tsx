@@ -27,7 +27,11 @@ import { DatePickerWithRange } from "@/components/ui/date-picker-with-range";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import { getTransactions, getTransactionTypes, TransactionTypeOption } from "@/lib/api-client";
+import {
+  getTransactions,
+  getTransactionTypes,
+  TransactionTypeOption,
+} from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
 import { columns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
@@ -43,7 +47,9 @@ const formSchema = z.object({
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<TransactionWithNames[]>([]);
   const [loading, setLoading] = useState(false);
-  const [transactionTypes, setTransactionTypes] = useState<TransactionTypeOption[]>([]);
+  const [transactionTypes, setTransactionTypes] = useState<
+    TransactionTypeOption[]
+  >([]);
   const [loadingTypes, setLoadingTypes] = useState(false);
   const [pagination, setPagination] = useState({
     total: 0,
@@ -88,7 +94,7 @@ export default function TransactionsPage() {
   // Load initial transactions and transaction types
   useEffect(() => {
     fetchTransactions({ limit: 10, offset: 0 });
-    
+
     // Load transaction types from backend
     const loadTransactionTypes = async () => {
       try {
@@ -97,12 +103,13 @@ export default function TransactionsPage() {
         const types = await getTransactionTypes();
         console.log("Transaction types fetched:", types);
         // Filter out any invalid types before setting
-        const validTypes = types.filter(type => 
-          type && 
-          type.id && 
-          type.name && 
-          type.name.trim() !== "" &&
-          type.label_english
+        const validTypes = types.filter(
+          (type) =>
+            type &&
+            type.id &&
+            type.name &&
+            type.name.trim() !== "" &&
+            type.label_english,
         );
         console.log("Valid transaction types:", validTypes);
         setTransactionTypes(validTypes);
@@ -110,10 +117,30 @@ export default function TransactionsPage() {
         console.error("Error fetching transaction types:", error);
         // Fallback to hardcoded types if API fails
         const fallbackTypes: TransactionTypeOption[] = [
-          { id: "1", name: "DEPOSIT", label_english: "Deposit", label_telugu: "డిపాజిట్" },
-          { id: "2", name: "WITHDRAWL", label_english: "Withdrawal", label_telugu: "విత్‌డ్రావల్" },
-          { id: "3", name: "LOAN", label_english: "Loan", label_telugu: "లోన్" },
-          { id: "4", name: "PAYBACK", label_english: "Payback", label_telugu: "పేబ్యాక్" }
+          {
+            id: "1",
+            name: "DEPOSIT",
+            label_english: "Deposit",
+            label_telugu: "డిపాజిట్",
+          },
+          {
+            id: "2",
+            name: "WITHDRAWL",
+            label_english: "Withdrawal",
+            label_telugu: "విత్‌డ్రావల్",
+          },
+          {
+            id: "3",
+            name: "LOAN",
+            label_english: "Loan",
+            label_telugu: "లోన్",
+          },
+          {
+            id: "4",
+            name: "PAYBACK",
+            label_english: "Payback",
+            label_telugu: "పేబ్యాక్",
+          },
         ];
         console.log("Using fallback transaction types:", fallbackTypes);
         setTransactionTypes(fallbackTypes);
@@ -121,7 +148,7 @@ export default function TransactionsPage() {
         setLoadingTypes(false);
       }
     };
-    
+
     loadTransactionTypes();
   }, []);
 
@@ -144,8 +171,10 @@ export default function TransactionsPage() {
     if (values.supervisorId) params.supervisorId = values.supervisorId;
     if (values.type) params.type = values.type;
     if (values.amount) params.amount = parseFloat(values.amount);
-    if (values.dateRange?.from) params.startDate = values.dateRange.from.toISOString().split('T')[0];
-    if (values.dateRange?.to) params.endDate = values.dateRange.to.toISOString().split('T')[0];
+    if (values.dateRange?.from)
+      params.startDate = values.dateRange.from.toISOString().split("T")[0];
+    if (values.dateRange?.to)
+      params.endDate = values.dateRange.to.toISOString().split("T")[0];
 
     fetchTransactions(params);
   }
@@ -167,11 +196,16 @@ export default function TransactionsPage() {
     };
 
     if (currentValues.memberId) params.memberId = currentValues.memberId;
-    if (currentValues.supervisorId) params.supervisorId = currentValues.supervisorId;
+    if (currentValues.supervisorId)
+      params.supervisorId = currentValues.supervisorId;
     if (currentValues.type) params.type = currentValues.type;
     if (currentValues.amount) params.amount = parseFloat(currentValues.amount);
-    if (currentValues.dateRange?.from) params.startDate = currentValues.dateRange.from.toISOString().split('T')[0];
-    if (currentValues.dateRange?.to) params.endDate = currentValues.dateRange.to.toISOString().split('T')[0];
+    if (currentValues.dateRange?.from)
+      params.startDate = currentValues.dateRange.from
+        .toISOString()
+        .split("T")[0];
+    if (currentValues.dateRange?.to)
+      params.endDate = currentValues.dateRange.to.toISOString().split("T")[0];
 
     fetchTransactions(params);
   };
@@ -265,7 +299,10 @@ export default function TransactionsPage() {
                               </SelectItem>
                             ) : (
                               transactionTypes
-                                .filter((type) => type.name && type.name.trim() !== "")
+                                .filter(
+                                  (type) =>
+                                    type.name && type.name.trim() !== "",
+                                )
                                 .map((type) => (
                                   <SelectItem key={type.id} value={type.name}>
                                     {type.label_english} ({type.label_telugu})

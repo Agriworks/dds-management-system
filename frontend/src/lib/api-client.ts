@@ -197,7 +197,7 @@ export async function getTransactionTypes(): Promise<TransactionTypeOption[]> {
     };
     timestamp: string;
   }>("/transaction-types");
-  
+
   return response.data.mainTypes;
 }
 

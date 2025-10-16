@@ -1,7 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { TransactionWithNames } from "@/types/transaction";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
-import { getTransactionTypeColor, formatDateTime, formatAmount } from "@/lib/utils";
+import {
+  getTransactionTypeColor,
+  formatDateTime,
+  formatAmount,
+} from "@/lib/utils";
 
 export const columns: ColumnDef<TransactionWithNames>[] = [
   {
