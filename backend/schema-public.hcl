@@ -1,24 +1,7 @@
 schema "public" {
-  comment = "Public schema for the application, containing all application tables and enums"
+  comment = "Public schema for the application, containing all application tables"
 }
 
-# Enum for transaction types
-enum "transaction_type_enum" {
-  schema = schema.public
-  values = ["DEPOSIT", "WITHDRAWL", "LOAN", "PAYBACK"]
-}
-
-# Enum for loan types
-enum "loan_type_enum" {
-  schema = schema.public
-  values = ["LIVESTOCK", "INDIVIDUAL", "LAAGODI"]
-}
-
-# Enum for fund types (used only if loan_type = Laagodi)
-enum "fund_type_enum" {
-  schema = schema.public
-  values = ["DDS_FUNDS", "PROJECT_FUNDS"]
-}
 
 table "users" {
   schema = schema.public
@@ -26,6 +9,7 @@ table "users" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "name" {
@@ -70,11 +54,16 @@ table "roles" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "name" {
     type = text
     null = false
+  }
+
+  unique "roles_name_unique" {
+    columns = [column.name]
   }
 
   column "description" {
@@ -111,6 +100,7 @@ table "user_roles_mapping" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "user_id" {
@@ -185,40 +175,6 @@ table "user_roles_mapping" {
 }
 
 
-table "supervisors" {
-  schema = schema.public
-
-  column "id" {
-    type = uuid
-    null = false
-  }
-
-  column "full_name_english" {
-    type = text
-    null = false
-  }
-
-  column "full_name_telugu" {
-    type = text
-    null = false
-  }
-
-  column "created_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  column "updated_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  primary_key {
-    columns = [column.id]
-  }
-}
 
 table "mandals" {
   schema = schema.public
@@ -226,6 +182,7 @@ table "mandals" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "label_english" {
@@ -261,6 +218,7 @@ table "villages" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "label_english" {
@@ -307,6 +265,7 @@ table "members" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "full_name_english" {
@@ -363,6 +322,7 @@ table "transactions" {
   column "id" {
     type = uuid
     null = false
+    default = sql("gen_random_uuid()")
   }
 
   column "supervised_by" {
@@ -375,8 +335,8 @@ table "transactions" {
     null = false
   }
 
-  column "type" {
-    type = enum.transaction_type_enum
+  column "transaction_type_id" {
+    type = uuid
     null = false
   }
 
@@ -390,23 +350,13 @@ table "transactions" {
     null = true
   }
 
-  column "loan_type" {
-    type = enum.loan_type_enum
-    null = true
-  }
-
-  column "fund_type" {
-    type = enum.fund_type_enum
-    null = true
-  }
-
   column "transaction_date" {
     type = date
     null = false
   }
 
-  column "recipet_number" {
-    type = text
+  column "receipt_number" {
+    type = varchar(255)
     null = false
   }
 
@@ -422,9 +372,9 @@ table "transactions" {
     default = sql("CURRENT_TIMESTAMP")
   }
 
-  foreign_key "fk_transactions_supervisor" {
+  foreign_key "fk_transactions_user" {
     columns = [column.supervised_by]
-    ref_columns = [table.supervisors.column.id]
+    ref_columns = [table.users.column.id]
     on_delete = "RESTRICT"
   }
 
@@ -434,12 +384,132 @@ table "transactions" {
     on_delete = "RESTRICT"
   }
 
-  check "loan_type_required_for_loans" {
-    expr = "type != 'LOAN' OR loan_type IS NOT NULL"
+  foreign_key "fk_transactions_type" {
+    columns = [column.transaction_type_id]
+    ref_columns = [table.transaction_types.column.id]
+    on_delete = "RESTRICT"
   }
 
-  check "fund_type_required_for_laagodi" {
-    expr = "loan_type != 'LAAGODI' OR fund_type IS NOT NULL"
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+table "transaction_types" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+    default = sql("gen_random_uuid()")
+  }
+
+  column "name" {
+    type = varchar(255)
+    null = false
+  }
+
+  unique "transaction_types_name_unique" {
+    columns = [column.name]
+  }
+
+  column "label_english" {
+    type = varchar(255)
+    null = false
+  }
+
+  column "label_telugu" {
+    type = varchar(255)
+    null = false
+  }
+
+  column "description" {
+    type = text
+    null = true
+  }
+
+  column "is_active" {
+    type = boolean
+    null = false
+    default = true
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "parent_id" {
+    type = uuid
+    null = true
+  }
+
+  foreign_key "fk_type_parent" {
+    columns = [column.parent_id]
+    ref_columns = [table.transaction_types.column.id]
+    on_delete = "RESTRICT"
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+table "endpointaccess" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+    default = sql("gen_random_uuid()")
+  }
+
+  column "role" {
+    type = varchar(255)
+    null = false
+  }
+
+  column "endpoint" {
+    type = varchar(255)
+    null = false
+  }
+
+  column "viewer" {
+    type = boolean
+    null = false
+  }
+
+  column "contributor" {
+    type = boolean
+    null = false
+  }
+
+  column "admin" {
+    type = boolean
+    null = false
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  unique "role_endpoint_unique" {
+    columns = [column.role, column.endpoint]
   }
 
   primary_key {
