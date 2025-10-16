@@ -44,3 +44,17 @@ export function formatAmount(amount: number): string {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+export function formatDateTime(input: string | Date): string {
+  const date = input instanceof Date ? input : new Date(input);
+  if (isNaN(date.getTime())) return "-";
+
+  return date.toLocaleString("en-IN", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
