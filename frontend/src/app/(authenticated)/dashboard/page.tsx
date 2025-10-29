@@ -2,33 +2,12 @@
 
 import React from "react";
 import { ContentLayout } from "../../../components/admin-panel/content-layout";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { ComingSoonCard } from "@/components/dashboard/coming-soon-card";
+
 export default function DashboardPage() {
   return (
     <ContentLayout title="Dashboard">
-      <div className="flex items-center justify-center py-12">
-        <Card className="w-full max-w-xl shadow-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <Clock className="h-12 w-12 text-muted-foreground" />
-            </div>
-            <CardTitle className="text-2xl">Coming Soon</CardTitle>
-            <CardDescription>
-              We&apos;re building this dashboard. Check back again shortly.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center text-muted-foreground">
-            Thanks for your patience!
-          </CardContent>
-        </Card>
-      </div>
+      <ComingSoonCard />
     </ContentLayout>
   );
 }
