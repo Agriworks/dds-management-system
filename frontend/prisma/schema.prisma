@@ -141,21 +141,3 @@ model endpointaccess {
   @@index([endpoint], map: "idx_endpointaccess_endpoint")
   @@index([role], map: "idx_endpointaccess_role")
 }
-
-enum fund_type_enum {
-  DDS_FUNDS
-  PROJECT_FUNDS
-}
-
-enum loan_type_enum {
-  LIVESTOCK
-  INDIVIDUAL
-  LAAGODI
-}
-
-enum transaction_type_enum {
-  DEPOSIT
-  WITHDRAWL
-  LOAN
-  PAYBACK
-}

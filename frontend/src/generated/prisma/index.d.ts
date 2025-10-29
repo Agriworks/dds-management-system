@@ -60,50 +60,6 @@ export type transaction_types = $Result.DefaultSelection<Prisma.$transaction_typ
 export type endpointaccess = $Result.DefaultSelection<Prisma.$endpointaccessPayload>
 
 /**
- * Enums
- */
-export namespace $Enums {
-  export const fund_type_enum: {
-  DDS_FUNDS: 'DDS_FUNDS',
-  PROJECT_FUNDS: 'PROJECT_FUNDS'
-};
-
-export type fund_type_enum = (typeof fund_type_enum)[keyof typeof fund_type_enum]
-
-
-export const loan_type_enum: {
-  LIVESTOCK: 'LIVESTOCK',
-  INDIVIDUAL: 'INDIVIDUAL',
-  LAAGODI: 'LAAGODI'
-};
-
-export type loan_type_enum = (typeof loan_type_enum)[keyof typeof loan_type_enum]
-
-
-export const transaction_type_enum: {
-  DEPOSIT: 'DEPOSIT',
-  WITHDRAWL: 'WITHDRAWL',
-  LOAN: 'LOAN',
-  PAYBACK: 'PAYBACK'
-};
-
-export type transaction_type_enum = (typeof transaction_type_enum)[keyof typeof transaction_type_enum]
-
-}
-
-export type fund_type_enum = $Enums.fund_type_enum
-
-export const fund_type_enum: typeof $Enums.fund_type_enum
-
-export type loan_type_enum = $Enums.loan_type_enum
-
-export const loan_type_enum: typeof $Enums.loan_type_enum
-
-export type transaction_type_enum = $Enums.transaction_type_enum
-
-export const transaction_type_enum: typeof $Enums.transaction_type_enum
-
-/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
