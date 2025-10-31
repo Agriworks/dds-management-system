@@ -122,7 +122,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UsersScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  first_name: 'first_name',
+  last_name: 'last_name',
   email: 'email',
   external_id: 'external_id',
   created_at: 'created_at',
@@ -143,7 +144,6 @@ exports.Prisma.User_roles_mappingScalarFieldEnum = {
   user_id: 'user_id',
   role_id: 'role_id',
   assigned_by: 'assigned_by',
-  assigned_at: 'assigned_at',
   is_active: 'is_active',
   expires_at: 'expires_at',
   created_at: 'created_at',
@@ -153,54 +153,54 @@ exports.Prisma.User_roles_mappingScalarFieldEnum = {
 exports.Prisma.MandalsScalarFieldEnum = {
   id: 'id',
   label_english: 'label_english',
-  label_telugu: 'label_telugu',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
 exports.Prisma.MembersScalarFieldEnum = {
   id: 'id',
-  full_name_english: 'full_name_english',
+  first_name: 'first_name',
+  last_name: 'last_name',
   village_id: 'village_id',
   house_number: 'house_number',
   phone_number: 'phone_number',
   husband_or_father_name: 'husband_or_father_name',
+  aadhar_number: 'aadhar_number',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
 
 exports.Prisma.TransactionsScalarFieldEnum = {
   id: 'id',
-  supervised_by: 'supervised_by',
-  member: 'member',
+  supervisor_id: 'supervisor_id',
+  member_id: 'member_id',
+  transaction_type_id: 'transaction_type_id',
   amount: 'amount',
   comments: 'comments',
   transaction_date: 'transaction_date',
   receipt_number: 'receipt_number',
+  is_archived: 'is_archived',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  transaction_type_id: 'transaction_type_id'
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.VillagesScalarFieldEnum = {
   id: 'id',
   label_english: 'label_english',
-  label_telugu: 'label_telugu',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  mandal: 'mandal'
+  mandal_id: 'mandal_id'
 };
 
 exports.Prisma.Transaction_typesScalarFieldEnum = {
   id: 'id',
   name: 'name',
   label_english: 'label_english',
-  label_telugu: 'label_telugu',
   description: 'description',
   is_active: 'is_active',
+  debit_or_credit: 'debit_or_credit',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  parent_id: 'parent_id'
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.EndpointaccessScalarFieldEnum = {
@@ -210,7 +210,75 @@ exports.Prisma.EndpointaccessScalarFieldEnum = {
   viewer: 'viewer',
   contributor: 'contributor',
   admin: 'admin',
-  created_time: 'created_time'
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Account_typesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  label_english: 'label_english',
+  description: 'description',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.AccountsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  account_number: 'account_number',
+  balance: 'balance',
+  account_type_id: 'account_type_id',
+  description: 'description',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.I18n_labelsScalarFieldEnum = {
+  id: 'id',
+  entity_table: 'entity_table',
+  entity_id: 'entity_id',
+  field: 'field',
+  language_code: 'language_code',
+  text: 'text',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Members_accounts_onlinkScalarFieldEnum = {
+  id: 'id',
+  member_id: 'member_id',
+  account_id: 'account_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Transaction_sub_typesScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  label_english: 'label_english',
+  description: 'description',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Transaction_types_sub_types_linkScalarFieldEnum = {
+  id: 'id',
+  type_id: 'type_id',
+  sub_type_id: 'sub_type_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Villages_accounts_onlinkScalarFieldEnum = {
+  id: 'id',
+  village_id: 'village_id',
+  account_id: 'account_id',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -227,7 +295,10 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.credit_debit_type = exports.$Enums.credit_debit_type = {
+  credit: 'credit',
+  debit: 'debit'
+};
 
 exports.Prisma.ModelName = {
   users: 'users',
@@ -238,7 +309,14 @@ exports.Prisma.ModelName = {
   transactions: 'transactions',
   villages: 'villages',
   transaction_types: 'transaction_types',
-  endpointaccess: 'endpointaccess'
+  endpointaccess: 'endpointaccess',
+  account_types: 'account_types',
+  accounts: 'accounts',
+  i18n_labels: 'i18n_labels',
+  members_accounts_onlink: 'members_accounts_onlink',
+  transaction_sub_types: 'transaction_sub_types',
+  transaction_types_sub_types_link: 'transaction_types_sub_types_link',
+  villages_accounts_onlink: 'villages_accounts_onlink'
 };
 
 /**
