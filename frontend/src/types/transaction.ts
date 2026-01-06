@@ -14,11 +14,14 @@ export interface TransactionFormData {
 }
 
 export interface CreateTransactionRequest {
-  supervised_by: string; // UUID of supervisor
-  member: string; // UUID of member (customer)
+  supervisor_id: string; // UUID of supervisor
+  member_id: string; // UUID of member (customer)
+  account_id: string; // UUID of account
   amount: number; // Integer amount in database
+  transaction_date?: string; // ISO datetime string, optional (defaults to now)
   comments: string | null;
   transaction_type_id: string; // UUID of transaction type (points to deepest level)
+  receipt_number?: string; // Optional receipt number
   // created_at and updated_at are handled by database
 }
 
