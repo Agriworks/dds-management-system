@@ -159,8 +159,8 @@ exports.Prisma.MandalsScalarFieldEnum = {
 
 exports.Prisma.MembersScalarFieldEnum = {
   id: 'id',
-  first_name: 'first_name',
-  last_name: 'last_name',
+  given_name: 'given_name',
+  family_name: 'family_name',
   village_id: 'village_id',
   house_number: 'house_number',
   phone_number: 'phone_number',
@@ -170,11 +170,22 @@ exports.Prisma.MembersScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.Member_name_labelsScalarFieldEnum = {
+  id: 'id',
+  member_id: 'member_id',
+  language_code: 'language_code',
+  given_name: 'given_name',
+  family_name: 'family_name',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.TransactionsScalarFieldEnum = {
   id: 'id',
   supervisor_id: 'supervisor_id',
   member_id: 'member_id',
   transaction_type_id: 'transaction_type_id',
+  account_id: 'account_id',
   amount: 'amount',
   comments: 'comments',
   transaction_date: 'transaction_date',
@@ -199,6 +210,7 @@ exports.Prisma.Transaction_typesScalarFieldEnum = {
   description: 'description',
   is_active: 'is_active',
   debit_or_credit: 'debit_or_credit',
+  parent_id: 'parent_id',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -255,24 +267,6 @@ exports.Prisma.Members_accounts_onlinkScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
-exports.Prisma.Transaction_sub_typesScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  label_english: 'label_english',
-  description: 'description',
-  is_active: 'is_active',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
-exports.Prisma.Transaction_types_sub_types_linkScalarFieldEnum = {
-  id: 'id',
-  type_id: 'type_id',
-  sub_type_id: 'sub_type_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.Villages_accounts_onlinkScalarFieldEnum = {
   id: 'id',
   village_id: 'village_id',
@@ -306,6 +300,7 @@ exports.Prisma.ModelName = {
   user_roles_mapping: 'user_roles_mapping',
   mandals: 'mandals',
   members: 'members',
+  member_name_labels: 'member_name_labels',
   transactions: 'transactions',
   villages: 'villages',
   transaction_types: 'transaction_types',
@@ -314,8 +309,6 @@ exports.Prisma.ModelName = {
   accounts: 'accounts',
   i18n_labels: 'i18n_labels',
   members_accounts_onlink: 'members_accounts_onlink',
-  transaction_sub_types: 'transaction_sub_types',
-  transaction_types_sub_types_link: 'transaction_types_sub_types_link',
   villages_accounts_onlink: 'villages_accounts_onlink'
 };
 
