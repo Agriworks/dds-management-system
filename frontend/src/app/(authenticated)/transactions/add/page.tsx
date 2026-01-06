@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import { MandalDropdown } from "./new-transaction-form/mandals-dropdown";
 import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
+import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
 import { useState } from "react";
 import { Loader2, CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -45,6 +46,7 @@ const formSchema = z
     mandal: z.string().min(1, { message: "Please select a mandal" }),
     village: z.string().min(1, { message: "Please select a village" }),
     customer: z.string().min(1, { message: "Please select a customer" }),
+    accountId: z.string().min(1, { message: "Please select an account" }),
     transactionDate: z.date({ message: "Please select a transaction date" }),
     amount: z
       .string()
@@ -94,6 +96,7 @@ export default function AddTransactionForm() {
   const [subtypes, setSubtypes] = useState<TransactionType[]>([]);
   const [childSubtypes, setChildSubtypes] = useState<TransactionType[]>([]);
   const [loadingTypes, setLoadingTypes] = useState<boolean>(false);
+  
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -101,6 +104,7 @@ export default function AddTransactionForm() {
       mandal: "",
       village: "",
       customer: "",
+      accountId: "",
       amount: "",
       transactionType: "",
       transactionTypeId: "",
@@ -135,6 +139,8 @@ export default function AddTransactionForm() {
     };
     loadMainTypes();
   }, []);
+
+  // account types are loaded inside the dropdown component
 
   // Reset subtypes when transaction type changes
   useEffect(() => {
@@ -224,16 +230,30 @@ export default function AddTransactionForm() {
 
       const supervisorId = session.user.id;
 
-      // Use the deepest subtype (child subtype if available, otherwise parent subtype, otherwise main type)
+      // CRITICAL: Always use the deepest leaf subtype (no children)
+      // Transactions must store leaf types only, never parent types
+      // Priority: childSubtypeId > transactionSubtypeId > transactionTypeId
+      // Only use transactionTypeId if it has no subtypes (it's already a leaf)
       const finalTypeId =
         values.childSubtypeId ||
         values.transactionSubtypeId ||
         values.transactionTypeId;
 
+      if (!finalTypeId) {
+        theToast.toast({
+          title: "Error",
+          description: "Please select a transaction type.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
+
       // Format the data for API submission
       const transactionData = {
-        supervised_by: supervisorId,
-        member: values.customer,
+        supervisor_id: supervisorId,
+        member_id: values.customer,
+        account_id: values.accountId,
         amount: parseInt(values.amount, 10),
         transaction_date: values.transactionDate.toISOString(),
         comments: values.comments || null,
@@ -300,9 +320,10 @@ export default function AddTransactionForm() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset village and customer when mandal changes
+                              // Reset village, customer, and account when mandal changes
                               form.setValue("village", "");
                               form.setValue("customer", "");
+                              form.setValue("accountId", "");
                             }}
                           />
                         </FormControl>
@@ -328,8 +349,9 @@ export default function AddTransactionForm() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset customer when village changes
+                              // Reset customer and account when village changes
                               form.setValue("customer", "");
+                              form.setValue("accountId", "");
                             }}
                             disabled={!form.watch("mandal")}
                           />
@@ -355,9 +377,42 @@ export default function AddTransactionForm() {
                             mandalId={form.watch("mandal")}
                             villageId={form.watch("village")}
                             value={field.value}
-                            onChange={field.onChange}
+                            onChange={(val) => {
+                              field.onChange(val);
+                              // Reset account when customer changes
+                              form.setValue("accountId", "");
+                            }}
                             disabled={
                               !form.watch("mandal") || !form.watch("village")
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="accountId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Account (ఖాతా)
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <AccountsDropdown
+                            memberId={form.watch("customer")}
+                            villageId={form.watch("village")}
+                            value={field.value}
+                            onChange={(accountId) => {
+                              field.onChange(accountId);
+                            }}
+                            disabled={
+                              !form.watch("customer") || !form.watch("village")
                             }
                           />
                         </FormControl>
