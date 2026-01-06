@@ -161,7 +161,7 @@ table "user_roles_mapping" {
   foreign_key "fk_user_roles_assigned_by" {
     columns = [column.assigned_by]
     ref_columns = [table.users.column.id]
-    on_delete = "SET NULL"
+    on_delete = SET_NULL
   }
 
   primary_key {
@@ -255,12 +255,12 @@ table "members" {
     default = sql("gen_random_uuid()")
   }
 
-  column "first_name" {
+  column "given_name" {
     type = text
     null = false
   }
 
-  column "last_name" {
+  column "family_name" {
     type = text
     null = false
   }
@@ -313,6 +313,62 @@ table "members" {
   }
 }
 
+table "member_name_labels" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+    default = sql("gen_random_uuid()")
+  }
+
+  column "member_id" {
+    type = uuid
+    null = false
+  }
+
+  column "language_code" {
+    type = varchar(10)
+    null = false
+  }
+
+  column "given_name" {
+    type = text
+    null = false
+  }
+
+  column "family_name" {
+    type = text
+    null = false
+  }
+
+  column "created_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  column "updated_at" {
+    type = timestamp
+    null = false
+    default = sql("CURRENT_TIMESTAMP")
+  }
+
+  foreign_key "fk_member_name_labels_member" {
+    columns = [column.member_id]
+    ref_columns = [table.members.column.id]
+    on_delete = "CASCADE"
+  }
+
+  unique "member_name_labels_unique" {
+    columns = [column.member_id, column.language_code]
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
 table "transactions" {
   schema = schema.public
 
@@ -333,6 +389,11 @@ table "transactions" {
   }
 
   column "transaction_type_id" {
+    type = uuid
+    null = false
+  }
+
+  column "account_id" {
     type = uuid
     null = false
   }
@@ -393,106 +454,9 @@ table "transactions" {
     on_delete = "RESTRICT"
   }
 
-  primary_key {
-    columns = [column.id]
-  }
-}
-
-table "transaction_sub_types" {
-  schema = schema.public
-
-  column "id" {
-    type = uuid
-    null = false
-    default = sql("gen_random_uuid()")
-  }
-
-  column "name" {
-    type = varchar(255)
-    null = false
-  }
-
-  unique "transaction_sub_types_name_unique" {
-    columns = [column.name]
-  }
-
-  column "label_english" {
-    type = varchar(255)
-    null = false
-  }
-
-  column "description" {
-    type = text
-    null = true
-  }
-
-  column "is_active" {
-    type = boolean
-    null = false
-    default = true
-  }
-
-  column "created_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  column "updated_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  primary_key {
-    columns = [column.id]
-  }
-}
-
-table "transaction_types_sub_types_link" {
-  schema = schema.public
-
-  column "id" {
-    type = uuid
-    null = false
-    default = sql("gen_random_uuid()")
-  }
-
-  column "type_id" {
-    type = uuid
-    null = false
-  }
-
-  column "sub_type_id" {
-    type = uuid
-    null = false
-  }
-
-  unique "type_subtype_unique" {
-    columns = [column.type_id, column.sub_type_id]
-  }
-
-  column "created_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  column "updated_at" {
-    type = timestamp
-    null = false
-    default = sql("CURRENT_TIMESTAMP")
-  }
-
-  foreign_key "fk_type_subtypes_type" {
-    columns = [column.type_id]
-    ref_columns = [table.transaction_types.column.id]
-    on_delete = "RESTRICT"
-  }
-
-  foreign_key "fk_type_subtypes_subtype" {
-    columns = [column.sub_type_id]
-    ref_columns = [table.transaction_sub_types.column.id]
+  foreign_key "fk_transactions_account" {
+    columns = [column.account_id]
+    ref_columns = [table.accounts.column.id]
     on_delete = "RESTRICT"
   }
 
@@ -500,6 +464,7 @@ table "transaction_types_sub_types_link" {
     columns = [column.id]
   }
 }
+
 
 table "account_types" {
   schema = schema.public
@@ -759,6 +724,11 @@ table "transaction_types" {
     null = false
   }
 
+  column "parent_id" {
+    type = uuid
+    null = true
+  }
+
   column "created_at" {
     type = timestamp
     null = false
@@ -769,6 +739,12 @@ table "transaction_types" {
     type = timestamp
     null = false
     default = sql("CURRENT_TIMESTAMP")
+  }
+
+  foreign_key "fk_transaction_types_parent" {
+    columns = [column.parent_id]
+    ref_columns = [column.id]
+    on_delete = "RESTRICT"
   }
 
   primary_key {
