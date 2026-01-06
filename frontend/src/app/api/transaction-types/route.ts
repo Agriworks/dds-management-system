@@ -4,19 +4,16 @@ import { z } from "zod";
 
 const prisma = new PrismaClient();
 
-// Validation schema for creating transaction types
+// Validation schema for creating transaction types (aligned with DB schema)
 const createTransactionTypeSchema = z.object({
   name: z.string().min(1, "Name is required").max(255, "Name too long"),
   label_english: z
     .string()
     .min(1, "English label is required")
     .max(255, "English label too long"),
-  label_telugu: z
-    .string()
-    .min(1, "Telugu label is required")
-    .max(255, "Telugu label too long"),
+  // credit_debit_type enum in DB: 'credit' | 'debit'
+  debit_or_credit: z.enum(["credit", "debit"]),
   description: z.string().optional(),
-  parent_id: z.string().uuid().optional().nullable(),
 });
 
 // Get main transaction types (Level 1 - no parent_id)
@@ -24,27 +21,48 @@ export async function GET() {
   try {
     const mainTypes = await prisma.transaction_types.findMany({
       where: {
-        parent_id: null,
         is_active: true,
+        parent_id: null,
       },
       select: {
         id: true,
         name: true,
         label_english: true,
-        label_telugu: true,
         description: true,
-        parent_id: true,
+        debit_or_credit: true,
       },
       orderBy: {
         label_english: "asc",
       },
     });
 
+    // Fetch Telugu labels from i18n_labels for these transaction types
+    const transactionTypeIds = mainTypes.map((t) => t.id);
+    const teLabels = transactionTypeIds.length
+      ? await prisma.i18n_labels.findMany({
+          where: {
+            entity_table: "transaction_types",
+            field: "label_telugu",
+            language_code: "te",
+            entity_id: { in: transactionTypeIds },
+          },
+          select: { entity_id: true, text: true },
+        })
+      : [];
+
+    const teById = new Map(teLabels.map((l) => [l.entity_id, l.text]));
+
+    // Merge Telugu labels into the response
+    const mainTypesWithTelugu = mainTypes.map((type) => ({
+      ...type,
+      label_telugu: teById.get(type.id) ?? null,
+    }));
+
     return NextResponse.json({
       success: true,
       data: {
-        mainTypes,
-        count: mainTypes.length,
+        mainTypes: mainTypesWithTelugu,
+        count: mainTypesWithTelugu.length,
       },
       timestamp: new Date().toISOString(),
     });
@@ -91,44 +109,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate parent_id if provided
-    if (validatedData.parent_id) {
-      const parentExists = await prisma.transaction_types.findUnique({
-        where: { id: validatedData.parent_id },
-      });
-
-      if (!parentExists) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: {
-              code: "INVALID_PARENT",
-              message: "Parent transaction type not found",
-            },
-            timestamp: new Date().toISOString(),
-          },
-          { status: 400 },
-        );
-      }
-    }
-
     // Create the transaction type
     const newType = await prisma.transaction_types.create({
       data: {
         name: validatedData.name,
         label_english: validatedData.label_english,
-        label_telugu: validatedData.label_telugu,
         description: validatedData.description || null,
-        parent_id: validatedData.parent_id || null,
+        debit_or_credit: validatedData.debit_or_credit,
         is_active: true,
       },
       select: {
         id: true,
         name: true,
         label_english: true,
-        label_telugu: true,
         description: true,
-        parent_id: true,
+        debit_or_credit: true,
         is_active: true,
         created_at: true,
         updated_at: true,

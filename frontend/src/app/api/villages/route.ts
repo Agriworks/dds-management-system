@@ -40,12 +40,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Fetch villages from the database
     const villages = await prisma.villages.findMany({
       where: {
-        mandal: mandalId!,
+        mandal_id: mandalId!,
       },
       select: {
         id: true,
         label_english: true,
-        label_telugu: true,
         created_at: true,
         updated_at: true,
       },
@@ -54,11 +53,27 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       },
     });
 
+    // Fetch Telugu labels for villages from i18n_labels and merge by entity_id
+    const villageIds = villages.map((v) => v.id);
+    const teVillageLabels = villageIds.length
+      ? await prisma.i18n_labels.findMany({
+          where: {
+            entity_table: "villages",
+            field: "label_telugu",
+            language_code: "te",
+            entity_id: { in: villageIds },
+          },
+          select: { entity_id: true, text: true },
+        })
+      : [];
+
+    const teVillageById = new Map(teVillageLabels.map((l) => [l.entity_id, l.text]));
+
     // Transform the data to match the API response format
     const transformedVillages = villages.map((village) => ({
       id: village.id,
       label_english: village.label_english,
-      label_telugu: village.label_telugu,
+      label_telugu: teVillageById.get(village.id) ?? null,
       createdAt: village.created_at.toISOString(),
       updatedAt: village.updated_at.toISOString(),
     }));

@@ -55,7 +55,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const village = await prisma.villages.findFirst({
       where: {
         id: villageId!,
-        mandal: mandalId!,
+        mandal_id: mandalId!,
       },
     });
 
@@ -71,17 +71,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const searchConditions = search
       ? {
           OR: [
-            {
-              full_name_english: {
-                contains: search,
-                mode: "insensitive" as const,
-              },
-            },
-            {
-              phone_number: {
-                contains: search,
-              },
-            },
+            { given_name: { contains: search, mode: "insensitive" as const } },
+            { family_name: { contains: search, mode: "insensitive" as const } },
+            { phone_number: { contains: search } },
             {
               husband_or_father_name: {
                 contains: search,
@@ -101,7 +93,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         },
         select: {
           id: true,
-          full_name_english: true,
+          given_name: true,
+          family_name: true,
           village_id: true,
           phone_number: true,
           house_number: true,
@@ -110,7 +103,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           updated_at: true,
         },
         orderBy: {
-          full_name_english: "asc",
+          given_name: "asc",
         },
         take: limit,
         skip: offset,
@@ -126,7 +119,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     // Transform the data to match the API response format
     const transformedCustomers = customers.map((customer) => ({
       id: customer.id,
-      full_name_english: customer.full_name_english,
+      full_name_english: `${customer.given_name} ${customer.family_name}`.trim(),
       village_id: customer.village_id,
       house_number: customer.house_number,
       phone_number: customer.phone_number,
