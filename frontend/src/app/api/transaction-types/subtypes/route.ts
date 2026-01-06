@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
     // Fetch subtypes from transaction_types where parent_id = parentId
     const subtypes = await prisma.transaction_types.findMany({
       where: {
-        // @ts-expect-error - parent_id field exists in database but TypeScript types may need regeneration
         parent_id: parentId,
         is_active: true,
       },
@@ -35,7 +34,6 @@ export async function GET(request: NextRequest) {
         name: true,
         label_english: true,
         description: true,
-        // @ts-expect-error - parent_id field exists in database but TypeScript types may need regeneration
         parent_id: true,
       },
       orderBy: {
