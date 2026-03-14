@@ -13,7 +13,6 @@ export async function GET(): Promise<NextResponse> {
       select: {
         id: true,
         label_english: true,
-        label_telugu: true,
         created_at: true,
         updated_at: true,
       },
@@ -22,11 +21,27 @@ export async function GET(): Promise<NextResponse> {
       },
     });
 
+    // Fetch Telugu labels from i18n_labels for these mandals
+    const mandalIds = mandals.map((m) => m.id);
+    const teLabels = mandalIds.length
+      ? await prisma.i18n_labels.findMany({
+          where: {
+            entity_table: "mandals",
+            field: "label_telugu",
+            language_code: "te",
+            entity_id: { in: mandalIds },
+          },
+          select: { entity_id: true, text: true },
+        })
+      : [];
+
+    const teById = new Map(teLabels.map((l) => [l.entity_id, l.text]));
+
     // Transform the data to match the API response format
     const transformedMandals = mandals.map((mandal) => ({
       id: mandal.id,
       label_english: mandal.label_english,
-      label_telugu: mandal.label_telugu,
+      label_telugu: teById.get(mandal.id) ?? null,
       createdAt: mandal.created_at.toISOString(),
       updatedAt: mandal.updated_at.toISOString(),
     }));

@@ -11,7 +11,8 @@ export async function GET(): Promise<NextResponse> {
     const users = await prisma.users.findMany({
       select: {
         id: true,
-        name: true,
+        first_name: true,
+        last_name: true,
         email: true,
         created_at: true,
         updated_at: true,
@@ -29,14 +30,14 @@ export async function GET(): Promise<NextResponse> {
         },
       },
       orderBy: {
-        name: "asc",
+        first_name: "asc",
       },
     });
 
     // Transform the data to match the API response format
     const transformedUsers = users.map((user) => ({
       id: user.id,
-      name: user.name,
+      name: `${user.first_name} ${user.last_name}`.trim(),
       email: user.email,
       roles: user.user_roles.map((ur) => ur.role.name),
       created_at: user.created_at.toISOString(),

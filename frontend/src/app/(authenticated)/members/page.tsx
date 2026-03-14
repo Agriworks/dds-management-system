@@ -22,7 +22,10 @@ import { VillageDropdown } from "@/app/(authenticated)/transactions/add/new-tran
 import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  full_name_english: z.string().min(1, { message: "Full name is required" }),
+  given_name: z.string().min(1, { message: "Given name is required" }),
+  family_name: z.string().min(1, { message: "Family name is required" }),
+  given_name_telugu: z.string().min(1, { message: "Given name in Telugu is required" }),
+  family_name_telugu: z.string().min(1, { message: "Family name in Telugu is required" }),
   mandal: z.string().min(1, { message: "Please select a mandal" }),
   village: z.string().min(1, { message: "Please select a village" }),
   house_number: z.string().min(1, { message: "House number is required" }),
@@ -35,6 +38,12 @@ const formSchema = z.object({
   husband_or_father_name: z
     .string()
     .min(1, { message: "Husband/Father name is required" }),
+  aadhar_number: z
+    .string()
+    .min(1, { message: "Aadhar number is required" })
+    .refine((val) => /^[0-9]{12}$/.test(val.replace(/\D/g, "")), {
+      message: "Please enter a valid 12-digit Aadhar number",
+    }),
 });
 
 export default function AddMemberPage() {
@@ -44,12 +53,16 @@ export default function AddMemberPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      full_name_english: "",
+      given_name: "",
+      family_name: "",
+      given_name_telugu: "",
+      family_name_telugu: "",
       mandal: "",
       village: "",
       house_number: "",
       phone_number: "",
       husband_or_father_name: "",
+      aadhar_number: "",
     },
   });
 
@@ -64,11 +77,15 @@ export default function AddMemberPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          full_name_english: values.full_name_english.trim(),
+          given_name: values.given_name.trim(),
+          family_name: values.family_name.trim(),
+          given_name_telugu: values.given_name_telugu.trim(),
+          family_name_telugu: values.family_name_telugu.trim(),
           village_id: values.village,
           house_number: values.house_number.trim(),
           phone_number: values.phone_number.replace(/\D/g, ""),
           husband_or_father_name: values.husband_or_father_name.trim(),
+          aadhar_number: values.aadhar_number.replace(/\D/g, ""),
         }),
       });
 
@@ -87,8 +104,21 @@ export default function AddMemberPage() {
             variant: "destructive",
             duration: 5000,
           });
-          // Clear the form
-          form.reset();
+          return;
+        }
+
+        // Check if it's an Aadhar number conflict
+        if (
+          response.status === 409 &&
+          errorData.error?.message?.includes("Aadhar number already exists")
+        ) {
+          theToast.toast({
+            title: "Aadhar number already exists",
+            description:
+              "A member with this Aadhar number already exists. Please use a different Aadhar number.",
+            variant: "destructive",
+            duration: 5000,
+          });
           return;
         }
 
@@ -141,17 +171,86 @@ export default function AddMemberPage() {
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="full_name_english"
+                    name="given_name"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Full Name (English) (పూర్తి పేరు)
+                          Given Name (English) (ఇచ్చిన పేరు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter full name in English"
+                            placeholder="Enter given name in English"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="family_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Family Name (English) (కుటుంబ పేరు)
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter family name in English"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="given_name_telugu"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Given Name (Telugu) (ఇచ్చిన పేరు - తెలుగు)
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter given name in Telugu"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="family_name_telugu"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Family Name (Telugu) (కుటుంబ పేరు - తెలుగు)
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter family name in Telugu"
                             {...field}
                           />
                         </FormControl>
@@ -199,6 +298,30 @@ export default function AddMemberPage() {
                             type="tel"
                             placeholder="Enter 10-digit phone number"
                             maxLength={10}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="aadhar_number"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Aadhar Number (ఆధార్ నంబర్)
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter 12-digit Aadhar number"
+                            maxLength={12}
                             {...field}
                           />
                         </FormControl>

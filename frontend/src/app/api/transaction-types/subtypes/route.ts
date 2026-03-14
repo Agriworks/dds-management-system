@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Fetch subtypes from transaction_types where parent_id = parentId
     const subtypes = await prisma.transaction_types.findMany({
       where: {
         parent_id: parentId,
@@ -32,7 +33,6 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
         label_english: true,
-        label_telugu: true,
         description: true,
         parent_id: true,
       },
@@ -41,12 +41,34 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    // Fetch Telugu labels from i18n_labels for these subtypes
+    const subTypeIds = subtypes.map((s) => s.id);
+    const teLabels = subTypeIds.length
+      ? await prisma.i18n_labels.findMany({
+          where: {
+            entity_table: "transaction_types",
+            field: "label_telugu",
+            language_code: "te",
+            entity_id: { in: subTypeIds },
+          },
+          select: { entity_id: true, text: true },
+        })
+      : [];
+
+    const teById = new Map(teLabels.map((l) => [l.entity_id, l.text]));
+
+    // Merge Telugu labels into the response
+    const subtypesWithTelugu = subtypes.map((item) => ({
+      ...item,
+      label_telugu: teById.get(item.id) ?? null,
+    }));
+
     return NextResponse.json({
       success: true,
       data: {
-        subtypes,
+        subtypes: subtypesWithTelugu,
         parentId,
-        count: subtypes.length,
+        count: subtypesWithTelugu.length,
       },
       timestamp: new Date().toISOString(),
     });

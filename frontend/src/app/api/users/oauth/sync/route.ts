@@ -58,10 +58,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     const newUser = await prisma.users.create({
       data: {
         id: uuidv4(),
-        name:
-          payload.first_name && payload.last_name
-            ? `${payload.first_name} ${payload.last_name}`.trim()
-            : payload.first_name || payload.last_name || "Unknown User",
+        first_name: payload.first_name || "Unknown",
+        last_name: payload.last_name || "User",
         email: payload.email,
         external_id: externalId,
       },
