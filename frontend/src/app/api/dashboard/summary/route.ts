@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
 import {
   createErrorResponse,
@@ -23,7 +23,7 @@ type DashboardSummaryResponse = {
   };
 };
 
-export async function GET(_request: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   try {
     const villages = await prisma.villages.findMany({
       select: {
