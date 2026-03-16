@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { createErrorResponse, createSuccessResponse } from "@/lib/api-utils";
+import { prisma } from "../../../../lib/prisma";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../../../../lib/api-utils";
 
 type VillageSummary = {
   villageId: string;
@@ -41,6 +44,7 @@ export async function GET(_request: NextRequest): Promise<NextResponse> {
           prisma.transactions.aggregate({
             _sum: { amount: true },
             where: {
+              is_archived: false,
               accounts: {
                 villages_accounts_onlink: {
                   some: {
@@ -65,6 +69,7 @@ export async function GET(_request: NextRequest): Promise<NextResponse> {
           prisma.transactions.aggregate({
             _sum: { amount: true },
             where: {
+              is_archived: false,
               accounts: {
                 villages_accounts_onlink: {
                   some: {
@@ -108,10 +113,7 @@ export async function GET(_request: NextRequest): Promise<NextResponse> {
           (acc, v) => acc + v.totalDeposits,
           0,
         ),
-        totalLoans: summaries.reduce(
-          (acc, v) => acc + v.totalLoans,
-          0,
-        ),
+        totalLoans: summaries.reduce((acc, v) => acc + v.totalLoans, 0),
       },
     };
 
