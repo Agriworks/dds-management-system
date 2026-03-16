@@ -33,7 +33,7 @@ import {
   TransactionTypeOption,
 } from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
-import { columns } from "./columns";
+import { getTransactionColumns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
 
 const formSchema = z.object({
@@ -419,7 +419,7 @@ export default function TransactionsPage() {
           </div>
           <div className="overflow-x-auto">
             <DataTable
-              columns={columns}
+              columns={getTransactionColumns()}
               data={transactions}
               pageCount={Math.ceil(pagination.total / pagination.limit)}
               pageIndex={Math.floor(pagination.offset / pagination.limit)}

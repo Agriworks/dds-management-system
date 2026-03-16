@@ -32,6 +32,7 @@ export interface Transaction {
   amount: number;
   comments: string | null;
   transaction_type_id: string;
+  is_archived?: boolean;
   created_at: string;
   updated_at: string;
   // Type information for display

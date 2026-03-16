@@ -31,7 +31,8 @@ export async function middleware(req: NextRequest) {
     !pathname.startsWith("/transactions") &&
     !pathname.startsWith("/members") &&
     !pathname.startsWith("/customers") &&
-    !pathname.startsWith("/transaction_types")
+    !pathname.startsWith("/transaction_types") &&
+    !pathname.startsWith("/accounts")
   ) {
     return NextResponse.next();
   }
@@ -87,5 +88,6 @@ export const config = {
     "/members/:path*",
     "/customers/:path*",
     "/transaction_types/:path*",
+    "/accounts/:path*",
   ],
 };
