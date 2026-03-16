@@ -295,7 +295,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Jitendra\\Documents\\Aegion Dynamics\\dds-management-system\\frontend\\src\\generated\\prisma",
+      "value": "/workspaces/dds-management-system/frontend/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -304,7 +304,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -313,7 +313,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Jitendra\\Documents\\Aegion Dynamics\\dds-management-system\\frontend\\prisma\\schema.prisma",
+    "sourceFilePath": "/workspaces/dds-management-system/frontend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -376,8 +376,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "src/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-rhel-openssl-1.0.x.so.node");
