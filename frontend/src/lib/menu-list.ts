@@ -53,6 +53,11 @@ export function getMenuList(): Group[] {
           ],
         },
         {
+          href: "/accounts",
+          label: "Accounts",
+          icon: CreditCard,
+        },
+        {
           href: "/customers",
           label: "Roles Management",
           icon: Users,
