@@ -302,7 +302,7 @@ export default function AddTransactionForm() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Customer Information</CardTitle>
+                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -312,7 +312,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Mandal (మండల్)
+                          Mandal (మండలం)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -340,7 +340,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Village (విలేజ్)
+                          Village (ఊరు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -369,7 +369,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Member (మెంబర్)
+                          Member (సంఘం సభ్యులు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -428,10 +428,10 @@ export default function AddTransactionForm() {
                     name="comments"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Comments (కామెంట్స్)</FormLabel>
+                        <FormLabel>Comments (ఇతర వివరములు)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Any additional comments"
+                            placeholder="ఇతర వివరములు"
                             {...field}
                             value={field.value || ""}
                           />

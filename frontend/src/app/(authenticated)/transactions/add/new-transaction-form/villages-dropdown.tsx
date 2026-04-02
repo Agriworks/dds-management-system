@@ -64,9 +64,9 @@ export function VillageDropdown({
             ) : error ? (
               error
             ) : !mandalId ? (
-              "Select a mandal first"
+              "ముందు మండలం ఎంచుకోండి"
             ) : (
-              "Select a village"
+              "ఊరు ఎంచుకోండి"
             )
           }
         />
@@ -82,7 +82,7 @@ export function VillageDropdown({
           </div>
         ) : villages.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            No villages found
+            ఊరు కనుగొనబడలేదు
           </div>
         ) : (
           villages.map((village) => (

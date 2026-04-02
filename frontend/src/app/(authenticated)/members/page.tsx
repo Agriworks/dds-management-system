@@ -165,7 +165,7 @@ export default function AddMemberPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
+                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">

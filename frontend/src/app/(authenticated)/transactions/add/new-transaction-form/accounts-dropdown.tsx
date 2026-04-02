@@ -76,7 +76,14 @@ export function AccountsDropdown({
       value={value || undefined}
       disabled={disabled || !memberId || !villageId || loading}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger
+        className={
+          "w-full min-w-0 max-w-full overflow-hidden " +
+          "[&_[data-slot=select-value]]:!block [&_[data-slot=select-value]]:min-w-0 " +
+          "[&_[data-slot=select-value]]:flex-1 [&_[data-slot=select-value]]:truncate " +
+          "[&_[data-slot=select-value]]:text-left"
+        }
+      >
         <SelectValue
           placeholder={
             !memberId || !villageId
@@ -110,14 +117,18 @@ export function AccountsDropdown({
             No accounts found for this member
           </div>
         ) : (
-          accounts.map((account) => (
-            <SelectItem key={account.id} value={account.id}>
-              {account.name} ({account.account_number})
-              {account.account_type_label_english
+          accounts.map((account) => {
+            const label =
+              `(${account.account_number})` +
+              (account.account_type_label_english
                 ? ` - ${account.account_type_label_english}`
-                : ""}
-            </SelectItem>
-          ))
+                : "");
+            return (
+              <SelectItem key={account.id} value={account.id} title={label}>
+                <span className="block min-w-0 max-w-full truncate">{label}</span>
+              </SelectItem>
+            );
+          })
         )}
       </SelectContent>
     </Select>

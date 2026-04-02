@@ -87,11 +87,11 @@ export function CustomerDropdown({
       disabled={disabled || !mandalId || !villageId}
       placeholder={
         !mandalId || !villageId
-          ? "Select a mandal and village first"
-          : "Select a customer"
+          ? "ముందు మండలం మరియు ఊరు ఎంచుకోండి"
+          : "సంఘం సభ్యుని ఎంచుకోండి"
       }
-      searchPlaceholder="Search customers by name or phone..."
-      emptyMessage="No customers found"
+      searchPlaceholder="సంఘం సభ్యుని పేరు లేదా ఫోను ద్వారా వెతకండి..."
+      emptyMessage="సంఘం సభ్యుని కనుగొనబడలేదు"
       loadingMessage="Loading customers..."
       errorMessage="Failed to load customers"
       options={options}
