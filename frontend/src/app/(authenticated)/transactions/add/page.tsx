@@ -29,16 +29,8 @@ import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
 import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
 import { useState } from "react";
-import { Loader2, CalendarIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 
 const formSchema = z
@@ -47,7 +39,6 @@ const formSchema = z
     village: z.string().min(1, { message: "Please select a village" }),
     customer: z.string().min(1, { message: "Please select a customer" }),
     accountId: z.string().min(1, { message: "Please select an account" }),
-    transactionDate: z.date({ message: "Please select a transaction date" }),
     amount: z
       .string()
       .min(1, { message: "Please enter an amount" })
@@ -82,7 +73,6 @@ export default function AddTransactionForm() {
   const { data: session } = useSession();
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
   // Backend-driven types
   type TransactionType = {
     id: string;
@@ -249,13 +239,20 @@ export default function AddTransactionForm() {
         return;
       }
 
+      const now = new Date();
+      const transactionDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+      );
+
       // Format the data for API submission
       const transactionData = {
         supervisor_id: supervisorId,
         member_id: values.customer,
         account_id: values.accountId,
         amount: parseInt(values.amount, 10),
-        transaction_date: values.transactionDate.toISOString(),
+        transaction_date: transactionDate.toISOString(),
         comments: values.comments || null,
         transaction_type_id: finalTypeId,
       };
@@ -452,65 +449,6 @@ export default function AddTransactionForm() {
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="transactionDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          ట్రాన్సాక్షన్ డేట్
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Popover
-                            open={calendarOpen}
-                            onOpenChange={setCalendarOpen}
-                          >
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full justify-start text-left font-normal h-10 px-3 py-2",
-                                  !field.value && "text-muted-foreground",
-                                )}
-                              >
-                                <span className="text-sm">
-                                  {field.value
-                                    ? format(new Date(field.value), "PPP")
-                                    : "Select transaction date"}
-                                </span>
-                                <CalendarIcon className="h-4 w-4 opacity-50 ml-auto" />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  field.value
-                                    ? new Date(field.value)
-                                    : undefined
-                                }
-                                onSelect={(date) => {
-                                  if (date) {
-                                    field.onChange(date);
-                                    setCalendarOpen(false);
-                                  }
-                                }}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
                     name="amount"
                     render={({ field }) => (
                       <FormItem>
@@ -521,7 +459,7 @@ export default function AddTransactionForm() {
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="Enter amount in rupees"
+                            placeholder="రూపాయల్లో అమౌంట్ ఇవ్వండి"
                             min="0"
                             step="1"
                             {...field}
@@ -563,7 +501,7 @@ export default function AddTransactionForm() {
                                 placeholder={
                                   loadingTypes
                                     ? "Loading transaction types..."
-                                    : "Select transaction type"
+                                    : "ట్రాన్సాక్షన్ టైప్ ఎంచుకోండి"
                                 }
                               />
                             </SelectTrigger>
