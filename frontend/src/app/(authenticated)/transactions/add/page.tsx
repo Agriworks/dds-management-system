@@ -51,23 +51,8 @@ const formSchema = z
     transactionTypeId: z
       .string()
       .min(1, { message: "Please select a transaction type" }),
-    transactionSubtype: z.string().optional(),
-    transactionSubtypeId: z.string().optional(),
-    childSubtype: z.string().optional(),
-    childSubtypeId: z.string().optional(),
     comments: z.string().nullable(),
-  })
-  .refine(
-    () => {
-      // If there are child subtypes available, child subtype is required
-      // This will be checked dynamically in the component
-      return true;
-    },
-    {
-      message: "Please select all required subtype details",
-      path: ["childSubtype"],
-    },
-  );
+  });
 
 export default function AddTransactionForm() {
   const { data: session } = useSession();
@@ -83,8 +68,6 @@ export default function AddTransactionForm() {
     description?: string;
   };
   const [mainTypes, setMainTypes] = useState<TransactionType[]>([]);
-  const [subtypes, setSubtypes] = useState<TransactionType[]>([]);
-  const [childSubtypes, setChildSubtypes] = useState<TransactionType[]>([]);
   const [loadingTypes, setLoadingTypes] = useState<boolean>(false);
   
 
@@ -98,17 +81,9 @@ export default function AddTransactionForm() {
       amount: "",
       transactionType: "",
       transactionTypeId: "",
-      transactionSubtype: "",
-      transactionSubtypeId: "",
-      childSubtype: undefined,
-      childSubtypeId: undefined,
       comments: null,
     },
   });
-
-  // Watch form values for dependent loading
-  const selectedTransactionType = form.watch("transactionType");
-  const selectedTransactionSubtype = form.watch("transactionSubtype");
 
   // Load main transaction types from backend
   useEffect(() => {
@@ -132,77 +107,6 @@ export default function AddTransactionForm() {
 
   // account types are loaded inside the dropdown component
 
-  // Reset subtypes when transaction type changes
-  useEffect(() => {
-    form.setValue("transactionSubtype", undefined);
-    form.setValue("transactionSubtypeId", undefined);
-    form.setValue("childSubtype", undefined);
-    form.setValue("childSubtypeId", undefined);
-    setSubtypes([]);
-    setChildSubtypes([]);
-  }, [selectedTransactionType, form]);
-
-  // When user selects a transaction type, fetch subtypes from backend
-  useEffect(() => {
-    const fetchTransactionSubtypes = async () => {
-      try {
-        const selectedType = mainTypes.find(
-          (t) => t.name === selectedTransactionType,
-        );
-        if (selectedType?.id) {
-          const subRes = await fetch(
-            `/api/transaction-types/subtypes?parentId=${selectedType.id}`,
-          );
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            const subs: TransactionType[] = subData?.data?.subtypes ?? [];
-            setSubtypes(subs);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch transaction subtypes", e);
-      }
-    };
-
-    if (selectedTransactionType && mainTypes.length > 0) {
-      fetchTransactionSubtypes();
-    }
-  }, [selectedTransactionType, mainTypes]);
-
-  // Reset child subtypes when parent subtype changes
-  useEffect(() => {
-    form.setValue("childSubtype", undefined);
-    form.setValue("childSubtypeId", undefined);
-    setChildSubtypes([]);
-  }, [selectedTransactionSubtype, form]);
-
-  // When user selects a transaction subtype, check if it has child subtypes
-  useEffect(() => {
-    const fetchChildSubtypes = async () => {
-      try {
-        const selectedSubtype = subtypes.find(
-          (s) => s.name === selectedTransactionSubtype,
-        );
-        if (selectedSubtype?.id) {
-          const subRes = await fetch(
-            `/api/transaction-types/subtypes?parentId=${selectedSubtype.id}`,
-          );
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            const childs: TransactionType[] = subData?.data?.subtypes ?? [];
-            setChildSubtypes(childs);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch child subtypes", e);
-      }
-    };
-
-    if (selectedTransactionSubtype && subtypes.length > 0) {
-      fetchChildSubtypes();
-    }
-  }, [selectedTransactionSubtype, subtypes]);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
@@ -220,25 +124,6 @@ export default function AddTransactionForm() {
 
       const supervisorId = session.user.id;
 
-      // CRITICAL: Always use the deepest leaf subtype (no children)
-      // Transactions must store leaf types only, never parent types
-      // Priority: childSubtypeId > transactionSubtypeId > transactionTypeId
-      // Only use transactionTypeId if it has no subtypes (it's already a leaf)
-      const finalTypeId =
-        values.childSubtypeId ||
-        values.transactionSubtypeId ||
-        values.transactionTypeId;
-
-      if (!finalTypeId) {
-        theToast.toast({
-          title: "Error",
-          description: "Please select a transaction type.",
-          variant: "destructive",
-          duration: 5000,
-        });
-        return;
-      }
-
       const now = new Date();
       const transactionDate = new Date(
         now.getFullYear(),
@@ -254,7 +139,7 @@ export default function AddTransactionForm() {
         amount: parseInt(values.amount, 10),
         transaction_date: transactionDate.toISOString(),
         comments: values.comments || null,
-        transaction_type_id: finalTypeId,
+        transaction_type_id: values.transactionTypeId,
       };
 
       console.log("Submitting transaction:", transactionData);
@@ -526,122 +411,6 @@ export default function AddTransactionForm() {
                     )}
                   />
                 </div>
-
-                {subtypes.length > 0 && (
-                  <div className="space-y-2">
-                    <FormField
-                      control={form.control}
-                      name="transactionSubtype"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Transaction Subtype (ట్రాన్సాక్షన్ సబ్‌టైప్)
-                            <span className="text-destructive">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={(value) => {
-                                const selectedSubtype = subtypes.find(
-                                  (s) => s.name === value,
-                                );
-                                field.onChange(value);
-                                form.setValue(
-                                  "transactionSubtypeId",
-                                  selectedSubtype?.id || "",
-                                );
-                              }}
-                              value={field.value || undefined}
-                              disabled={loadingTypes}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue
-                                  placeholder={
-                                    loadingTypes
-                                      ? "Loading subtypes..."
-                                      : "Select transaction subtype"
-                                  }
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {loadingTypes ? (
-                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
-                                    Loading...
-                                  </div>
-                                ) : (
-                                  subtypes.map((s) => (
-                                    <SelectItem key={s.id} value={s.name}>
-                                      {s.label_english} ({s.label_telugu})
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
-                {childSubtypes.length > 0 && (
-                  <div className="space-y-2">
-                    <FormField
-                      control={form.control}
-                      name="childSubtype"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Subtype Detail (సబ్‌టైప్ వివరాలు)
-                            <span className="text-destructive">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={(value) => {
-                                const selectedChild = childSubtypes.find(
-                                  (s) => s.name === value,
-                                );
-                                field.onChange(value);
-                                form.setValue(
-                                  "childSubtypeId",
-                                  selectedChild?.id || undefined,
-                                );
-                              }}
-                              value={field.value || undefined}
-                              disabled={loadingTypes}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue
-                                  placeholder={
-                                    loadingTypes
-                                      ? "Loading subtypes..."
-                                      : "Select subtype detail"
-                                  }
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {loadingTypes ? (
-                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
-                                    Loading...
-                                  </div>
-                                ) : (
-                                  childSubtypes.map((s) => (
-                                    <SelectItem key={s.id} value={s.name}>
-                                      {s.label_english} ({s.label_telugu})
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button
