@@ -54,7 +54,7 @@ export function MandalDropdown({
             ) : error ? (
               error
             ) : (
-              "Select a mandal"
+              "మండలం ఎంచుకోండి"
             )
           }
         />
@@ -70,12 +70,12 @@ export function MandalDropdown({
           </div>
         ) : mandals.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            No mandals found
+            మండలం కనుగొనబడలేదు
           </div>
         ) : (
           mandals.map((mandal) => (
             <SelectItem key={mandal.id} value={mandal.id}>
-              {mandal.label_english} ({mandal.label_telugu})
+              {mandal.label_telugu}
             </SelectItem>
           ))
         )}

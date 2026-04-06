@@ -29,16 +29,8 @@ import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
 import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
 import { useState } from "react";
-import { Loader2, CalendarIcon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 
 const formSchema = z
@@ -47,7 +39,6 @@ const formSchema = z
     village: z.string().min(1, { message: "Please select a village" }),
     customer: z.string().min(1, { message: "Please select a customer" }),
     accountId: z.string().min(1, { message: "Please select an account" }),
-    transactionDate: z.date({ message: "Please select a transaction date" }),
     amount: z
       .string()
       .min(1, { message: "Please enter an amount" })
@@ -60,29 +51,13 @@ const formSchema = z
     transactionTypeId: z
       .string()
       .min(1, { message: "Please select a transaction type" }),
-    transactionSubtype: z.string().optional(),
-    transactionSubtypeId: z.string().optional(),
-    childSubtype: z.string().optional(),
-    childSubtypeId: z.string().optional(),
     comments: z.string().nullable(),
-  })
-  .refine(
-    () => {
-      // If there are child subtypes available, child subtype is required
-      // This will be checked dynamically in the component
-      return true;
-    },
-    {
-      message: "Please select all required subtype details",
-      path: ["childSubtype"],
-    },
-  );
+  });
 
 export default function AddTransactionForm() {
   const { data: session } = useSession();
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
-  const [calendarOpen, setCalendarOpen] = useState(false);
   // Backend-driven types
   type TransactionType = {
     id: string;
@@ -93,8 +68,6 @@ export default function AddTransactionForm() {
     description?: string;
   };
   const [mainTypes, setMainTypes] = useState<TransactionType[]>([]);
-  const [subtypes, setSubtypes] = useState<TransactionType[]>([]);
-  const [childSubtypes, setChildSubtypes] = useState<TransactionType[]>([]);
   const [loadingTypes, setLoadingTypes] = useState<boolean>(false);
   
 
@@ -108,17 +81,9 @@ export default function AddTransactionForm() {
       amount: "",
       transactionType: "",
       transactionTypeId: "",
-      transactionSubtype: "",
-      transactionSubtypeId: "",
-      childSubtype: undefined,
-      childSubtypeId: undefined,
       comments: null,
     },
   });
-
-  // Watch form values for dependent loading
-  const selectedTransactionType = form.watch("transactionType");
-  const selectedTransactionSubtype = form.watch("transactionSubtype");
 
   // Load main transaction types from backend
   useEffect(() => {
@@ -142,77 +107,6 @@ export default function AddTransactionForm() {
 
   // account types are loaded inside the dropdown component
 
-  // Reset subtypes when transaction type changes
-  useEffect(() => {
-    form.setValue("transactionSubtype", undefined);
-    form.setValue("transactionSubtypeId", undefined);
-    form.setValue("childSubtype", undefined);
-    form.setValue("childSubtypeId", undefined);
-    setSubtypes([]);
-    setChildSubtypes([]);
-  }, [selectedTransactionType, form]);
-
-  // When user selects a transaction type, fetch subtypes from backend
-  useEffect(() => {
-    const fetchTransactionSubtypes = async () => {
-      try {
-        const selectedType = mainTypes.find(
-          (t) => t.name === selectedTransactionType,
-        );
-        if (selectedType?.id) {
-          const subRes = await fetch(
-            `/api/transaction-types/subtypes?parentId=${selectedType.id}`,
-          );
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            const subs: TransactionType[] = subData?.data?.subtypes ?? [];
-            setSubtypes(subs);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch transaction subtypes", e);
-      }
-    };
-
-    if (selectedTransactionType && mainTypes.length > 0) {
-      fetchTransactionSubtypes();
-    }
-  }, [selectedTransactionType, mainTypes]);
-
-  // Reset child subtypes when parent subtype changes
-  useEffect(() => {
-    form.setValue("childSubtype", undefined);
-    form.setValue("childSubtypeId", undefined);
-    setChildSubtypes([]);
-  }, [selectedTransactionSubtype, form]);
-
-  // When user selects a transaction subtype, check if it has child subtypes
-  useEffect(() => {
-    const fetchChildSubtypes = async () => {
-      try {
-        const selectedSubtype = subtypes.find(
-          (s) => s.name === selectedTransactionSubtype,
-        );
-        if (selectedSubtype?.id) {
-          const subRes = await fetch(
-            `/api/transaction-types/subtypes?parentId=${selectedSubtype.id}`,
-          );
-          if (subRes.ok) {
-            const subData = await subRes.json();
-            const childs: TransactionType[] = subData?.data?.subtypes ?? [];
-            setChildSubtypes(childs);
-          }
-        }
-      } catch (e) {
-        console.error("Failed to fetch child subtypes", e);
-      }
-    };
-
-    if (selectedTransactionSubtype && subtypes.length > 0) {
-      fetchChildSubtypes();
-    }
-  }, [selectedTransactionSubtype, subtypes]);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
@@ -230,24 +124,12 @@ export default function AddTransactionForm() {
 
       const supervisorId = session.user.id;
 
-      // CRITICAL: Always use the deepest leaf subtype (no children)
-      // Transactions must store leaf types only, never parent types
-      // Priority: childSubtypeId > transactionSubtypeId > transactionTypeId
-      // Only use transactionTypeId if it has no subtypes (it's already a leaf)
-      const finalTypeId =
-        values.childSubtypeId ||
-        values.transactionSubtypeId ||
-        values.transactionTypeId;
-
-      if (!finalTypeId) {
-        theToast.toast({
-          title: "Error",
-          description: "Please select a transaction type.",
-          variant: "destructive",
-          duration: 5000,
-        });
-        return;
-      }
+      const now = new Date();
+      const transactionDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+      );
 
       // Format the data for API submission
       const transactionData = {
@@ -255,9 +137,9 @@ export default function AddTransactionForm() {
         member_id: values.customer,
         account_id: values.accountId,
         amount: parseInt(values.amount, 10),
-        transaction_date: values.transactionDate.toISOString(),
+        transaction_date: transactionDate.toISOString(),
         comments: values.comments || null,
-        transaction_type_id: finalTypeId,
+        transaction_type_id: values.transactionTypeId,
       };
 
       console.log("Submitting transaction:", transactionData);
@@ -302,7 +184,7 @@ export default function AddTransactionForm() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Customer Information</CardTitle>
+                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -312,7 +194,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Mandal (మండల్)
+                          మండలం
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -340,7 +222,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Village (విలేజ్)
+                          ఊరు
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -369,7 +251,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Member (మెంబర్)
+                          సంఘం సభ్యులు
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -400,7 +282,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Account (ఖాతా)
+                          ఖాతా
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -428,10 +310,10 @@ export default function AddTransactionForm() {
                     name="comments"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Comments (కామెంట్స్)</FormLabel>
+                        <FormLabel>ఇతర వివరములు</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Any additional comments"
+                            placeholder="ఇతర వివరములు"
                             {...field}
                             value={field.value || ""}
                           />
@@ -446,68 +328,9 @@ export default function AddTransactionForm() {
 
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Transaction Details</CardTitle>
+                <CardTitle>ట్రాన్సాక్షన్ వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="transactionDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Transaction Date (ట్రాన్సాక్షన్ డేట్)
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Popover
-                            open={calendarOpen}
-                            onOpenChange={setCalendarOpen}
-                          >
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-full justify-start text-left font-normal h-10 px-3 py-2",
-                                  !field.value && "text-muted-foreground",
-                                )}
-                              >
-                                <span className="text-sm">
-                                  {field.value
-                                    ? format(new Date(field.value), "PPP")
-                                    : "Select transaction date"}
-                                </span>
-                                <CalendarIcon className="h-4 w-4 opacity-50 ml-auto" />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  field.value
-                                    ? new Date(field.value)
-                                    : undefined
-                                }
-                                onSelect={(date) => {
-                                  if (date) {
-                                    field.onChange(date);
-                                    setCalendarOpen(false);
-                                  }
-                                }}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
@@ -515,13 +338,13 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Amount (అమౌంట్)
+                          అమౌంట్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="Enter amount in rupees"
+                            placeholder="రూపాయల్లో అమౌంట్ ఇవ్వండి"
                             min="0"
                             step="1"
                             {...field}
@@ -540,7 +363,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Transaction Type (ట్రాన్సాక్షన్ టైప్)
+                          ట్రాన్సాక్షన్ టైప్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -563,7 +386,7 @@ export default function AddTransactionForm() {
                                 placeholder={
                                   loadingTypes
                                     ? "Loading transaction types..."
-                                    : "Select transaction type"
+                                    : "ట్రాన్సాక్షన్ టైప్ ఎంచుకోండి"
                                 }
                               />
                             </SelectTrigger>
@@ -589,129 +412,13 @@ export default function AddTransactionForm() {
                   />
                 </div>
 
-                {subtypes.length > 0 && (
-                  <div className="space-y-2">
-                    <FormField
-                      control={form.control}
-                      name="transactionSubtype"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Transaction Subtype (ట్రాన్సాక్షన్ సబ్‌టైప్)
-                            <span className="text-destructive">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={(value) => {
-                                const selectedSubtype = subtypes.find(
-                                  (s) => s.name === value,
-                                );
-                                field.onChange(value);
-                                form.setValue(
-                                  "transactionSubtypeId",
-                                  selectedSubtype?.id || "",
-                                );
-                              }}
-                              value={field.value || undefined}
-                              disabled={loadingTypes}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue
-                                  placeholder={
-                                    loadingTypes
-                                      ? "Loading subtypes..."
-                                      : "Select transaction subtype"
-                                  }
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {loadingTypes ? (
-                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
-                                    Loading...
-                                  </div>
-                                ) : (
-                                  subtypes.map((s) => (
-                                    <SelectItem key={s.id} value={s.name}>
-                                      {s.label_english} ({s.label_telugu})
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
-                {childSubtypes.length > 0 && (
-                  <div className="space-y-2">
-                    <FormField
-                      control={form.control}
-                      name="childSubtype"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Subtype Detail (సబ్‌టైప్ వివరాలు)
-                            <span className="text-destructive">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={(value) => {
-                                const selectedChild = childSubtypes.find(
-                                  (s) => s.name === value,
-                                );
-                                field.onChange(value);
-                                form.setValue(
-                                  "childSubtypeId",
-                                  selectedChild?.id || undefined,
-                                );
-                              }}
-                              value={field.value || undefined}
-                              disabled={loadingTypes}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue
-                                  placeholder={
-                                    loadingTypes
-                                      ? "Loading subtypes..."
-                                      : "Select subtype detail"
-                                  }
-                                />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {loadingTypes ? (
-                                  <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
-                                    Loading...
-                                  </div>
-                                ) : (
-                                  childSubtypes.map((s) => (
-                                    <SelectItem key={s.id} value={s.name}>
-                                      {s.label_english} ({s.label_telugu})
-                                    </SelectItem>
-                                  ))
-                                )}
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button
                     type="submit"
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    {loading ? "Creating Transaction..." : "Create Transaction"}
+                    {loading ? "ట్రాన్సాక్షన్ సృష్టించుతుంది..." : "ట్రాన్సాక్షన్ సృష్టించు"}
                   </Button>
                   <Button
                     type="button"
@@ -720,7 +427,7 @@ export default function AddTransactionForm() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    Reset
+                    రీసెట్
                   </Button>
                 </div>
               </CardContent>

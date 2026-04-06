@@ -76,11 +76,18 @@ export function AccountsDropdown({
       value={value || undefined}
       disabled={disabled || !memberId || !villageId || loading}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger
+        className={
+          "w-full min-w-0 max-w-full overflow-hidden " +
+          "[&_[data-slot=select-value]]:!block [&_[data-slot=select-value]]:min-w-0 " +
+          "[&_[data-slot=select-value]]:flex-1 [&_[data-slot=select-value]]:truncate " +
+          "[&_[data-slot=select-value]]:text-left"
+        }
+      >
         <SelectValue
           placeholder={
             !memberId || !villageId
-              ? "Select member and village first"
+              ? "సంఘం సభ్యుని ఎంచుకోండి"
               : loading
                 ? (
                     <span className="inline-flex items-center gap-2">
@@ -91,8 +98,8 @@ export function AccountsDropdown({
                 : error
                   ? error
                   : accounts.length === 0
-                    ? "No accounts available"
-                    : "Select account"
+                    ? "ఖాతాలు కనుగొనబడలేదు"
+                    : "ఖాతా ఎంచుకోండి"
           }
         />
       </SelectTrigger>
@@ -107,17 +114,21 @@ export function AccountsDropdown({
           </div>
         ) : accounts.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            No accounts found for this member
+            సంఘం సభ్యుని కోసం ఖాతాలు కనుగొనబడలేదు
           </div>
         ) : (
-          accounts.map((account) => (
-            <SelectItem key={account.id} value={account.id}>
-              {account.name} ({account.account_number})
-              {account.account_type_label_english
+          accounts.map((account) => {
+            const label =
+              `(${account.account_number})` +
+              (account.account_type_label_english
                 ? ` - ${account.account_type_label_english}`
-                : ""}
-            </SelectItem>
-          ))
+                : "");
+            return (
+              <SelectItem key={account.id} value={account.id} title={label}>
+                <span className="block min-w-0 max-w-full truncate">{label}</span>
+              </SelectItem>
+            );
+          })
         )}
       </SelectContent>
     </Select>

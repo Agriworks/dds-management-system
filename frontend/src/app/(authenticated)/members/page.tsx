@@ -165,7 +165,7 @@ export default function AddMemberPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
+                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -175,13 +175,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Given Name (English) (ఇచ్చిన పేరు)
+                          పేరు (ఇంగ్లీషు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter given name in English"
+                            placeholder="పేరు ఇంగ్లీషులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -198,13 +198,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Family Name (English) (కుటుంబ పేరు)
+                          ఇంటి పేరు (ఇంగ్లీషు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter family name in English"
+                            placeholder="ఇంటి పేరు ఇంగ్లీషులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -221,13 +221,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Given Name (Telugu) (ఇచ్చిన పేరు - తెలుగు)
+                          పేరు (తెలుగు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter given name in Telugu"
+                            placeholder="పేరు తెలుగులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -244,13 +244,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Family Name (Telugu) (కుటుంబ పేరు - తెలుగు)
+                          ఇంటి పేరు (తెలుగు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter family name in Telugu"
+                            placeholder="ఇంటి పేరు తెలుగులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -267,13 +267,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Husband/Father Name (భర్త/తండ్రి పేరు)
+                          భర్త/తండ్రి పేరు (ఇంగ్లీషు)
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter husband or father name"
+                            placeholder="భర్త/తండ్రి పేరు ఇంగ్లీషులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -290,13 +290,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Phone Number (ఫోన్ నంబర్)
+                          ఫోన్ నంబర్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="tel"
-                            placeholder="Enter 10-digit phone number"
+                            placeholder="ఫోన్ నంబర్ ఇవ్వండి"
                             maxLength={10}
                             {...field}
                           />
@@ -314,13 +314,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Aadhar Number (ఆధార్ నంబర్)
+                          ఆధార్ నంబర్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter 12-digit Aadhar number"
+                            placeholder="ఆధార్ నంబర్ ఇవ్వండి"
                             maxLength={12}
                             {...field}
                           />
@@ -335,7 +335,7 @@ export default function AddMemberPage() {
 
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Location Information</CardTitle>
+                <CardTitle>స్థాన సమాచారం</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -345,7 +345,7 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Mandal (మండల్)
+                          మండలం
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -371,7 +371,7 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Village (విలేజ్)
+                          ఊరు
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -395,13 +395,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          House Number (ఇంటి నంబర్)
+                          ఇంటి నంబర్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter house number"
+                            placeholder="ఇంటి నంబర్ ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>
@@ -417,7 +417,7 @@ export default function AddMemberPage() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    {loading ? "Creating Member..." : "Create Member"}
+                    {loading ? "సంఘం సభ్యుని సృష్టించుతుంది..." : "సంఘం సభ్యుని సృష్టించు"}
                   </Button>
                   <Button
                     type="button"
@@ -426,7 +426,7 @@ export default function AddMemberPage() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    Reset
+                    రీసెట్
                   </Button>
                 </div>
               </CardContent>
