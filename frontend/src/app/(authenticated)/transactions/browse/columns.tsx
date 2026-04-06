@@ -31,12 +31,6 @@ export function getTransactionColumns(opts?: {
       ),
     },
     {
-      accessorKey: "loan_type",
-      header: "Transaction Subtype",
-      cell: (info: CellContext<TransactionWithNames, unknown>) =>
-        String(info.getValue() ?? "-") as React.ReactNode,
-    },
-    {
       accessorKey: "amount",
       header: "Amount",
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
