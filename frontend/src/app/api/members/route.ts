@@ -152,22 +152,29 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Get the SAVINGS account type
     const savingsAccountType = await prisma.account_types.findUnique({
       where: { name: "SAVINGS" },
     });
+    const loansAccountType = await prisma.account_types.findUnique({
+      where: { name: "LOANS" },
+    });
 
     if (!savingsAccountType) {
-      // If SAVINGS account type doesn't exist, return error
       return createErrorResponse(
         "INTERNAL_ERROR",
         "SAVINGS account type not found in database",
         500,
       );
     }
+    if (!loansAccountType) {
+      return createErrorResponse(
+        "INTERNAL_ERROR",
+        "LOANS account type not found in database",
+        500,
+      );
+    }
 
-    // Generate next account number
-    // Find the highest existing account number with pattern ACC###
+    // Next two sequential ACC### numbers (savings then loan)
     const existingAccounts = await prisma.accounts.findMany({
       where: {
         account_number: {
@@ -180,24 +187,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       take: 1,
     });
 
-    let nextAccountNumber = "ACC001";
+    let seq = 1;
     if (existingAccounts.length > 0) {
       const lastAccountNumber = existingAccounts[0].account_number;
       const match = lastAccountNumber.match(/ACC(\d+)/);
       if (match) {
-        const lastNumber = parseInt(match[1], 10);
-        const nextNumber = lastNumber + 1;
-        nextAccountNumber = `ACC${nextNumber.toString().padStart(3, "0")}`;
+        seq = parseInt(match[1], 10) + 1;
       }
     }
+    const savingsAccountNumber = `ACC${seq.toString().padStart(3, "0")}`;
+    const loanAccountNumber = `ACC${(seq + 1).toString().padStart(3, "0")}`;
 
-    // Create the savings account
     const memberFullName = `${given_name.trim()} ${family_name.trim()}`;
-    const newAccount = await prisma.accounts.create({
+
+    const newSavingsAccount = await prisma.accounts.create({
       data: {
         id: crypto.randomUUID(),
         name: memberFullName,
-        account_number: nextAccountNumber,
+        account_number: savingsAccountNumber,
         balance: 0,
         account_type_id: savingsAccountType.id,
         description: `Main savings account for ${memberFullName}`,
@@ -205,27 +212,52 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Link account to member
-    await prisma.members_accounts_onlink.create({
+    const newLoanAccount = await prisma.accounts.create({
       data: {
         id: crypto.randomUUID(),
-        member_id: newMember.id,
-        account_id: newAccount.id,
+        name: memberFullName,
+        account_number: loanAccountNumber,
+        balance: 0,
+        account_type_id: loansAccountType.id,
+        description: `Loan account for ${memberFullName}`,
+        is_active: true,
       },
     });
 
-    // Link account to village
-    await prisma.villages_accounts_onlink.create({
-      data: {
-        id: crypto.randomUUID(),
-        village_id: village_id,
-        account_id: newAccount.id,
-      },
+    await prisma.members_accounts_onlink.createMany({
+      data: [
+        {
+          id: crypto.randomUUID(),
+          member_id: newMember.id,
+          account_id: newSavingsAccount.id,
+        },
+        {
+          id: crypto.randomUUID(),
+          member_id: newMember.id,
+          account_id: newLoanAccount.id,
+        },
+      ],
+    });
+
+    await prisma.villages_accounts_onlink.createMany({
+      data: [
+        {
+          id: crypto.randomUUID(),
+          village_id: village_id,
+          account_id: newSavingsAccount.id,
+        },
+        {
+          id: crypto.randomUUID(),
+          village_id: village_id,
+          account_id: newLoanAccount.id,
+        },
+      ],
     });
 
     return createSuccessResponse(
       {
-        message: "Member created successfully with savings account",
+        message:
+          "Member created successfully with savings and loan accounts",
         member: {
           id: newMember.id,
           given_name: newMember.given_name,
@@ -238,13 +270,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           mandal: newMember.villages.mandals.label_english,
           created_at: newMember.created_at,
         },
-        account: {
-          id: newAccount.id,
-          account_number: newAccount.account_number,
-          name: newAccount.name,
+        savings_account: {
+          id: newSavingsAccount.id,
+          account_number: newSavingsAccount.account_number,
+          name: newSavingsAccount.name,
+        },
+        loan_account: {
+          id: newLoanAccount.id,
+          account_number: newLoanAccount.account_number,
+          name: newLoanAccount.name,
         },
       },
-      "Member created successfully with savings account",
+      "Member created successfully with savings and loan accounts",
     );
   } catch (error) {
     console.error("Error creating member:", error);
