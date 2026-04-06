@@ -400,7 +400,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Account (ఖాతా)
+                          ఖాతా
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -428,7 +428,7 @@ export default function AddTransactionForm() {
                     name="comments"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Comments (ఇతర వివరములు)</FormLabel>
+                        <FormLabel>ఇతర వివరములు</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="ఇతర వివరములు"
@@ -446,7 +446,7 @@ export default function AddTransactionForm() {
 
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>Transaction Details</CardTitle>
+                <CardTitle>ట్రాన్సాక్షన్ వివరములు</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -456,7 +456,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Transaction Date (ట్రాన్సాక్షన్ డేట్)
+                          ట్రాన్సాక్షన్ డేట్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -515,7 +515,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Amount (అమౌంట్)
+                          అమౌంట్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -540,7 +540,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Transaction Type (ట్రాన్సాక్షన్ టైప్)
+                          ట్రాన్సాక్షన్ టైప్
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -711,7 +711,7 @@ export default function AddTransactionForm() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    {loading ? "Creating Transaction..." : "Create Transaction"}
+                    {loading ? "ట్రాన్సాక్షన్ సృష్టించుతుంది..." : "ట్రాన్సాక్షన్ సృష్టించు"}
                   </Button>
                   <Button
                     type="button"
@@ -720,7 +720,7 @@ export default function AddTransactionForm() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    Reset
+                    రీసెట్
                   </Button>
                 </div>
               </CardContent>

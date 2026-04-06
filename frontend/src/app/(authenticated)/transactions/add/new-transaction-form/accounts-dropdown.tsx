@@ -87,7 +87,7 @@ export function AccountsDropdown({
         <SelectValue
           placeholder={
             !memberId || !villageId
-              ? "Select member and village first"
+              ? "సంఘం సభ్యుని ఎంచుకోండి"
               : loading
                 ? (
                     <span className="inline-flex items-center gap-2">
@@ -98,8 +98,8 @@ export function AccountsDropdown({
                 : error
                   ? error
                   : accounts.length === 0
-                    ? "No accounts available"
-                    : "Select account"
+                    ? "ఖాతాలు కనుగొనబడలేదు"
+                    : "ఖాతా ఎంచుకోండి"
           }
         />
       </SelectTrigger>
@@ -114,7 +114,7 @@ export function AccountsDropdown({
           </div>
         ) : accounts.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            No accounts found for this member
+            సంఘం సభ్యుని కోసం ఖాతాలు కనుగొనబడలేదు
           </div>
         ) : (
           accounts.map((account) => {
