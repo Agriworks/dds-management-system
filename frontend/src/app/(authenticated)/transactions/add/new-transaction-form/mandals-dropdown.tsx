@@ -75,7 +75,7 @@ export function MandalDropdown({
         ) : (
           mandals.map((mandal) => (
             <SelectItem key={mandal.id} value={mandal.id}>
-              {mandal.label_english} ({mandal.label_telugu})
+              {mandal.label_telugu}
             </SelectItem>
           ))
         )}

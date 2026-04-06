@@ -312,7 +312,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Mandal (మండలం)
+                          మండలం
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -340,7 +340,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Village (ఊరు)
+                          ఊరు
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -369,7 +369,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Member (సంఘం సభ్యులు)
+                          సంఘం సభ్యులు
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>

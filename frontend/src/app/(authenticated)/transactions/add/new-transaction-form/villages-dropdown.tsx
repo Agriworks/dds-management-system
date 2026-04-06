@@ -87,7 +87,7 @@ export function VillageDropdown({
         ) : (
           villages.map((village) => (
             <SelectItem key={village.id} value={village.id}>
-              {village.label_english} ({village.label_telugu})
+              {village.label_telugu}
             </SelectItem>
           ))
         )}
