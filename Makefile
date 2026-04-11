@@ -5,7 +5,6 @@ atlas-apply:
 	-u "postgres://postgres:@localhost:5432/postgres?sslmode=disable" \
 	--to file://schema-public.hcl \
 	--to file://schema-baseline.hcl \
-	--dev-url "docker://postgres/15"
 
 .PHONY: prisma-db-pull
 prisma-db-pull:
