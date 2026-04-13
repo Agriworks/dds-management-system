@@ -184,7 +184,7 @@ exports.Prisma.TransactionsScalarFieldEnum = {
   id: 'id',
   supervisor_id: 'supervisor_id',
   member_id: 'member_id',
-  transaction_type_id: 'transaction_type_id',
+  transaction_type: 'transaction_type',
   account_id: 'account_id',
   amount: 'amount',
   comments: 'comments',
@@ -201,18 +201,6 @@ exports.Prisma.VillagesScalarFieldEnum = {
   created_at: 'created_at',
   updated_at: 'updated_at',
   mandal_id: 'mandal_id'
-};
-
-exports.Prisma.Transaction_typesScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  label_english: 'label_english',
-  description: 'description',
-  is_active: 'is_active',
-  debit_or_credit: 'debit_or_credit',
-  parent_id: 'parent_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
 };
 
 exports.Prisma.EndpointaccessScalarFieldEnum = {
@@ -267,14 +255,6 @@ exports.Prisma.Members_accounts_onlinkScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
-exports.Prisma.Villages_accounts_onlinkScalarFieldEnum = {
-  id: 'id',
-  village_id: 'village_id',
-  account_id: 'account_id',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -303,13 +283,11 @@ exports.Prisma.ModelName = {
   member_name_labels: 'member_name_labels',
   transactions: 'transactions',
   villages: 'villages',
-  transaction_types: 'transaction_types',
   endpointaccess: 'endpointaccess',
   account_types: 'account_types',
   accounts: 'accounts',
   i18n_labels: 'i18n_labels',
-  members_accounts_onlink: 'members_accounts_onlink',
-  villages_accounts_onlink: 'villages_accounts_onlink'
+  members_accounts_onlink: 'members_accounts_onlink'
 };
 
 /**

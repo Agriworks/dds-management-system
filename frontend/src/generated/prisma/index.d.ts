@@ -54,11 +54,6 @@ export type transactions = $Result.DefaultSelection<Prisma.$transactionsPayload>
  */
 export type villages = $Result.DefaultSelection<Prisma.$villagesPayload>
 /**
- * Model transaction_types
- * 
- */
-export type transaction_types = $Result.DefaultSelection<Prisma.$transaction_typesPayload>
-/**
  * Model endpointaccess
  * 
  */
@@ -83,11 +78,6 @@ export type i18n_labels = $Result.DefaultSelection<Prisma.$i18n_labelsPayload>
  * 
  */
 export type members_accounts_onlink = $Result.DefaultSelection<Prisma.$members_accounts_onlinkPayload>
-/**
- * Model villages_accounts_onlink
- * 
- */
-export type villages_accounts_onlink = $Result.DefaultSelection<Prisma.$villages_accounts_onlinkPayload>
 
 /**
  * Enums
@@ -312,16 +302,6 @@ export class PrismaClient<
   get villages(): Prisma.villagesDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.transaction_types`: Exposes CRUD operations for the **transaction_types** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Transaction_types
-    * const transaction_types = await prisma.transaction_types.findMany()
-    * ```
-    */
-  get transaction_types(): Prisma.transaction_typesDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.endpointaccess`: Exposes CRUD operations for the **endpointaccess** model.
     * Example usage:
     * ```ts
@@ -370,16 +350,6 @@ export class PrismaClient<
     * ```
     */
   get members_accounts_onlink(): Prisma.members_accounts_onlinkDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.villages_accounts_onlink`: Exposes CRUD operations for the **villages_accounts_onlink** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Villages_accounts_onlinks
-    * const villages_accounts_onlinks = await prisma.villages_accounts_onlink.findMany()
-    * ```
-    */
-  get villages_accounts_onlink(): Prisma.villages_accounts_onlinkDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -828,13 +798,11 @@ export namespace Prisma {
     member_name_labels: 'member_name_labels',
     transactions: 'transactions',
     villages: 'villages',
-    transaction_types: 'transaction_types',
     endpointaccess: 'endpointaccess',
     account_types: 'account_types',
     accounts: 'accounts',
     i18n_labels: 'i18n_labels',
-    members_accounts_onlink: 'members_accounts_onlink',
-    villages_accounts_onlink: 'villages_accounts_onlink'
+    members_accounts_onlink: 'members_accounts_onlink'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -853,7 +821,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "member_name_labels" | "transactions" | "villages" | "transaction_types" | "endpointaccess" | "account_types" | "accounts" | "i18n_labels" | "members_accounts_onlink" | "villages_accounts_onlink"
+      modelProps: "users" | "roles" | "user_roles_mapping" | "mandals" | "members" | "member_name_labels" | "transactions" | "villages" | "endpointaccess" | "account_types" | "accounts" | "i18n_labels" | "members_accounts_onlink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1449,80 +1417,6 @@ export namespace Prisma {
           }
         }
       }
-      transaction_types: {
-        payload: Prisma.$transaction_typesPayload<ExtArgs>
-        fields: Prisma.transaction_typesFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.transaction_typesFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.transaction_typesFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          findFirst: {
-            args: Prisma.transaction_typesFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.transaction_typesFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          findMany: {
-            args: Prisma.transaction_typesFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>[]
-          }
-          create: {
-            args: Prisma.transaction_typesCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          createMany: {
-            args: Prisma.transaction_typesCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.transaction_typesCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>[]
-          }
-          delete: {
-            args: Prisma.transaction_typesDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          update: {
-            args: Prisma.transaction_typesUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          deleteMany: {
-            args: Prisma.transaction_typesDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.transaction_typesUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.transaction_typesUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>[]
-          }
-          upsert: {
-            args: Prisma.transaction_typesUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$transaction_typesPayload>
-          }
-          aggregate: {
-            args: Prisma.Transaction_typesAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTransaction_types>
-          }
-          groupBy: {
-            args: Prisma.transaction_typesGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Transaction_typesGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.transaction_typesCountArgs<ExtArgs>
-            result: $Utils.Optional<Transaction_typesCountAggregateOutputType> | number
-          }
-        }
-      }
       endpointaccess: {
         payload: Prisma.$endpointaccessPayload<ExtArgs>
         fields: Prisma.endpointaccessFieldRefs
@@ -1893,80 +1787,6 @@ export namespace Prisma {
           }
         }
       }
-      villages_accounts_onlink: {
-        payload: Prisma.$villages_accounts_onlinkPayload<ExtArgs>
-        fields: Prisma.villages_accounts_onlinkFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.villages_accounts_onlinkFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.villages_accounts_onlinkFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          findFirst: {
-            args: Prisma.villages_accounts_onlinkFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.villages_accounts_onlinkFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          findMany: {
-            args: Prisma.villages_accounts_onlinkFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>[]
-          }
-          create: {
-            args: Prisma.villages_accounts_onlinkCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          createMany: {
-            args: Prisma.villages_accounts_onlinkCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.villages_accounts_onlinkCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>[]
-          }
-          delete: {
-            args: Prisma.villages_accounts_onlinkDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          update: {
-            args: Prisma.villages_accounts_onlinkUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          deleteMany: {
-            args: Prisma.villages_accounts_onlinkDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.villages_accounts_onlinkUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.villages_accounts_onlinkUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>[]
-          }
-          upsert: {
-            args: Prisma.villages_accounts_onlinkUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$villages_accounts_onlinkPayload>
-          }
-          aggregate: {
-            args: Prisma.Villages_accounts_onlinkAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateVillages_accounts_onlink>
-          }
-          groupBy: {
-            args: Prisma.villages_accounts_onlinkGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Villages_accounts_onlinkGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.villages_accounts_onlinkCountArgs<ExtArgs>
-            result: $Utils.Optional<Villages_accounts_onlinkCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -2059,13 +1879,11 @@ export namespace Prisma {
     member_name_labels?: member_name_labelsOmit
     transactions?: transactionsOmit
     villages?: villagesOmit
-    transaction_types?: transaction_typesOmit
     endpointaccess?: endpointaccessOmit
     account_types?: account_typesOmit
     accounts?: accountsOmit
     i18n_labels?: i18n_labelsOmit
     members_accounts_onlink?: members_accounts_onlinkOmit
-    villages_accounts_onlink?: villages_accounts_onlinkOmit
   }
 
   /* Types for Logging */
@@ -2321,12 +2139,10 @@ export namespace Prisma {
 
   export type VillagesCountOutputType = {
     members: number
-    villages_accounts_onlink: number
   }
 
   export type VillagesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | VillagesCountOutputTypeCountMembersArgs
-    villages_accounts_onlink?: boolean | VillagesCountOutputTypeCountVillages_accounts_onlinkArgs
   }
 
   // Custom InputTypes
@@ -2345,53 +2161,6 @@ export namespace Prisma {
    */
   export type VillagesCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: membersWhereInput
-  }
-
-  /**
-   * VillagesCountOutputType without action
-   */
-  export type VillagesCountOutputTypeCountVillages_accounts_onlinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: villages_accounts_onlinkWhereInput
-  }
-
-
-  /**
-   * Count Type Transaction_typesCountOutputType
-   */
-
-  export type Transaction_typesCountOutputType = {
-    other_transaction_types: number
-    transactions: number
-  }
-
-  export type Transaction_typesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    other_transaction_types?: boolean | Transaction_typesCountOutputTypeCountOther_transaction_typesArgs
-    transactions?: boolean | Transaction_typesCountOutputTypeCountTransactionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * Transaction_typesCountOutputType without action
-   */
-  export type Transaction_typesCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Transaction_typesCountOutputType
-     */
-    select?: Transaction_typesCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * Transaction_typesCountOutputType without action
-   */
-  export type Transaction_typesCountOutputTypeCountOther_transaction_typesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: transaction_typesWhereInput
-  }
-
-  /**
-   * Transaction_typesCountOutputType without action
-   */
-  export type Transaction_typesCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: transactionsWhereInput
   }
 
 
@@ -2433,13 +2202,11 @@ export namespace Prisma {
   export type AccountsCountOutputType = {
     members_accounts_onlink: number
     transactions: number
-    villages_accounts_onlink: number
   }
 
   export type AccountsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members_accounts_onlink?: boolean | AccountsCountOutputTypeCountMembers_accounts_onlinkArgs
     transactions?: boolean | AccountsCountOutputTypeCountTransactionsArgs
-    villages_accounts_onlink?: boolean | AccountsCountOutputTypeCountVillages_accounts_onlinkArgs
   }
 
   // Custom InputTypes
@@ -2465,13 +2232,6 @@ export namespace Prisma {
    */
   export type AccountsCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: transactionsWhereInput
-  }
-
-  /**
-   * AccountsCountOutputType without action
-   */
-  export type AccountsCountOutputTypeCountVillages_accounts_onlinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: villages_accounts_onlinkWhereInput
   }
 
 
@@ -9220,7 +8980,7 @@ export namespace Prisma {
     id: string | null
     supervisor_id: string | null
     member_id: string | null
-    transaction_type_id: string | null
+    transaction_type: $Enums.credit_debit_type | null
     account_id: string | null
     amount: number | null
     comments: string | null
@@ -9235,7 +8995,7 @@ export namespace Prisma {
     id: string | null
     supervisor_id: string | null
     member_id: string | null
-    transaction_type_id: string | null
+    transaction_type: $Enums.credit_debit_type | null
     account_id: string | null
     amount: number | null
     comments: string | null
@@ -9250,7 +9010,7 @@ export namespace Prisma {
     id: number
     supervisor_id: number
     member_id: number
-    transaction_type_id: number
+    transaction_type: number
     account_id: number
     amount: number
     comments: number
@@ -9275,7 +9035,7 @@ export namespace Prisma {
     id?: true
     supervisor_id?: true
     member_id?: true
-    transaction_type_id?: true
+    transaction_type?: true
     account_id?: true
     amount?: true
     comments?: true
@@ -9290,7 +9050,7 @@ export namespace Prisma {
     id?: true
     supervisor_id?: true
     member_id?: true
-    transaction_type_id?: true
+    transaction_type?: true
     account_id?: true
     amount?: true
     comments?: true
@@ -9305,7 +9065,7 @@ export namespace Prisma {
     id?: true
     supervisor_id?: true
     member_id?: true
-    transaction_type_id?: true
+    transaction_type?: true
     account_id?: true
     amount?: true
     comments?: true
@@ -9407,7 +9167,7 @@ export namespace Prisma {
     id: string
     supervisor_id: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments: string | null
@@ -9441,7 +9201,7 @@ export namespace Prisma {
     id?: boolean
     supervisor_id?: boolean
     member_id?: boolean
-    transaction_type_id?: boolean
+    transaction_type?: boolean
     account_id?: boolean
     amount?: boolean
     comments?: boolean
@@ -9452,7 +9212,6 @@ export namespace Prisma {
     updated_at?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
@@ -9460,7 +9219,7 @@ export namespace Prisma {
     id?: boolean
     supervisor_id?: boolean
     member_id?: boolean
-    transaction_type_id?: boolean
+    transaction_type?: boolean
     account_id?: boolean
     amount?: boolean
     comments?: boolean
@@ -9471,7 +9230,6 @@ export namespace Prisma {
     updated_at?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
@@ -9479,7 +9237,7 @@ export namespace Prisma {
     id?: boolean
     supervisor_id?: boolean
     member_id?: boolean
-    transaction_type_id?: boolean
+    transaction_type?: boolean
     account_id?: boolean
     amount?: boolean
     comments?: boolean
@@ -9490,7 +9248,6 @@ export namespace Prisma {
     updated_at?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transactions"]>
 
@@ -9498,7 +9255,7 @@ export namespace Prisma {
     id?: boolean
     supervisor_id?: boolean
     member_id?: boolean
-    transaction_type_id?: boolean
+    transaction_type?: boolean
     account_id?: boolean
     amount?: boolean
     comments?: boolean
@@ -9509,23 +9266,20 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type transactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "supervisor_id" | "member_id" | "transaction_type_id" | "account_id" | "amount" | "comments" | "transaction_date" | "receipt_number" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["transactions"]>
+  export type transactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "supervisor_id" | "member_id" | "transaction_type" | "account_id" | "amount" | "comments" | "transaction_date" | "receipt_number" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["transactions"]>
   export type transactionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type transactionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
   export type transactionsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
-    transaction_types?: boolean | transaction_typesDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
 
@@ -9534,14 +9288,13 @@ export namespace Prisma {
     objects: {
       accounts: Prisma.$accountsPayload<ExtArgs>
       members: Prisma.$membersPayload<ExtArgs>
-      transaction_types: Prisma.$transaction_typesPayload<ExtArgs>
       users: Prisma.$usersPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       supervisor_id: string
       member_id: string
-      transaction_type_id: string
+      transaction_type: $Enums.credit_debit_type
       account_id: string
       amount: number
       comments: string | null
@@ -9946,7 +9699,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     accounts<T extends accountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, accountsDefaultArgs<ExtArgs>>): Prisma__accountsClient<$Result.GetResult<Prisma.$accountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     members<T extends membersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, membersDefaultArgs<ExtArgs>>): Prisma__membersClient<$Result.GetResult<Prisma.$membersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    transaction_types<T extends transaction_typesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, transaction_typesDefaultArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends usersDefaultArgs<ExtArgs> = {}>(args?: Subset<T, usersDefaultArgs<ExtArgs>>): Prisma__usersClient<$Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9980,7 +9732,7 @@ export namespace Prisma {
     readonly id: FieldRef<"transactions", 'String'>
     readonly supervisor_id: FieldRef<"transactions", 'String'>
     readonly member_id: FieldRef<"transactions", 'String'>
-    readonly transaction_type_id: FieldRef<"transactions", 'String'>
+    readonly transaction_type: FieldRef<"transactions", 'credit_debit_type'>
     readonly account_id: FieldRef<"transactions", 'String'>
     readonly amount: FieldRef<"transactions", 'Int'>
     readonly comments: FieldRef<"transactions", 'String'>
@@ -10569,7 +10321,6 @@ export namespace Prisma {
     mandal_id?: boolean
     members?: boolean | villages$membersArgs<ExtArgs>
     mandals?: boolean | mandalsDefaultArgs<ExtArgs>
-    villages_accounts_onlink?: boolean | villages$villages_accounts_onlinkArgs<ExtArgs>
     _count?: boolean | VillagesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["villages"]>
 
@@ -10603,7 +10354,6 @@ export namespace Prisma {
   export type villagesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | villages$membersArgs<ExtArgs>
     mandals?: boolean | mandalsDefaultArgs<ExtArgs>
-    villages_accounts_onlink?: boolean | villages$villages_accounts_onlinkArgs<ExtArgs>
     _count?: boolean | VillagesCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type villagesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10618,7 +10368,6 @@ export namespace Prisma {
     objects: {
       members: Prisma.$membersPayload<ExtArgs>[]
       mandals: Prisma.$mandalsPayload<ExtArgs>
-      villages_accounts_onlink: Prisma.$villages_accounts_onlinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11022,7 +10771,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     members<T extends villages$membersArgs<ExtArgs> = {}>(args?: Subset<T, villages$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$membersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mandals<T extends mandalsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, mandalsDefaultArgs<ExtArgs>>): Prisma__mandalsClient<$Result.GetResult<Prisma.$mandalsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    villages_accounts_onlink<T extends villages$villages_accounts_onlinkArgs<ExtArgs> = {}>(args?: Subset<T, villages$villages_accounts_onlinkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11477,30 +11225,6 @@ export namespace Prisma {
   }
 
   /**
-   * villages.villages_accounts_onlink
-   */
-  export type villages$villages_accounts_onlinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    where?: villages_accounts_onlinkWhereInput
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Villages_accounts_onlinkScalarFieldEnum | Villages_accounts_onlinkScalarFieldEnum[]
-  }
-
-  /**
    * villages without action
    */
   export type villagesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11516,1193 +11240,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: villagesInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model transaction_types
-   */
-
-  export type AggregateTransaction_types = {
-    _count: Transaction_typesCountAggregateOutputType | null
-    _min: Transaction_typesMinAggregateOutputType | null
-    _max: Transaction_typesMaxAggregateOutputType | null
-  }
-
-  export type Transaction_typesMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    label_english: string | null
-    description: string | null
-    is_active: boolean | null
-    debit_or_credit: $Enums.credit_debit_type | null
-    parent_id: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type Transaction_typesMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    label_english: string | null
-    description: string | null
-    is_active: boolean | null
-    debit_or_credit: $Enums.credit_debit_type | null
-    parent_id: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type Transaction_typesCountAggregateOutputType = {
-    id: number
-    name: number
-    label_english: number
-    description: number
-    is_active: number
-    debit_or_credit: number
-    parent_id: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type Transaction_typesMinAggregateInputType = {
-    id?: true
-    name?: true
-    label_english?: true
-    description?: true
-    is_active?: true
-    debit_or_credit?: true
-    parent_id?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type Transaction_typesMaxAggregateInputType = {
-    id?: true
-    name?: true
-    label_english?: true
-    description?: true
-    is_active?: true
-    debit_or_credit?: true
-    parent_id?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type Transaction_typesCountAggregateInputType = {
-    id?: true
-    name?: true
-    label_english?: true
-    description?: true
-    is_active?: true
-    debit_or_credit?: true
-    parent_id?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type Transaction_typesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which transaction_types to aggregate.
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of transaction_types to fetch.
-     */
-    orderBy?: transaction_typesOrderByWithRelationInput | transaction_typesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: transaction_typesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` transaction_types from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` transaction_types.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned transaction_types
-    **/
-    _count?: true | Transaction_typesCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Transaction_typesMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Transaction_typesMaxAggregateInputType
-  }
-
-  export type GetTransaction_typesAggregateType<T extends Transaction_typesAggregateArgs> = {
-        [P in keyof T & keyof AggregateTransaction_types]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateTransaction_types[P]>
-      : GetScalarType<T[P], AggregateTransaction_types[P]>
-  }
-
-
-
-
-  export type transaction_typesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: transaction_typesWhereInput
-    orderBy?: transaction_typesOrderByWithAggregationInput | transaction_typesOrderByWithAggregationInput[]
-    by: Transaction_typesScalarFieldEnum[] | Transaction_typesScalarFieldEnum
-    having?: transaction_typesScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Transaction_typesCountAggregateInputType | true
-    _min?: Transaction_typesMinAggregateInputType
-    _max?: Transaction_typesMaxAggregateInputType
-  }
-
-  export type Transaction_typesGroupByOutputType = {
-    id: string
-    name: string
-    label_english: string
-    description: string | null
-    is_active: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    parent_id: string | null
-    created_at: Date
-    updated_at: Date
-    _count: Transaction_typesCountAggregateOutputType | null
-    _min: Transaction_typesMinAggregateOutputType | null
-    _max: Transaction_typesMaxAggregateOutputType | null
-  }
-
-  type GetTransaction_typesGroupByPayload<T extends transaction_typesGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Transaction_typesGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Transaction_typesGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Transaction_typesGroupByOutputType[P]>
-            : GetScalarType<T[P], Transaction_typesGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type transaction_typesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    label_english?: boolean
-    description?: boolean
-    is_active?: boolean
-    debit_or_credit?: boolean
-    parent_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-    other_transaction_types?: boolean | transaction_types$other_transaction_typesArgs<ExtArgs>
-    transactions?: boolean | transaction_types$transactionsArgs<ExtArgs>
-    _count?: boolean | Transaction_typesCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["transaction_types"]>
-
-  export type transaction_typesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    label_english?: boolean
-    description?: boolean
-    is_active?: boolean
-    debit_or_credit?: boolean
-    parent_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-  }, ExtArgs["result"]["transaction_types"]>
-
-  export type transaction_typesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    label_english?: boolean
-    description?: boolean
-    is_active?: boolean
-    debit_or_credit?: boolean
-    parent_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-  }, ExtArgs["result"]["transaction_types"]>
-
-  export type transaction_typesSelectScalar = {
-    id?: boolean
-    name?: boolean
-    label_english?: boolean
-    description?: boolean
-    is_active?: boolean
-    debit_or_credit?: boolean
-    parent_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type transaction_typesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "label_english" | "description" | "is_active" | "debit_or_credit" | "parent_id" | "created_at" | "updated_at", ExtArgs["result"]["transaction_types"]>
-  export type transaction_typesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-    other_transaction_types?: boolean | transaction_types$other_transaction_typesArgs<ExtArgs>
-    transactions?: boolean | transaction_types$transactionsArgs<ExtArgs>
-    _count?: boolean | Transaction_typesCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type transaction_typesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-  }
-  export type transaction_typesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transaction_types?: boolean | transaction_types$transaction_typesArgs<ExtArgs>
-  }
-
-  export type $transaction_typesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "transaction_types"
-    objects: {
-      transaction_types: Prisma.$transaction_typesPayload<ExtArgs> | null
-      other_transaction_types: Prisma.$transaction_typesPayload<ExtArgs>[]
-      transactions: Prisma.$transactionsPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      label_english: string
-      description: string | null
-      is_active: boolean
-      debit_or_credit: $Enums.credit_debit_type
-      parent_id: string | null
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["transaction_types"]>
-    composites: {}
-  }
-
-  type transaction_typesGetPayload<S extends boolean | null | undefined | transaction_typesDefaultArgs> = $Result.GetResult<Prisma.$transaction_typesPayload, S>
-
-  type transaction_typesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<transaction_typesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Transaction_typesCountAggregateInputType | true
-    }
-
-  export interface transaction_typesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['transaction_types'], meta: { name: 'transaction_types' } }
-    /**
-     * Find zero or one Transaction_types that matches the filter.
-     * @param {transaction_typesFindUniqueArgs} args - Arguments to find a Transaction_types
-     * @example
-     * // Get one Transaction_types
-     * const transaction_types = await prisma.transaction_types.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends transaction_typesFindUniqueArgs>(args: SelectSubset<T, transaction_typesFindUniqueArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Transaction_types that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {transaction_typesFindUniqueOrThrowArgs} args - Arguments to find a Transaction_types
-     * @example
-     * // Get one Transaction_types
-     * const transaction_types = await prisma.transaction_types.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends transaction_typesFindUniqueOrThrowArgs>(args: SelectSubset<T, transaction_typesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Transaction_types that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesFindFirstArgs} args - Arguments to find a Transaction_types
-     * @example
-     * // Get one Transaction_types
-     * const transaction_types = await prisma.transaction_types.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends transaction_typesFindFirstArgs>(args?: SelectSubset<T, transaction_typesFindFirstArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Transaction_types that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesFindFirstOrThrowArgs} args - Arguments to find a Transaction_types
-     * @example
-     * // Get one Transaction_types
-     * const transaction_types = await prisma.transaction_types.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends transaction_typesFindFirstOrThrowArgs>(args?: SelectSubset<T, transaction_typesFindFirstOrThrowArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Transaction_types that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Transaction_types
-     * const transaction_types = await prisma.transaction_types.findMany()
-     * 
-     * // Get first 10 Transaction_types
-     * const transaction_types = await prisma.transaction_types.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const transaction_typesWithIdOnly = await prisma.transaction_types.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends transaction_typesFindManyArgs>(args?: SelectSubset<T, transaction_typesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Transaction_types.
-     * @param {transaction_typesCreateArgs} args - Arguments to create a Transaction_types.
-     * @example
-     * // Create one Transaction_types
-     * const Transaction_types = await prisma.transaction_types.create({
-     *   data: {
-     *     // ... data to create a Transaction_types
-     *   }
-     * })
-     * 
-     */
-    create<T extends transaction_typesCreateArgs>(args: SelectSubset<T, transaction_typesCreateArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Transaction_types.
-     * @param {transaction_typesCreateManyArgs} args - Arguments to create many Transaction_types.
-     * @example
-     * // Create many Transaction_types
-     * const transaction_types = await prisma.transaction_types.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends transaction_typesCreateManyArgs>(args?: SelectSubset<T, transaction_typesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Transaction_types and returns the data saved in the database.
-     * @param {transaction_typesCreateManyAndReturnArgs} args - Arguments to create many Transaction_types.
-     * @example
-     * // Create many Transaction_types
-     * const transaction_types = await prisma.transaction_types.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Transaction_types and only return the `id`
-     * const transaction_typesWithIdOnly = await prisma.transaction_types.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends transaction_typesCreateManyAndReturnArgs>(args?: SelectSubset<T, transaction_typesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Transaction_types.
-     * @param {transaction_typesDeleteArgs} args - Arguments to delete one Transaction_types.
-     * @example
-     * // Delete one Transaction_types
-     * const Transaction_types = await prisma.transaction_types.delete({
-     *   where: {
-     *     // ... filter to delete one Transaction_types
-     *   }
-     * })
-     * 
-     */
-    delete<T extends transaction_typesDeleteArgs>(args: SelectSubset<T, transaction_typesDeleteArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Transaction_types.
-     * @param {transaction_typesUpdateArgs} args - Arguments to update one Transaction_types.
-     * @example
-     * // Update one Transaction_types
-     * const transaction_types = await prisma.transaction_types.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends transaction_typesUpdateArgs>(args: SelectSubset<T, transaction_typesUpdateArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Transaction_types.
-     * @param {transaction_typesDeleteManyArgs} args - Arguments to filter Transaction_types to delete.
-     * @example
-     * // Delete a few Transaction_types
-     * const { count } = await prisma.transaction_types.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends transaction_typesDeleteManyArgs>(args?: SelectSubset<T, transaction_typesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Transaction_types.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Transaction_types
-     * const transaction_types = await prisma.transaction_types.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends transaction_typesUpdateManyArgs>(args: SelectSubset<T, transaction_typesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Transaction_types and returns the data updated in the database.
-     * @param {transaction_typesUpdateManyAndReturnArgs} args - Arguments to update many Transaction_types.
-     * @example
-     * // Update many Transaction_types
-     * const transaction_types = await prisma.transaction_types.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Transaction_types and only return the `id`
-     * const transaction_typesWithIdOnly = await prisma.transaction_types.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends transaction_typesUpdateManyAndReturnArgs>(args: SelectSubset<T, transaction_typesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Transaction_types.
-     * @param {transaction_typesUpsertArgs} args - Arguments to update or create a Transaction_types.
-     * @example
-     * // Update or create a Transaction_types
-     * const transaction_types = await prisma.transaction_types.upsert({
-     *   create: {
-     *     // ... data to create a Transaction_types
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Transaction_types we want to update
-     *   }
-     * })
-     */
-    upsert<T extends transaction_typesUpsertArgs>(args: SelectSubset<T, transaction_typesUpsertArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Transaction_types.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesCountArgs} args - Arguments to filter Transaction_types to count.
-     * @example
-     * // Count the number of Transaction_types
-     * const count = await prisma.transaction_types.count({
-     *   where: {
-     *     // ... the filter for the Transaction_types we want to count
-     *   }
-     * })
-    **/
-    count<T extends transaction_typesCountArgs>(
-      args?: Subset<T, transaction_typesCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Transaction_typesCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Transaction_types.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Transaction_typesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Transaction_typesAggregateArgs>(args: Subset<T, Transaction_typesAggregateArgs>): Prisma.PrismaPromise<GetTransaction_typesAggregateType<T>>
-
-    /**
-     * Group by Transaction_types.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {transaction_typesGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends transaction_typesGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: transaction_typesGroupByArgs['orderBy'] }
-        : { orderBy?: transaction_typesGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, transaction_typesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransaction_typesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the transaction_types model
-   */
-  readonly fields: transaction_typesFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for transaction_types.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__transaction_typesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    transaction_types<T extends transaction_types$transaction_typesArgs<ExtArgs> = {}>(args?: Subset<T, transaction_types$transaction_typesArgs<ExtArgs>>): Prisma__transaction_typesClient<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    other_transaction_types<T extends transaction_types$other_transaction_typesArgs<ExtArgs> = {}>(args?: Subset<T, transaction_types$other_transaction_typesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transaction_typesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    transactions<T extends transaction_types$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, transaction_types$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the transaction_types model
-   */
-  interface transaction_typesFieldRefs {
-    readonly id: FieldRef<"transaction_types", 'String'>
-    readonly name: FieldRef<"transaction_types", 'String'>
-    readonly label_english: FieldRef<"transaction_types", 'String'>
-    readonly description: FieldRef<"transaction_types", 'String'>
-    readonly is_active: FieldRef<"transaction_types", 'Boolean'>
-    readonly debit_or_credit: FieldRef<"transaction_types", 'credit_debit_type'>
-    readonly parent_id: FieldRef<"transaction_types", 'String'>
-    readonly created_at: FieldRef<"transaction_types", 'DateTime'>
-    readonly updated_at: FieldRef<"transaction_types", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * transaction_types findUnique
-   */
-  export type transaction_typesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter, which transaction_types to fetch.
-     */
-    where: transaction_typesWhereUniqueInput
-  }
-
-  /**
-   * transaction_types findUniqueOrThrow
-   */
-  export type transaction_typesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter, which transaction_types to fetch.
-     */
-    where: transaction_typesWhereUniqueInput
-  }
-
-  /**
-   * transaction_types findFirst
-   */
-  export type transaction_typesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter, which transaction_types to fetch.
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of transaction_types to fetch.
-     */
-    orderBy?: transaction_typesOrderByWithRelationInput | transaction_typesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for transaction_types.
-     */
-    cursor?: transaction_typesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` transaction_types from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` transaction_types.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of transaction_types.
-     */
-    distinct?: Transaction_typesScalarFieldEnum | Transaction_typesScalarFieldEnum[]
-  }
-
-  /**
-   * transaction_types findFirstOrThrow
-   */
-  export type transaction_typesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter, which transaction_types to fetch.
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of transaction_types to fetch.
-     */
-    orderBy?: transaction_typesOrderByWithRelationInput | transaction_typesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for transaction_types.
-     */
-    cursor?: transaction_typesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` transaction_types from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` transaction_types.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of transaction_types.
-     */
-    distinct?: Transaction_typesScalarFieldEnum | Transaction_typesScalarFieldEnum[]
-  }
-
-  /**
-   * transaction_types findMany
-   */
-  export type transaction_typesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter, which transaction_types to fetch.
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of transaction_types to fetch.
-     */
-    orderBy?: transaction_typesOrderByWithRelationInput | transaction_typesOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing transaction_types.
-     */
-    cursor?: transaction_typesWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` transaction_types from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` transaction_types.
-     */
-    skip?: number
-    distinct?: Transaction_typesScalarFieldEnum | Transaction_typesScalarFieldEnum[]
-  }
-
-  /**
-   * transaction_types create
-   */
-  export type transaction_typesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * The data needed to create a transaction_types.
-     */
-    data: XOR<transaction_typesCreateInput, transaction_typesUncheckedCreateInput>
-  }
-
-  /**
-   * transaction_types createMany
-   */
-  export type transaction_typesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many transaction_types.
-     */
-    data: transaction_typesCreateManyInput | transaction_typesCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * transaction_types createManyAndReturn
-   */
-  export type transaction_typesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * The data used to create many transaction_types.
-     */
-    data: transaction_typesCreateManyInput | transaction_typesCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * transaction_types update
-   */
-  export type transaction_typesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * The data needed to update a transaction_types.
-     */
-    data: XOR<transaction_typesUpdateInput, transaction_typesUncheckedUpdateInput>
-    /**
-     * Choose, which transaction_types to update.
-     */
-    where: transaction_typesWhereUniqueInput
-  }
-
-  /**
-   * transaction_types updateMany
-   */
-  export type transaction_typesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update transaction_types.
-     */
-    data: XOR<transaction_typesUpdateManyMutationInput, transaction_typesUncheckedUpdateManyInput>
-    /**
-     * Filter which transaction_types to update
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * Limit how many transaction_types to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * transaction_types updateManyAndReturn
-   */
-  export type transaction_typesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * The data used to update transaction_types.
-     */
-    data: XOR<transaction_typesUpdateManyMutationInput, transaction_typesUncheckedUpdateManyInput>
-    /**
-     * Filter which transaction_types to update
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * Limit how many transaction_types to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * transaction_types upsert
-   */
-  export type transaction_typesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * The filter to search for the transaction_types to update in case it exists.
-     */
-    where: transaction_typesWhereUniqueInput
-    /**
-     * In case the transaction_types found by the `where` argument doesn't exist, create a new transaction_types with this data.
-     */
-    create: XOR<transaction_typesCreateInput, transaction_typesUncheckedCreateInput>
-    /**
-     * In case the transaction_types was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<transaction_typesUpdateInput, transaction_typesUncheckedUpdateInput>
-  }
-
-  /**
-   * transaction_types delete
-   */
-  export type transaction_typesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    /**
-     * Filter which transaction_types to delete.
-     */
-    where: transaction_typesWhereUniqueInput
-  }
-
-  /**
-   * transaction_types deleteMany
-   */
-  export type transaction_typesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which transaction_types to delete
-     */
-    where?: transaction_typesWhereInput
-    /**
-     * Limit how many transaction_types to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * transaction_types.transaction_types
-   */
-  export type transaction_types$transaction_typesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    where?: transaction_typesWhereInput
-  }
-
-  /**
-   * transaction_types.other_transaction_types
-   */
-  export type transaction_types$other_transaction_typesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
-    where?: transaction_typesWhereInput
-    orderBy?: transaction_typesOrderByWithRelationInput | transaction_typesOrderByWithRelationInput[]
-    cursor?: transaction_typesWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Transaction_typesScalarFieldEnum | Transaction_typesScalarFieldEnum[]
-  }
-
-  /**
-   * transaction_types.transactions
-   */
-  export type transaction_types$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transactions
-     */
-    select?: transactionsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transactions
-     */
-    omit?: transactionsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transactionsInclude<ExtArgs> | null
-    where?: transactionsWhereInput
-    orderBy?: transactionsOrderByWithRelationInput | transactionsOrderByWithRelationInput[]
-    cursor?: transactionsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TransactionsScalarFieldEnum | TransactionsScalarFieldEnum[]
-  }
-
-  /**
-   * transaction_types without action
-   */
-  export type transaction_typesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the transaction_types
-     */
-    select?: transaction_typesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the transaction_types
-     */
-    omit?: transaction_typesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: transaction_typesInclude<ExtArgs> | null
   }
 
 
@@ -15069,7 +13606,6 @@ export namespace Prisma {
     account_types?: boolean | account_typesDefaultArgs<ExtArgs>
     members_accounts_onlink?: boolean | accounts$members_accounts_onlinkArgs<ExtArgs>
     transactions?: boolean | accounts$transactionsArgs<ExtArgs>
-    villages_accounts_onlink?: boolean | accounts$villages_accounts_onlinkArgs<ExtArgs>
     _count?: boolean | AccountsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["accounts"]>
 
@@ -15116,7 +13652,6 @@ export namespace Prisma {
     account_types?: boolean | account_typesDefaultArgs<ExtArgs>
     members_accounts_onlink?: boolean | accounts$members_accounts_onlinkArgs<ExtArgs>
     transactions?: boolean | accounts$transactionsArgs<ExtArgs>
-    villages_accounts_onlink?: boolean | accounts$villages_accounts_onlinkArgs<ExtArgs>
     _count?: boolean | AccountsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type accountsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15132,7 +13667,6 @@ export namespace Prisma {
       account_types: Prisma.$account_typesPayload<ExtArgs>
       members_accounts_onlink: Prisma.$members_accounts_onlinkPayload<ExtArgs>[]
       transactions: Prisma.$transactionsPayload<ExtArgs>[]
-      villages_accounts_onlink: Prisma.$villages_accounts_onlinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15541,7 +14075,6 @@ export namespace Prisma {
     account_types<T extends account_typesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, account_typesDefaultArgs<ExtArgs>>): Prisma__account_typesClient<$Result.GetResult<Prisma.$account_typesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     members_accounts_onlink<T extends accounts$members_accounts_onlinkArgs<ExtArgs> = {}>(args?: Subset<T, accounts$members_accounts_onlinkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$members_accounts_onlinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends accounts$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, accounts$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$transactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    villages_accounts_onlink<T extends accounts$villages_accounts_onlinkArgs<ExtArgs> = {}>(args?: Subset<T, accounts$villages_accounts_onlinkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16021,30 +14554,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransactionsScalarFieldEnum | TransactionsScalarFieldEnum[]
-  }
-
-  /**
-   * accounts.villages_accounts_onlink
-   */
-  export type accounts$villages_accounts_onlinkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    where?: villages_accounts_onlinkWhereInput
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Villages_accounts_onlinkScalarFieldEnum | Villages_accounts_onlinkScalarFieldEnum[]
   }
 
   /**
@@ -18167,1072 +16676,6 @@ export namespace Prisma {
 
 
   /**
-   * Model villages_accounts_onlink
-   */
-
-  export type AggregateVillages_accounts_onlink = {
-    _count: Villages_accounts_onlinkCountAggregateOutputType | null
-    _min: Villages_accounts_onlinkMinAggregateOutputType | null
-    _max: Villages_accounts_onlinkMaxAggregateOutputType | null
-  }
-
-  export type Villages_accounts_onlinkMinAggregateOutputType = {
-    id: string | null
-    village_id: string | null
-    account_id: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type Villages_accounts_onlinkMaxAggregateOutputType = {
-    id: string | null
-    village_id: string | null
-    account_id: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type Villages_accounts_onlinkCountAggregateOutputType = {
-    id: number
-    village_id: number
-    account_id: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type Villages_accounts_onlinkMinAggregateInputType = {
-    id?: true
-    village_id?: true
-    account_id?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type Villages_accounts_onlinkMaxAggregateInputType = {
-    id?: true
-    village_id?: true
-    account_id?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type Villages_accounts_onlinkCountAggregateInputType = {
-    id?: true
-    village_id?: true
-    account_id?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type Villages_accounts_onlinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which villages_accounts_onlink to aggregate.
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of villages_accounts_onlinks to fetch.
-     */
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` villages_accounts_onlinks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` villages_accounts_onlinks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned villages_accounts_onlinks
-    **/
-    _count?: true | Villages_accounts_onlinkCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Villages_accounts_onlinkMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Villages_accounts_onlinkMaxAggregateInputType
-  }
-
-  export type GetVillages_accounts_onlinkAggregateType<T extends Villages_accounts_onlinkAggregateArgs> = {
-        [P in keyof T & keyof AggregateVillages_accounts_onlink]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateVillages_accounts_onlink[P]>
-      : GetScalarType<T[P], AggregateVillages_accounts_onlink[P]>
-  }
-
-
-
-
-  export type villages_accounts_onlinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: villages_accounts_onlinkWhereInput
-    orderBy?: villages_accounts_onlinkOrderByWithAggregationInput | villages_accounts_onlinkOrderByWithAggregationInput[]
-    by: Villages_accounts_onlinkScalarFieldEnum[] | Villages_accounts_onlinkScalarFieldEnum
-    having?: villages_accounts_onlinkScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Villages_accounts_onlinkCountAggregateInputType | true
-    _min?: Villages_accounts_onlinkMinAggregateInputType
-    _max?: Villages_accounts_onlinkMaxAggregateInputType
-  }
-
-  export type Villages_accounts_onlinkGroupByOutputType = {
-    id: string
-    village_id: string
-    account_id: string
-    created_at: Date
-    updated_at: Date
-    _count: Villages_accounts_onlinkCountAggregateOutputType | null
-    _min: Villages_accounts_onlinkMinAggregateOutputType | null
-    _max: Villages_accounts_onlinkMaxAggregateOutputType | null
-  }
-
-  type GetVillages_accounts_onlinkGroupByPayload<T extends villages_accounts_onlinkGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Villages_accounts_onlinkGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Villages_accounts_onlinkGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Villages_accounts_onlinkGroupByOutputType[P]>
-            : GetScalarType<T[P], Villages_accounts_onlinkGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type villages_accounts_onlinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    village_id?: boolean
-    account_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["villages_accounts_onlink"]>
-
-  export type villages_accounts_onlinkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    village_id?: boolean
-    account_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["villages_accounts_onlink"]>
-
-  export type villages_accounts_onlinkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    village_id?: boolean
-    account_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["villages_accounts_onlink"]>
-
-  export type villages_accounts_onlinkSelectScalar = {
-    id?: boolean
-    village_id?: boolean
-    account_id?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type villages_accounts_onlinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "village_id" | "account_id" | "created_at" | "updated_at", ExtArgs["result"]["villages_accounts_onlink"]>
-  export type villages_accounts_onlinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }
-  export type villages_accounts_onlinkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }
-  export type villages_accounts_onlinkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    accounts?: boolean | accountsDefaultArgs<ExtArgs>
-    villages?: boolean | villagesDefaultArgs<ExtArgs>
-  }
-
-  export type $villages_accounts_onlinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "villages_accounts_onlink"
-    objects: {
-      accounts: Prisma.$accountsPayload<ExtArgs>
-      villages: Prisma.$villagesPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      village_id: string
-      account_id: string
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["villages_accounts_onlink"]>
-    composites: {}
-  }
-
-  type villages_accounts_onlinkGetPayload<S extends boolean | null | undefined | villages_accounts_onlinkDefaultArgs> = $Result.GetResult<Prisma.$villages_accounts_onlinkPayload, S>
-
-  type villages_accounts_onlinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<villages_accounts_onlinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Villages_accounts_onlinkCountAggregateInputType | true
-    }
-
-  export interface villages_accounts_onlinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['villages_accounts_onlink'], meta: { name: 'villages_accounts_onlink' } }
-    /**
-     * Find zero or one Villages_accounts_onlink that matches the filter.
-     * @param {villages_accounts_onlinkFindUniqueArgs} args - Arguments to find a Villages_accounts_onlink
-     * @example
-     * // Get one Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends villages_accounts_onlinkFindUniqueArgs>(args: SelectSubset<T, villages_accounts_onlinkFindUniqueArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Villages_accounts_onlink that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {villages_accounts_onlinkFindUniqueOrThrowArgs} args - Arguments to find a Villages_accounts_onlink
-     * @example
-     * // Get one Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends villages_accounts_onlinkFindUniqueOrThrowArgs>(args: SelectSubset<T, villages_accounts_onlinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Villages_accounts_onlink that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkFindFirstArgs} args - Arguments to find a Villages_accounts_onlink
-     * @example
-     * // Get one Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends villages_accounts_onlinkFindFirstArgs>(args?: SelectSubset<T, villages_accounts_onlinkFindFirstArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Villages_accounts_onlink that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkFindFirstOrThrowArgs} args - Arguments to find a Villages_accounts_onlink
-     * @example
-     * // Get one Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends villages_accounts_onlinkFindFirstOrThrowArgs>(args?: SelectSubset<T, villages_accounts_onlinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Villages_accounts_onlinks that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Villages_accounts_onlinks
-     * const villages_accounts_onlinks = await prisma.villages_accounts_onlink.findMany()
-     * 
-     * // Get first 10 Villages_accounts_onlinks
-     * const villages_accounts_onlinks = await prisma.villages_accounts_onlink.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const villages_accounts_onlinkWithIdOnly = await prisma.villages_accounts_onlink.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends villages_accounts_onlinkFindManyArgs>(args?: SelectSubset<T, villages_accounts_onlinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Villages_accounts_onlink.
-     * @param {villages_accounts_onlinkCreateArgs} args - Arguments to create a Villages_accounts_onlink.
-     * @example
-     * // Create one Villages_accounts_onlink
-     * const Villages_accounts_onlink = await prisma.villages_accounts_onlink.create({
-     *   data: {
-     *     // ... data to create a Villages_accounts_onlink
-     *   }
-     * })
-     * 
-     */
-    create<T extends villages_accounts_onlinkCreateArgs>(args: SelectSubset<T, villages_accounts_onlinkCreateArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Villages_accounts_onlinks.
-     * @param {villages_accounts_onlinkCreateManyArgs} args - Arguments to create many Villages_accounts_onlinks.
-     * @example
-     * // Create many Villages_accounts_onlinks
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends villages_accounts_onlinkCreateManyArgs>(args?: SelectSubset<T, villages_accounts_onlinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Villages_accounts_onlinks and returns the data saved in the database.
-     * @param {villages_accounts_onlinkCreateManyAndReturnArgs} args - Arguments to create many Villages_accounts_onlinks.
-     * @example
-     * // Create many Villages_accounts_onlinks
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Villages_accounts_onlinks and only return the `id`
-     * const villages_accounts_onlinkWithIdOnly = await prisma.villages_accounts_onlink.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends villages_accounts_onlinkCreateManyAndReturnArgs>(args?: SelectSubset<T, villages_accounts_onlinkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Villages_accounts_onlink.
-     * @param {villages_accounts_onlinkDeleteArgs} args - Arguments to delete one Villages_accounts_onlink.
-     * @example
-     * // Delete one Villages_accounts_onlink
-     * const Villages_accounts_onlink = await prisma.villages_accounts_onlink.delete({
-     *   where: {
-     *     // ... filter to delete one Villages_accounts_onlink
-     *   }
-     * })
-     * 
-     */
-    delete<T extends villages_accounts_onlinkDeleteArgs>(args: SelectSubset<T, villages_accounts_onlinkDeleteArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Villages_accounts_onlink.
-     * @param {villages_accounts_onlinkUpdateArgs} args - Arguments to update one Villages_accounts_onlink.
-     * @example
-     * // Update one Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends villages_accounts_onlinkUpdateArgs>(args: SelectSubset<T, villages_accounts_onlinkUpdateArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Villages_accounts_onlinks.
-     * @param {villages_accounts_onlinkDeleteManyArgs} args - Arguments to filter Villages_accounts_onlinks to delete.
-     * @example
-     * // Delete a few Villages_accounts_onlinks
-     * const { count } = await prisma.villages_accounts_onlink.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends villages_accounts_onlinkDeleteManyArgs>(args?: SelectSubset<T, villages_accounts_onlinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Villages_accounts_onlinks.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Villages_accounts_onlinks
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends villages_accounts_onlinkUpdateManyArgs>(args: SelectSubset<T, villages_accounts_onlinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Villages_accounts_onlinks and returns the data updated in the database.
-     * @param {villages_accounts_onlinkUpdateManyAndReturnArgs} args - Arguments to update many Villages_accounts_onlinks.
-     * @example
-     * // Update many Villages_accounts_onlinks
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Villages_accounts_onlinks and only return the `id`
-     * const villages_accounts_onlinkWithIdOnly = await prisma.villages_accounts_onlink.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends villages_accounts_onlinkUpdateManyAndReturnArgs>(args: SelectSubset<T, villages_accounts_onlinkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Villages_accounts_onlink.
-     * @param {villages_accounts_onlinkUpsertArgs} args - Arguments to update or create a Villages_accounts_onlink.
-     * @example
-     * // Update or create a Villages_accounts_onlink
-     * const villages_accounts_onlink = await prisma.villages_accounts_onlink.upsert({
-     *   create: {
-     *     // ... data to create a Villages_accounts_onlink
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Villages_accounts_onlink we want to update
-     *   }
-     * })
-     */
-    upsert<T extends villages_accounts_onlinkUpsertArgs>(args: SelectSubset<T, villages_accounts_onlinkUpsertArgs<ExtArgs>>): Prisma__villages_accounts_onlinkClient<$Result.GetResult<Prisma.$villages_accounts_onlinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Villages_accounts_onlinks.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkCountArgs} args - Arguments to filter Villages_accounts_onlinks to count.
-     * @example
-     * // Count the number of Villages_accounts_onlinks
-     * const count = await prisma.villages_accounts_onlink.count({
-     *   where: {
-     *     // ... the filter for the Villages_accounts_onlinks we want to count
-     *   }
-     * })
-    **/
-    count<T extends villages_accounts_onlinkCountArgs>(
-      args?: Subset<T, villages_accounts_onlinkCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Villages_accounts_onlinkCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Villages_accounts_onlink.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Villages_accounts_onlinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Villages_accounts_onlinkAggregateArgs>(args: Subset<T, Villages_accounts_onlinkAggregateArgs>): Prisma.PrismaPromise<GetVillages_accounts_onlinkAggregateType<T>>
-
-    /**
-     * Group by Villages_accounts_onlink.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {villages_accounts_onlinkGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends villages_accounts_onlinkGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: villages_accounts_onlinkGroupByArgs['orderBy'] }
-        : { orderBy?: villages_accounts_onlinkGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, villages_accounts_onlinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVillages_accounts_onlinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the villages_accounts_onlink model
-   */
-  readonly fields: villages_accounts_onlinkFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for villages_accounts_onlink.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__villages_accounts_onlinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    accounts<T extends accountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, accountsDefaultArgs<ExtArgs>>): Prisma__accountsClient<$Result.GetResult<Prisma.$accountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    villages<T extends villagesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, villagesDefaultArgs<ExtArgs>>): Prisma__villagesClient<$Result.GetResult<Prisma.$villagesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the villages_accounts_onlink model
-   */
-  interface villages_accounts_onlinkFieldRefs {
-    readonly id: FieldRef<"villages_accounts_onlink", 'String'>
-    readonly village_id: FieldRef<"villages_accounts_onlink", 'String'>
-    readonly account_id: FieldRef<"villages_accounts_onlink", 'String'>
-    readonly created_at: FieldRef<"villages_accounts_onlink", 'DateTime'>
-    readonly updated_at: FieldRef<"villages_accounts_onlink", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * villages_accounts_onlink findUnique
-   */
-  export type villages_accounts_onlinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter, which villages_accounts_onlink to fetch.
-     */
-    where: villages_accounts_onlinkWhereUniqueInput
-  }
-
-  /**
-   * villages_accounts_onlink findUniqueOrThrow
-   */
-  export type villages_accounts_onlinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter, which villages_accounts_onlink to fetch.
-     */
-    where: villages_accounts_onlinkWhereUniqueInput
-  }
-
-  /**
-   * villages_accounts_onlink findFirst
-   */
-  export type villages_accounts_onlinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter, which villages_accounts_onlink to fetch.
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of villages_accounts_onlinks to fetch.
-     */
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for villages_accounts_onlinks.
-     */
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` villages_accounts_onlinks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` villages_accounts_onlinks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of villages_accounts_onlinks.
-     */
-    distinct?: Villages_accounts_onlinkScalarFieldEnum | Villages_accounts_onlinkScalarFieldEnum[]
-  }
-
-  /**
-   * villages_accounts_onlink findFirstOrThrow
-   */
-  export type villages_accounts_onlinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter, which villages_accounts_onlink to fetch.
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of villages_accounts_onlinks to fetch.
-     */
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for villages_accounts_onlinks.
-     */
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` villages_accounts_onlinks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` villages_accounts_onlinks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of villages_accounts_onlinks.
-     */
-    distinct?: Villages_accounts_onlinkScalarFieldEnum | Villages_accounts_onlinkScalarFieldEnum[]
-  }
-
-  /**
-   * villages_accounts_onlink findMany
-   */
-  export type villages_accounts_onlinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter, which villages_accounts_onlinks to fetch.
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of villages_accounts_onlinks to fetch.
-     */
-    orderBy?: villages_accounts_onlinkOrderByWithRelationInput | villages_accounts_onlinkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing villages_accounts_onlinks.
-     */
-    cursor?: villages_accounts_onlinkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` villages_accounts_onlinks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` villages_accounts_onlinks.
-     */
-    skip?: number
-    distinct?: Villages_accounts_onlinkScalarFieldEnum | Villages_accounts_onlinkScalarFieldEnum[]
-  }
-
-  /**
-   * villages_accounts_onlink create
-   */
-  export type villages_accounts_onlinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * The data needed to create a villages_accounts_onlink.
-     */
-    data: XOR<villages_accounts_onlinkCreateInput, villages_accounts_onlinkUncheckedCreateInput>
-  }
-
-  /**
-   * villages_accounts_onlink createMany
-   */
-  export type villages_accounts_onlinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many villages_accounts_onlinks.
-     */
-    data: villages_accounts_onlinkCreateManyInput | villages_accounts_onlinkCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * villages_accounts_onlink createManyAndReturn
-   */
-  export type villages_accounts_onlinkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * The data used to create many villages_accounts_onlinks.
-     */
-    data: villages_accounts_onlinkCreateManyInput | villages_accounts_onlinkCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * villages_accounts_onlink update
-   */
-  export type villages_accounts_onlinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * The data needed to update a villages_accounts_onlink.
-     */
-    data: XOR<villages_accounts_onlinkUpdateInput, villages_accounts_onlinkUncheckedUpdateInput>
-    /**
-     * Choose, which villages_accounts_onlink to update.
-     */
-    where: villages_accounts_onlinkWhereUniqueInput
-  }
-
-  /**
-   * villages_accounts_onlink updateMany
-   */
-  export type villages_accounts_onlinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update villages_accounts_onlinks.
-     */
-    data: XOR<villages_accounts_onlinkUpdateManyMutationInput, villages_accounts_onlinkUncheckedUpdateManyInput>
-    /**
-     * Filter which villages_accounts_onlinks to update
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * Limit how many villages_accounts_onlinks to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * villages_accounts_onlink updateManyAndReturn
-   */
-  export type villages_accounts_onlinkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * The data used to update villages_accounts_onlinks.
-     */
-    data: XOR<villages_accounts_onlinkUpdateManyMutationInput, villages_accounts_onlinkUncheckedUpdateManyInput>
-    /**
-     * Filter which villages_accounts_onlinks to update
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * Limit how many villages_accounts_onlinks to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * villages_accounts_onlink upsert
-   */
-  export type villages_accounts_onlinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * The filter to search for the villages_accounts_onlink to update in case it exists.
-     */
-    where: villages_accounts_onlinkWhereUniqueInput
-    /**
-     * In case the villages_accounts_onlink found by the `where` argument doesn't exist, create a new villages_accounts_onlink with this data.
-     */
-    create: XOR<villages_accounts_onlinkCreateInput, villages_accounts_onlinkUncheckedCreateInput>
-    /**
-     * In case the villages_accounts_onlink was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<villages_accounts_onlinkUpdateInput, villages_accounts_onlinkUncheckedUpdateInput>
-  }
-
-  /**
-   * villages_accounts_onlink delete
-   */
-  export type villages_accounts_onlinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-    /**
-     * Filter which villages_accounts_onlink to delete.
-     */
-    where: villages_accounts_onlinkWhereUniqueInput
-  }
-
-  /**
-   * villages_accounts_onlink deleteMany
-   */
-  export type villages_accounts_onlinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which villages_accounts_onlinks to delete
-     */
-    where?: villages_accounts_onlinkWhereInput
-    /**
-     * Limit how many villages_accounts_onlinks to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * villages_accounts_onlink without action
-   */
-  export type villages_accounts_onlinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the villages_accounts_onlink
-     */
-    select?: villages_accounts_onlinkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the villages_accounts_onlink
-     */
-    omit?: villages_accounts_onlinkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: villages_accounts_onlinkInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -19328,7 +16771,7 @@ export namespace Prisma {
     id: 'id',
     supervisor_id: 'supervisor_id',
     member_id: 'member_id',
-    transaction_type_id: 'transaction_type_id',
+    transaction_type: 'transaction_type',
     account_id: 'account_id',
     amount: 'amount',
     comments: 'comments',
@@ -19351,21 +16794,6 @@ export namespace Prisma {
   };
 
   export type VillagesScalarFieldEnum = (typeof VillagesScalarFieldEnum)[keyof typeof VillagesScalarFieldEnum]
-
-
-  export const Transaction_typesScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    label_english: 'label_english',
-    description: 'description',
-    is_active: 'is_active',
-    debit_or_credit: 'debit_or_credit',
-    parent_id: 'parent_id',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type Transaction_typesScalarFieldEnum = (typeof Transaction_typesScalarFieldEnum)[keyof typeof Transaction_typesScalarFieldEnum]
 
 
   export const EndpointaccessScalarFieldEnum: {
@@ -19435,17 +16863,6 @@ export namespace Prisma {
   export type Members_accounts_onlinkScalarFieldEnum = (typeof Members_accounts_onlinkScalarFieldEnum)[keyof typeof Members_accounts_onlinkScalarFieldEnum]
 
 
-  export const Villages_accounts_onlinkScalarFieldEnum: {
-    id: 'id',
-    village_id: 'village_id',
-    account_id: 'account_id',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type Villages_accounts_onlinkScalarFieldEnum = (typeof Villages_accounts_onlinkScalarFieldEnum)[keyof typeof Villages_accounts_onlinkScalarFieldEnum]
-
-
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -19511,20 +16928,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'credit_debit_type'
    */
   export type Enumcredit_debit_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'credit_debit_type'>
@@ -19535,6 +16938,20 @@ export namespace Prisma {
    * Reference to a field of type 'credit_debit_type[]'
    */
   export type ListEnumcredit_debit_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'credit_debit_type[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -19852,6 +17269,8 @@ export namespace Prisma {
 
   export type membersWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    phone_number?: string
+    aadhar_number?: string
     AND?: membersWhereInput | membersWhereInput[]
     OR?: membersWhereInput[]
     NOT?: membersWhereInput | membersWhereInput[]
@@ -19859,16 +17278,14 @@ export namespace Prisma {
     family_name?: StringFilter<"members"> | string
     village_id?: UuidFilter<"members"> | string
     house_number?: StringFilter<"members"> | string
-    phone_number?: StringFilter<"members"> | string
     husband_or_father_name?: StringFilter<"members"> | string
-    aadhar_number?: StringFilter<"members"> | string
     created_at?: DateTimeFilter<"members"> | Date | string
     updated_at?: DateTimeFilter<"members"> | Date | string
     name_labels?: Member_name_labelsListRelationFilter
     villages?: XOR<VillagesScalarRelationFilter, villagesWhereInput>
     members_accounts_onlink?: Members_accounts_onlinkListRelationFilter
     transactions?: TransactionsListRelationFilter
-  }, "id">
+  }, "id" | "phone_number" | "aadhar_number">
 
   export type membersOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19975,7 +17392,7 @@ export namespace Prisma {
     id?: UuidFilter<"transactions"> | string
     supervisor_id?: UuidFilter<"transactions"> | string
     member_id?: UuidFilter<"transactions"> | string
-    transaction_type_id?: UuidFilter<"transactions"> | string
+    transaction_type?: Enumcredit_debit_typeFilter<"transactions"> | $Enums.credit_debit_type
     account_id?: UuidFilter<"transactions"> | string
     amount?: IntFilter<"transactions"> | number
     comments?: StringNullableFilter<"transactions"> | string | null
@@ -19986,7 +17403,6 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"transactions"> | Date | string
     accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
-    transaction_types?: XOR<Transaction_typesScalarRelationFilter, transaction_typesWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
@@ -19994,7 +17410,7 @@ export namespace Prisma {
     id?: SortOrder
     supervisor_id?: SortOrder
     member_id?: SortOrder
-    transaction_type_id?: SortOrder
+    transaction_type?: SortOrder
     account_id?: SortOrder
     amount?: SortOrder
     comments?: SortOrderInput | SortOrder
@@ -20005,7 +17421,6 @@ export namespace Prisma {
     updated_at?: SortOrder
     accounts?: accountsOrderByWithRelationInput
     members?: membersOrderByWithRelationInput
-    transaction_types?: transaction_typesOrderByWithRelationInput
     users?: usersOrderByWithRelationInput
   }
 
@@ -20016,7 +17431,7 @@ export namespace Prisma {
     NOT?: transactionsWhereInput | transactionsWhereInput[]
     supervisor_id?: UuidFilter<"transactions"> | string
     member_id?: UuidFilter<"transactions"> | string
-    transaction_type_id?: UuidFilter<"transactions"> | string
+    transaction_type?: Enumcredit_debit_typeFilter<"transactions"> | $Enums.credit_debit_type
     account_id?: UuidFilter<"transactions"> | string
     amount?: IntFilter<"transactions"> | number
     comments?: StringNullableFilter<"transactions"> | string | null
@@ -20027,7 +17442,6 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"transactions"> | Date | string
     accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
-    transaction_types?: XOR<Transaction_typesScalarRelationFilter, transaction_typesWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }, "id">
 
@@ -20035,7 +17449,7 @@ export namespace Prisma {
     id?: SortOrder
     supervisor_id?: SortOrder
     member_id?: SortOrder
-    transaction_type_id?: SortOrder
+    transaction_type?: SortOrder
     account_id?: SortOrder
     amount?: SortOrder
     comments?: SortOrderInput | SortOrder
@@ -20058,7 +17472,7 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"transactions"> | string
     supervisor_id?: UuidWithAggregatesFilter<"transactions"> | string
     member_id?: UuidWithAggregatesFilter<"transactions"> | string
-    transaction_type_id?: UuidWithAggregatesFilter<"transactions"> | string
+    transaction_type?: Enumcredit_debit_typeWithAggregatesFilter<"transactions"> | $Enums.credit_debit_type
     account_id?: UuidWithAggregatesFilter<"transactions"> | string
     amount?: IntWithAggregatesFilter<"transactions"> | number
     comments?: StringNullableWithAggregatesFilter<"transactions"> | string | null
@@ -20080,7 +17494,6 @@ export namespace Prisma {
     mandal_id?: UuidFilter<"villages"> | string
     members?: MembersListRelationFilter
     mandals?: XOR<MandalsScalarRelationFilter, mandalsWhereInput>
-    villages_accounts_onlink?: Villages_accounts_onlinkListRelationFilter
   }
 
   export type villagesOrderByWithRelationInput = {
@@ -20091,7 +17504,6 @@ export namespace Prisma {
     mandal_id?: SortOrder
     members?: membersOrderByRelationAggregateInput
     mandals?: mandalsOrderByWithRelationInput
-    villages_accounts_onlink?: villages_accounts_onlinkOrderByRelationAggregateInput
   }
 
   export type villagesWhereUniqueInput = Prisma.AtLeast<{
@@ -20105,7 +17517,6 @@ export namespace Prisma {
     mandal_id?: UuidFilter<"villages"> | string
     members?: MembersListRelationFilter
     mandals?: XOR<MandalsScalarRelationFilter, mandalsWhereInput>
-    villages_accounts_onlink?: Villages_accounts_onlinkListRelationFilter
   }, "id">
 
   export type villagesOrderByWithAggregationInput = {
@@ -20128,87 +17539,6 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"villages"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"villages"> | Date | string
     mandal_id?: UuidWithAggregatesFilter<"villages"> | string
-  }
-
-  export type transaction_typesWhereInput = {
-    AND?: transaction_typesWhereInput | transaction_typesWhereInput[]
-    OR?: transaction_typesWhereInput[]
-    NOT?: transaction_typesWhereInput | transaction_typesWhereInput[]
-    id?: UuidFilter<"transaction_types"> | string
-    name?: StringFilter<"transaction_types"> | string
-    label_english?: StringFilter<"transaction_types"> | string
-    description?: StringNullableFilter<"transaction_types"> | string | null
-    is_active?: BoolFilter<"transaction_types"> | boolean
-    debit_or_credit?: Enumcredit_debit_typeFilter<"transaction_types"> | $Enums.credit_debit_type
-    parent_id?: UuidNullableFilter<"transaction_types"> | string | null
-    created_at?: DateTimeFilter<"transaction_types"> | Date | string
-    updated_at?: DateTimeFilter<"transaction_types"> | Date | string
-    transaction_types?: XOR<Transaction_typesNullableScalarRelationFilter, transaction_typesWhereInput> | null
-    other_transaction_types?: Transaction_typesListRelationFilter
-    transactions?: TransactionsListRelationFilter
-  }
-
-  export type transaction_typesOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    label_english?: SortOrder
-    description?: SortOrderInput | SortOrder
-    is_active?: SortOrder
-    debit_or_credit?: SortOrder
-    parent_id?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    transaction_types?: transaction_typesOrderByWithRelationInput
-    other_transaction_types?: transaction_typesOrderByRelationAggregateInput
-    transactions?: transactionsOrderByRelationAggregateInput
-  }
-
-  export type transaction_typesWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    name?: string
-    AND?: transaction_typesWhereInput | transaction_typesWhereInput[]
-    OR?: transaction_typesWhereInput[]
-    NOT?: transaction_typesWhereInput | transaction_typesWhereInput[]
-    label_english?: StringFilter<"transaction_types"> | string
-    description?: StringNullableFilter<"transaction_types"> | string | null
-    is_active?: BoolFilter<"transaction_types"> | boolean
-    debit_or_credit?: Enumcredit_debit_typeFilter<"transaction_types"> | $Enums.credit_debit_type
-    parent_id?: UuidNullableFilter<"transaction_types"> | string | null
-    created_at?: DateTimeFilter<"transaction_types"> | Date | string
-    updated_at?: DateTimeFilter<"transaction_types"> | Date | string
-    transaction_types?: XOR<Transaction_typesNullableScalarRelationFilter, transaction_typesWhereInput> | null
-    other_transaction_types?: Transaction_typesListRelationFilter
-    transactions?: TransactionsListRelationFilter
-  }, "id" | "name">
-
-  export type transaction_typesOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    label_english?: SortOrder
-    description?: SortOrderInput | SortOrder
-    is_active?: SortOrder
-    debit_or_credit?: SortOrder
-    parent_id?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: transaction_typesCountOrderByAggregateInput
-    _max?: transaction_typesMaxOrderByAggregateInput
-    _min?: transaction_typesMinOrderByAggregateInput
-  }
-
-  export type transaction_typesScalarWhereWithAggregatesInput = {
-    AND?: transaction_typesScalarWhereWithAggregatesInput | transaction_typesScalarWhereWithAggregatesInput[]
-    OR?: transaction_typesScalarWhereWithAggregatesInput[]
-    NOT?: transaction_typesScalarWhereWithAggregatesInput | transaction_typesScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"transaction_types"> | string
-    name?: StringWithAggregatesFilter<"transaction_types"> | string
-    label_english?: StringWithAggregatesFilter<"transaction_types"> | string
-    description?: StringNullableWithAggregatesFilter<"transaction_types"> | string | null
-    is_active?: BoolWithAggregatesFilter<"transaction_types"> | boolean
-    debit_or_credit?: Enumcredit_debit_typeWithAggregatesFilter<"transaction_types"> | $Enums.credit_debit_type
-    parent_id?: UuidNullableWithAggregatesFilter<"transaction_types"> | string | null
-    created_at?: DateTimeWithAggregatesFilter<"transaction_types"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"transaction_types"> | Date | string
   }
 
   export type endpointaccessWhereInput = {
@@ -20360,7 +17690,6 @@ export namespace Prisma {
     account_types?: XOR<Account_typesScalarRelationFilter, account_typesWhereInput>
     members_accounts_onlink?: Members_accounts_onlinkListRelationFilter
     transactions?: TransactionsListRelationFilter
-    villages_accounts_onlink?: Villages_accounts_onlinkListRelationFilter
   }
 
   export type accountsOrderByWithRelationInput = {
@@ -20376,7 +17705,6 @@ export namespace Prisma {
     account_types?: account_typesOrderByWithRelationInput
     members_accounts_onlink?: members_accounts_onlinkOrderByRelationAggregateInput
     transactions?: transactionsOrderByRelationAggregateInput
-    villages_accounts_onlink?: villages_accounts_onlinkOrderByRelationAggregateInput
   }
 
   export type accountsWhereUniqueInput = Prisma.AtLeast<{
@@ -20395,7 +17723,6 @@ export namespace Prisma {
     account_types?: XOR<Account_typesScalarRelationFilter, account_typesWhereInput>
     members_accounts_onlink?: Members_accounts_onlinkListRelationFilter
     transactions?: TransactionsListRelationFilter
-    villages_accounts_onlink?: Villages_accounts_onlinkListRelationFilter
   }, "id">
 
   export type accountsOrderByWithAggregationInput = {
@@ -20555,65 +17882,6 @@ export namespace Prisma {
     account_id?: UuidWithAggregatesFilter<"members_accounts_onlink"> | string
     created_at?: DateTimeWithAggregatesFilter<"members_accounts_onlink"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"members_accounts_onlink"> | Date | string
-  }
-
-  export type villages_accounts_onlinkWhereInput = {
-    AND?: villages_accounts_onlinkWhereInput | villages_accounts_onlinkWhereInput[]
-    OR?: villages_accounts_onlinkWhereInput[]
-    NOT?: villages_accounts_onlinkWhereInput | villages_accounts_onlinkWhereInput[]
-    id?: UuidFilter<"villages_accounts_onlink"> | string
-    village_id?: UuidFilter<"villages_accounts_onlink"> | string
-    account_id?: UuidFilter<"villages_accounts_onlink"> | string
-    created_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-    updated_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-    accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
-    villages?: XOR<VillagesScalarRelationFilter, villagesWhereInput>
-  }
-
-  export type villages_accounts_onlinkOrderByWithRelationInput = {
-    id?: SortOrder
-    village_id?: SortOrder
-    account_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    accounts?: accountsOrderByWithRelationInput
-    villages?: villagesOrderByWithRelationInput
-  }
-
-  export type villages_accounts_onlinkWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    village_id_account_id?: villages_accounts_onlinkVillage_idAccount_idCompoundUniqueInput
-    AND?: villages_accounts_onlinkWhereInput | villages_accounts_onlinkWhereInput[]
-    OR?: villages_accounts_onlinkWhereInput[]
-    NOT?: villages_accounts_onlinkWhereInput | villages_accounts_onlinkWhereInput[]
-    village_id?: UuidFilter<"villages_accounts_onlink"> | string
-    account_id?: UuidFilter<"villages_accounts_onlink"> | string
-    created_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-    updated_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-    accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
-    villages?: XOR<VillagesScalarRelationFilter, villagesWhereInput>
-  }, "id" | "village_id_account_id">
-
-  export type villages_accounts_onlinkOrderByWithAggregationInput = {
-    id?: SortOrder
-    village_id?: SortOrder
-    account_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: villages_accounts_onlinkCountOrderByAggregateInput
-    _max?: villages_accounts_onlinkMaxOrderByAggregateInput
-    _min?: villages_accounts_onlinkMinOrderByAggregateInput
-  }
-
-  export type villages_accounts_onlinkScalarWhereWithAggregatesInput = {
-    AND?: villages_accounts_onlinkScalarWhereWithAggregatesInput | villages_accounts_onlinkScalarWhereWithAggregatesInput[]
-    OR?: villages_accounts_onlinkScalarWhereWithAggregatesInput[]
-    NOT?: villages_accounts_onlinkScalarWhereWithAggregatesInput | villages_accounts_onlinkScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"villages_accounts_onlink"> | string
-    village_id?: UuidWithAggregatesFilter<"villages_accounts_onlink"> | string
-    account_id?: UuidWithAggregatesFilter<"villages_accounts_onlink"> | string
-    created_at?: DateTimeWithAggregatesFilter<"villages_accounts_onlink"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"villages_accounts_onlink"> | Date | string
   }
 
   export type usersCreateInput = {
@@ -21065,6 +18333,7 @@ export namespace Prisma {
 
   export type transactionsCreateInput = {
     id?: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
@@ -21074,7 +18343,6 @@ export namespace Prisma {
     updated_at?: Date | string
     accounts: accountsCreateNestedOneWithoutTransactionsInput
     members: membersCreateNestedOneWithoutTransactionsInput
-    transaction_types: transaction_typesCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
   }
 
@@ -21082,7 +18350,7 @@ export namespace Prisma {
     id?: string
     supervisor_id: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -21095,6 +18363,7 @@ export namespace Prisma {
 
   export type transactionsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21104,7 +18373,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    transaction_types?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
@@ -21112,7 +18380,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21127,7 +18395,7 @@ export namespace Prisma {
     id?: string
     supervisor_id: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -21140,6 +18408,7 @@ export namespace Prisma {
 
   export type transactionsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21153,7 +18422,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21171,7 +18440,6 @@ export namespace Prisma {
     updated_at?: Date | string
     members?: membersCreateNestedManyWithoutVillagesInput
     mandals: mandalsCreateNestedOneWithoutVillagesInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesUncheckedCreateInput = {
@@ -21181,7 +18449,6 @@ export namespace Prisma {
     updated_at?: Date | string
     mandal_id: string
     members?: membersUncheckedCreateNestedManyWithoutVillagesInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesUpdateInput = {
@@ -21191,7 +18458,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUpdateManyWithoutVillagesNestedInput
     mandals?: mandalsUpdateOneRequiredWithoutVillagesNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutVillagesNestedInput
   }
 
   export type villagesUncheckedUpdateInput = {
@@ -21201,7 +18467,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     mandal_id?: StringFieldUpdateOperationsInput | string
     members?: membersUncheckedUpdateManyWithoutVillagesNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesNestedInput
   }
 
   export type villagesCreateManyInput = {
@@ -21225,97 +18490,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     mandal_id?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type transaction_typesCreateInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-    transaction_types?: transaction_typesCreateNestedOneWithoutOther_transaction_typesInput
-    other_transaction_types?: transaction_typesCreateNestedManyWithoutTransaction_typesInput
-    transactions?: transactionsCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesUncheckedCreateInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    parent_id?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    other_transaction_types?: transaction_typesUncheckedCreateNestedManyWithoutTransaction_typesInput
-    transactions?: transactionsUncheckedCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transaction_types?: transaction_typesUpdateOneWithoutOther_transaction_typesNestedInput
-    other_transaction_types?: transaction_typesUpdateManyWithoutTransaction_typesNestedInput
-    transactions?: transactionsUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    parent_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    other_transaction_types?: transaction_typesUncheckedUpdateManyWithoutTransaction_typesNestedInput
-    transactions?: transactionsUncheckedUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesCreateManyInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    parent_id?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type transaction_typesUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type transaction_typesUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    parent_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type endpointaccessCreateInput = {
@@ -21481,7 +18655,6 @@ export namespace Prisma {
     account_types: account_typesCreateNestedOneWithoutAccountsInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutAccountsInput
     transactions?: transactionsCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsUncheckedCreateInput = {
@@ -21496,7 +18669,6 @@ export namespace Prisma {
     updated_at?: Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsUpdateInput = {
@@ -21511,7 +18683,6 @@ export namespace Prisma {
     account_types?: account_typesUpdateOneRequiredWithoutAccountsNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutAccountsNestedInput
     transactions?: transactionsUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsUncheckedUpdateInput = {
@@ -21526,7 +18697,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsCreateManyInput = {
@@ -21690,60 +18860,6 @@ export namespace Prisma {
   export type members_accounts_onlinkUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkCreateInput = {
-    id?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    accounts: accountsCreateNestedOneWithoutVillages_accounts_onlinkInput
-    villages: villagesCreateNestedOneWithoutVillages_accounts_onlinkInput
-  }
-
-  export type villages_accounts_onlinkUncheckedCreateInput = {
-    id?: string
-    village_id: string
-    account_id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: accountsUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput
-    villages?: villagesUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    village_id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkCreateManyInput = {
-    id?: string
-    village_id: string
-    account_id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    village_id?: StringFieldUpdateOperationsInput | string
     account_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22202,6 +19318,13 @@ export namespace Prisma {
     updated_at?: SortOrder
   }
 
+  export type Enumcredit_debit_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumcredit_debit_typeFilter<$PrismaModel> | $Enums.credit_debit_type
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -22218,16 +19341,11 @@ export namespace Prisma {
     isNot?: accountsWhereInput
   }
 
-  export type Transaction_typesScalarRelationFilter = {
-    is?: transaction_typesWhereInput
-    isNot?: transaction_typesWhereInput
-  }
-
   export type transactionsCountOrderByAggregateInput = {
     id?: SortOrder
     supervisor_id?: SortOrder
     member_id?: SortOrder
-    transaction_type_id?: SortOrder
+    transaction_type?: SortOrder
     account_id?: SortOrder
     amount?: SortOrder
     comments?: SortOrder
@@ -22246,7 +19364,7 @@ export namespace Prisma {
     id?: SortOrder
     supervisor_id?: SortOrder
     member_id?: SortOrder
-    transaction_type_id?: SortOrder
+    transaction_type?: SortOrder
     account_id?: SortOrder
     amount?: SortOrder
     comments?: SortOrder
@@ -22261,7 +19379,7 @@ export namespace Prisma {
     id?: SortOrder
     supervisor_id?: SortOrder
     member_id?: SortOrder
-    transaction_type_id?: SortOrder
+    transaction_type?: SortOrder
     account_id?: SortOrder
     amount?: SortOrder
     comments?: SortOrder
@@ -22274,6 +19392,16 @@ export namespace Prisma {
 
   export type transactionsSumOrderByAggregateInput = {
     amount?: SortOrder
+  }
+
+  export type Enumcredit_debit_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel> | $Enums.credit_debit_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
+    _max?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -22303,17 +19431,7 @@ export namespace Prisma {
     isNot?: mandalsWhereInput
   }
 
-  export type Villages_accounts_onlinkListRelationFilter = {
-    every?: villages_accounts_onlinkWhereInput
-    some?: villages_accounts_onlinkWhereInput
-    none?: villages_accounts_onlinkWhereInput
-  }
-
   export type membersOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type villages_accounts_onlinkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22339,74 +19457,6 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     mandal_id?: SortOrder
-  }
-
-  export type Enumcredit_debit_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumcredit_debit_typeFilter<$PrismaModel> | $Enums.credit_debit_type
-  }
-
-  export type Transaction_typesNullableScalarRelationFilter = {
-    is?: transaction_typesWhereInput | null
-    isNot?: transaction_typesWhereInput | null
-  }
-
-  export type Transaction_typesListRelationFilter = {
-    every?: transaction_typesWhereInput
-    some?: transaction_typesWhereInput
-    none?: transaction_typesWhereInput
-  }
-
-  export type transaction_typesOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type transaction_typesCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    label_english?: SortOrder
-    description?: SortOrder
-    is_active?: SortOrder
-    debit_or_credit?: SortOrder
-    parent_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type transaction_typesMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    label_english?: SortOrder
-    description?: SortOrder
-    is_active?: SortOrder
-    debit_or_credit?: SortOrder
-    parent_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type transaction_typesMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    label_english?: SortOrder
-    description?: SortOrder
-    is_active?: SortOrder
-    debit_or_credit?: SortOrder
-    parent_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type Enumcredit_debit_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel> | $Enums.credit_debit_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
-    _max?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
   }
 
   export type endpointaccessRoleEndpointCompoundUniqueInput = {
@@ -22600,35 +19650,6 @@ export namespace Prisma {
   export type members_accounts_onlinkMinOrderByAggregateInput = {
     id?: SortOrder
     member_id?: SortOrder
-    account_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type villages_accounts_onlinkVillage_idAccount_idCompoundUniqueInput = {
-    village_id: string
-    account_id: string
-  }
-
-  export type villages_accounts_onlinkCountOrderByAggregateInput = {
-    id?: SortOrder
-    village_id?: SortOrder
-    account_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type villages_accounts_onlinkMaxOrderByAggregateInput = {
-    id?: SortOrder
-    village_id?: SortOrder
-    account_id?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type villages_accounts_onlinkMinOrderByAggregateInput = {
-    id?: SortOrder
-    village_id?: SortOrder
     account_id?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -23074,16 +20095,14 @@ export namespace Prisma {
     connect?: membersWhereUniqueInput
   }
 
-  export type transaction_typesCreateNestedOneWithoutTransactionsInput = {
-    create?: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransactionsInput
-    connect?: transaction_typesWhereUniqueInput
-  }
-
   export type usersCreateNestedOneWithoutTransactionsInput = {
     create?: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutTransactionsInput
     connect?: usersWhereUniqueInput
+  }
+
+  export type Enumcredit_debit_typeFieldUpdateOperationsInput = {
+    set?: $Enums.credit_debit_type
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -23110,14 +20129,6 @@ export namespace Prisma {
     update?: XOR<XOR<membersUpdateToOneWithWhereWithoutTransactionsInput, membersUpdateWithoutTransactionsInput>, membersUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput = {
-    create?: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransactionsInput
-    upsert?: transaction_typesUpsertWithoutTransactionsInput
-    connect?: transaction_typesWhereUniqueInput
-    update?: XOR<XOR<transaction_typesUpdateToOneWithWhereWithoutTransactionsInput, transaction_typesUpdateWithoutTransactionsInput>, transaction_typesUncheckedUpdateWithoutTransactionsInput>
-  }
-
   export type usersUpdateOneRequiredWithoutTransactionsNestedInput = {
     create?: XOR<usersCreateWithoutTransactionsInput, usersUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: usersCreateOrConnectWithoutTransactionsInput
@@ -23139,25 +20150,11 @@ export namespace Prisma {
     connect?: mandalsWhereUniqueInput
   }
 
-  export type villages_accounts_onlinkCreateNestedManyWithoutVillagesInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput> | villages_accounts_onlinkCreateWithoutVillagesInput[] | villages_accounts_onlinkUncheckedCreateWithoutVillagesInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutVillagesInput | villages_accounts_onlinkCreateOrConnectWithoutVillagesInput[]
-    createMany?: villages_accounts_onlinkCreateManyVillagesInputEnvelope
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-  }
-
   export type membersUncheckedCreateNestedManyWithoutVillagesInput = {
     create?: XOR<membersCreateWithoutVillagesInput, membersUncheckedCreateWithoutVillagesInput> | membersCreateWithoutVillagesInput[] | membersUncheckedCreateWithoutVillagesInput[]
     connectOrCreate?: membersCreateOrConnectWithoutVillagesInput | membersCreateOrConnectWithoutVillagesInput[]
     createMany?: membersCreateManyVillagesInputEnvelope
     connect?: membersWhereUniqueInput | membersWhereUniqueInput[]
-  }
-
-  export type villages_accounts_onlinkUncheckedCreateNestedManyWithoutVillagesInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput> | villages_accounts_onlinkCreateWithoutVillagesInput[] | villages_accounts_onlinkUncheckedCreateWithoutVillagesInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutVillagesInput | villages_accounts_onlinkCreateOrConnectWithoutVillagesInput[]
-    createMany?: villages_accounts_onlinkCreateManyVillagesInputEnvelope
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
   }
 
   export type membersUpdateManyWithoutVillagesNestedInput = {
@@ -23182,20 +20179,6 @@ export namespace Prisma {
     update?: XOR<XOR<mandalsUpdateToOneWithWhereWithoutVillagesInput, mandalsUpdateWithoutVillagesInput>, mandalsUncheckedUpdateWithoutVillagesInput>
   }
 
-  export type villages_accounts_onlinkUpdateManyWithoutVillagesNestedInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput> | villages_accounts_onlinkCreateWithoutVillagesInput[] | villages_accounts_onlinkUncheckedCreateWithoutVillagesInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutVillagesInput | villages_accounts_onlinkCreateOrConnectWithoutVillagesInput[]
-    upsert?: villages_accounts_onlinkUpsertWithWhereUniqueWithoutVillagesInput | villages_accounts_onlinkUpsertWithWhereUniqueWithoutVillagesInput[]
-    createMany?: villages_accounts_onlinkCreateManyVillagesInputEnvelope
-    set?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    disconnect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    delete?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    update?: villages_accounts_onlinkUpdateWithWhereUniqueWithoutVillagesInput | villages_accounts_onlinkUpdateWithWhereUniqueWithoutVillagesInput[]
-    updateMany?: villages_accounts_onlinkUpdateManyWithWhereWithoutVillagesInput | villages_accounts_onlinkUpdateManyWithWhereWithoutVillagesInput[]
-    deleteMany?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-  }
-
   export type membersUncheckedUpdateManyWithoutVillagesNestedInput = {
     create?: XOR<membersCreateWithoutVillagesInput, membersUncheckedCreateWithoutVillagesInput> | membersCreateWithoutVillagesInput[] | membersUncheckedCreateWithoutVillagesInput[]
     connectOrCreate?: membersCreateOrConnectWithoutVillagesInput | membersCreateOrConnectWithoutVillagesInput[]
@@ -23208,124 +20191,6 @@ export namespace Prisma {
     update?: membersUpdateWithWhereUniqueWithoutVillagesInput | membersUpdateWithWhereUniqueWithoutVillagesInput[]
     updateMany?: membersUpdateManyWithWhereWithoutVillagesInput | membersUpdateManyWithWhereWithoutVillagesInput[]
     deleteMany?: membersScalarWhereInput | membersScalarWhereInput[]
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesNestedInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput> | villages_accounts_onlinkCreateWithoutVillagesInput[] | villages_accounts_onlinkUncheckedCreateWithoutVillagesInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutVillagesInput | villages_accounts_onlinkCreateOrConnectWithoutVillagesInput[]
-    upsert?: villages_accounts_onlinkUpsertWithWhereUniqueWithoutVillagesInput | villages_accounts_onlinkUpsertWithWhereUniqueWithoutVillagesInput[]
-    createMany?: villages_accounts_onlinkCreateManyVillagesInputEnvelope
-    set?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    disconnect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    delete?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    update?: villages_accounts_onlinkUpdateWithWhereUniqueWithoutVillagesInput | villages_accounts_onlinkUpdateWithWhereUniqueWithoutVillagesInput[]
-    updateMany?: villages_accounts_onlinkUpdateManyWithWhereWithoutVillagesInput | villages_accounts_onlinkUpdateManyWithWhereWithoutVillagesInput[]
-    deleteMany?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-  }
-
-  export type transaction_typesCreateNestedOneWithoutOther_transaction_typesInput = {
-    create?: XOR<transaction_typesCreateWithoutOther_transaction_typesInput, transaction_typesUncheckedCreateWithoutOther_transaction_typesInput>
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutOther_transaction_typesInput
-    connect?: transaction_typesWhereUniqueInput
-  }
-
-  export type transaction_typesCreateNestedManyWithoutTransaction_typesInput = {
-    create?: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput> | transaction_typesCreateWithoutTransaction_typesInput[] | transaction_typesUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransaction_typesInput | transaction_typesCreateOrConnectWithoutTransaction_typesInput[]
-    createMany?: transaction_typesCreateManyTransaction_typesInputEnvelope
-    connect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-  }
-
-  export type transactionsCreateNestedManyWithoutTransaction_typesInput = {
-    create?: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput> | transactionsCreateWithoutTransaction_typesInput[] | transactionsUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutTransaction_typesInput | transactionsCreateOrConnectWithoutTransaction_typesInput[]
-    createMany?: transactionsCreateManyTransaction_typesInputEnvelope
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-  }
-
-  export type transaction_typesUncheckedCreateNestedManyWithoutTransaction_typesInput = {
-    create?: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput> | transaction_typesCreateWithoutTransaction_typesInput[] | transaction_typesUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransaction_typesInput | transaction_typesCreateOrConnectWithoutTransaction_typesInput[]
-    createMany?: transaction_typesCreateManyTransaction_typesInputEnvelope
-    connect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-  }
-
-  export type transactionsUncheckedCreateNestedManyWithoutTransaction_typesInput = {
-    create?: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput> | transactionsCreateWithoutTransaction_typesInput[] | transactionsUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutTransaction_typesInput | transactionsCreateOrConnectWithoutTransaction_typesInput[]
-    createMany?: transactionsCreateManyTransaction_typesInputEnvelope
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-  }
-
-  export type Enumcredit_debit_typeFieldUpdateOperationsInput = {
-    set?: $Enums.credit_debit_type
-  }
-
-  export type transaction_typesUpdateOneWithoutOther_transaction_typesNestedInput = {
-    create?: XOR<transaction_typesCreateWithoutOther_transaction_typesInput, transaction_typesUncheckedCreateWithoutOther_transaction_typesInput>
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutOther_transaction_typesInput
-    upsert?: transaction_typesUpsertWithoutOther_transaction_typesInput
-    disconnect?: transaction_typesWhereInput | boolean
-    delete?: transaction_typesWhereInput | boolean
-    connect?: transaction_typesWhereUniqueInput
-    update?: XOR<XOR<transaction_typesUpdateToOneWithWhereWithoutOther_transaction_typesInput, transaction_typesUpdateWithoutOther_transaction_typesInput>, transaction_typesUncheckedUpdateWithoutOther_transaction_typesInput>
-  }
-
-  export type transaction_typesUpdateManyWithoutTransaction_typesNestedInput = {
-    create?: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput> | transaction_typesCreateWithoutTransaction_typesInput[] | transaction_typesUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransaction_typesInput | transaction_typesCreateOrConnectWithoutTransaction_typesInput[]
-    upsert?: transaction_typesUpsertWithWhereUniqueWithoutTransaction_typesInput | transaction_typesUpsertWithWhereUniqueWithoutTransaction_typesInput[]
-    createMany?: transaction_typesCreateManyTransaction_typesInputEnvelope
-    set?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    disconnect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    delete?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    connect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    update?: transaction_typesUpdateWithWhereUniqueWithoutTransaction_typesInput | transaction_typesUpdateWithWhereUniqueWithoutTransaction_typesInput[]
-    updateMany?: transaction_typesUpdateManyWithWhereWithoutTransaction_typesInput | transaction_typesUpdateManyWithWhereWithoutTransaction_typesInput[]
-    deleteMany?: transaction_typesScalarWhereInput | transaction_typesScalarWhereInput[]
-  }
-
-  export type transactionsUpdateManyWithoutTransaction_typesNestedInput = {
-    create?: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput> | transactionsCreateWithoutTransaction_typesInput[] | transactionsUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutTransaction_typesInput | transactionsCreateOrConnectWithoutTransaction_typesInput[]
-    upsert?: transactionsUpsertWithWhereUniqueWithoutTransaction_typesInput | transactionsUpsertWithWhereUniqueWithoutTransaction_typesInput[]
-    createMany?: transactionsCreateManyTransaction_typesInputEnvelope
-    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    update?: transactionsUpdateWithWhereUniqueWithoutTransaction_typesInput | transactionsUpdateWithWhereUniqueWithoutTransaction_typesInput[]
-    updateMany?: transactionsUpdateManyWithWhereWithoutTransaction_typesInput | transactionsUpdateManyWithWhereWithoutTransaction_typesInput[]
-    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
-  }
-
-  export type transaction_typesUncheckedUpdateManyWithoutTransaction_typesNestedInput = {
-    create?: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput> | transaction_typesCreateWithoutTransaction_typesInput[] | transaction_typesUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transaction_typesCreateOrConnectWithoutTransaction_typesInput | transaction_typesCreateOrConnectWithoutTransaction_typesInput[]
-    upsert?: transaction_typesUpsertWithWhereUniqueWithoutTransaction_typesInput | transaction_typesUpsertWithWhereUniqueWithoutTransaction_typesInput[]
-    createMany?: transaction_typesCreateManyTransaction_typesInputEnvelope
-    set?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    disconnect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    delete?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    connect?: transaction_typesWhereUniqueInput | transaction_typesWhereUniqueInput[]
-    update?: transaction_typesUpdateWithWhereUniqueWithoutTransaction_typesInput | transaction_typesUpdateWithWhereUniqueWithoutTransaction_typesInput[]
-    updateMany?: transaction_typesUpdateManyWithWhereWithoutTransaction_typesInput | transaction_typesUpdateManyWithWhereWithoutTransaction_typesInput[]
-    deleteMany?: transaction_typesScalarWhereInput | transaction_typesScalarWhereInput[]
-  }
-
-  export type transactionsUncheckedUpdateManyWithoutTransaction_typesNestedInput = {
-    create?: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput> | transactionsCreateWithoutTransaction_typesInput[] | transactionsUncheckedCreateWithoutTransaction_typesInput[]
-    connectOrCreate?: transactionsCreateOrConnectWithoutTransaction_typesInput | transactionsCreateOrConnectWithoutTransaction_typesInput[]
-    upsert?: transactionsUpsertWithWhereUniqueWithoutTransaction_typesInput | transactionsUpsertWithWhereUniqueWithoutTransaction_typesInput[]
-    createMany?: transactionsCreateManyTransaction_typesInputEnvelope
-    set?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    disconnect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    delete?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-    update?: transactionsUpdateWithWhereUniqueWithoutTransaction_typesInput | transactionsUpdateWithWhereUniqueWithoutTransaction_typesInput[]
-    updateMany?: transactionsUpdateManyWithWhereWithoutTransaction_typesInput | transactionsUpdateManyWithWhereWithoutTransaction_typesInput[]
-    deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
   export type accountsCreateNestedManyWithoutAccount_typesInput = {
@@ -23390,13 +20255,6 @@ export namespace Prisma {
     connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
   }
 
-  export type villages_accounts_onlinkCreateNestedManyWithoutAccountsInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput> | villages_accounts_onlinkCreateWithoutAccountsInput[] | villages_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutAccountsInput | villages_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
-    createMany?: villages_accounts_onlinkCreateManyAccountsInputEnvelope
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-  }
-
   export type members_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput = {
     create?: XOR<members_accounts_onlinkCreateWithoutAccountsInput, members_accounts_onlinkUncheckedCreateWithoutAccountsInput> | members_accounts_onlinkCreateWithoutAccountsInput[] | members_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
     connectOrCreate?: members_accounts_onlinkCreateOrConnectWithoutAccountsInput | members_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
@@ -23409,13 +20267,6 @@ export namespace Prisma {
     connectOrCreate?: transactionsCreateOrConnectWithoutAccountsInput | transactionsCreateOrConnectWithoutAccountsInput[]
     createMany?: transactionsCreateManyAccountsInputEnvelope
     connect?: transactionsWhereUniqueInput | transactionsWhereUniqueInput[]
-  }
-
-  export type villages_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput> | villages_accounts_onlinkCreateWithoutAccountsInput[] | villages_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutAccountsInput | villages_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
-    createMany?: villages_accounts_onlinkCreateManyAccountsInputEnvelope
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
   }
 
   export type account_typesUpdateOneRequiredWithoutAccountsNestedInput = {
@@ -23454,20 +20305,6 @@ export namespace Prisma {
     deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
-  export type villages_accounts_onlinkUpdateManyWithoutAccountsNestedInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput> | villages_accounts_onlinkCreateWithoutAccountsInput[] | villages_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutAccountsInput | villages_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
-    upsert?: villages_accounts_onlinkUpsertWithWhereUniqueWithoutAccountsInput | villages_accounts_onlinkUpsertWithWhereUniqueWithoutAccountsInput[]
-    createMany?: villages_accounts_onlinkCreateManyAccountsInputEnvelope
-    set?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    disconnect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    delete?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    update?: villages_accounts_onlinkUpdateWithWhereUniqueWithoutAccountsInput | villages_accounts_onlinkUpdateWithWhereUniqueWithoutAccountsInput[]
-    updateMany?: villages_accounts_onlinkUpdateManyWithWhereWithoutAccountsInput | villages_accounts_onlinkUpdateManyWithWhereWithoutAccountsInput[]
-    deleteMany?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-  }
-
   export type members_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput = {
     create?: XOR<members_accounts_onlinkCreateWithoutAccountsInput, members_accounts_onlinkUncheckedCreateWithoutAccountsInput> | members_accounts_onlinkCreateWithoutAccountsInput[] | members_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
     connectOrCreate?: members_accounts_onlinkCreateOrConnectWithoutAccountsInput | members_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
@@ -23496,20 +20333,6 @@ export namespace Prisma {
     deleteMany?: transactionsScalarWhereInput | transactionsScalarWhereInput[]
   }
 
-  export type villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput = {
-    create?: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput> | villages_accounts_onlinkCreateWithoutAccountsInput[] | villages_accounts_onlinkUncheckedCreateWithoutAccountsInput[]
-    connectOrCreate?: villages_accounts_onlinkCreateOrConnectWithoutAccountsInput | villages_accounts_onlinkCreateOrConnectWithoutAccountsInput[]
-    upsert?: villages_accounts_onlinkUpsertWithWhereUniqueWithoutAccountsInput | villages_accounts_onlinkUpsertWithWhereUniqueWithoutAccountsInput[]
-    createMany?: villages_accounts_onlinkCreateManyAccountsInputEnvelope
-    set?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    disconnect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    delete?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    connect?: villages_accounts_onlinkWhereUniqueInput | villages_accounts_onlinkWhereUniqueInput[]
-    update?: villages_accounts_onlinkUpdateWithWhereUniqueWithoutAccountsInput | villages_accounts_onlinkUpdateWithWhereUniqueWithoutAccountsInput[]
-    updateMany?: villages_accounts_onlinkUpdateManyWithWhereWithoutAccountsInput | villages_accounts_onlinkUpdateManyWithWhereWithoutAccountsInput[]
-    deleteMany?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-  }
-
   export type accountsCreateNestedOneWithoutMembers_accounts_onlinkInput = {
     create?: XOR<accountsCreateWithoutMembers_accounts_onlinkInput, accountsUncheckedCreateWithoutMembers_accounts_onlinkInput>
     connectOrCreate?: accountsCreateOrConnectWithoutMembers_accounts_onlinkInput
@@ -23536,34 +20359,6 @@ export namespace Prisma {
     upsert?: membersUpsertWithoutMembers_accounts_onlinkInput
     connect?: membersWhereUniqueInput
     update?: XOR<XOR<membersUpdateToOneWithWhereWithoutMembers_accounts_onlinkInput, membersUpdateWithoutMembers_accounts_onlinkInput>, membersUncheckedUpdateWithoutMembers_accounts_onlinkInput>
-  }
-
-  export type accountsCreateNestedOneWithoutVillages_accounts_onlinkInput = {
-    create?: XOR<accountsCreateWithoutVillages_accounts_onlinkInput, accountsUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    connectOrCreate?: accountsCreateOrConnectWithoutVillages_accounts_onlinkInput
-    connect?: accountsWhereUniqueInput
-  }
-
-  export type villagesCreateNestedOneWithoutVillages_accounts_onlinkInput = {
-    create?: XOR<villagesCreateWithoutVillages_accounts_onlinkInput, villagesUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    connectOrCreate?: villagesCreateOrConnectWithoutVillages_accounts_onlinkInput
-    connect?: villagesWhereUniqueInput
-  }
-
-  export type accountsUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput = {
-    create?: XOR<accountsCreateWithoutVillages_accounts_onlinkInput, accountsUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    connectOrCreate?: accountsCreateOrConnectWithoutVillages_accounts_onlinkInput
-    upsert?: accountsUpsertWithoutVillages_accounts_onlinkInput
-    connect?: accountsWhereUniqueInput
-    update?: XOR<XOR<accountsUpdateToOneWithWhereWithoutVillages_accounts_onlinkInput, accountsUpdateWithoutVillages_accounts_onlinkInput>, accountsUncheckedUpdateWithoutVillages_accounts_onlinkInput>
-  }
-
-  export type villagesUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput = {
-    create?: XOR<villagesCreateWithoutVillages_accounts_onlinkInput, villagesUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    connectOrCreate?: villagesCreateOrConnectWithoutVillages_accounts_onlinkInput
-    upsert?: villagesUpsertWithoutVillages_accounts_onlinkInput
-    connect?: villagesWhereUniqueInput
-    update?: XOR<XOR<villagesUpdateToOneWithWhereWithoutVillages_accounts_onlinkInput, villagesUpdateWithoutVillages_accounts_onlinkInput>, villagesUncheckedUpdateWithoutVillages_accounts_onlinkInput>
   }
 
   export type NestedUuidFilter<$PrismaModel = never> = {
@@ -23763,6 +20558,23 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumcredit_debit_typeFilter<$PrismaModel = never> = {
+    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumcredit_debit_typeFilter<$PrismaModel> | $Enums.credit_debit_type
+  }
+
+  export type NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
+    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
+    not?: NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel> | $Enums.credit_debit_type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
+    _max?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -23790,25 +20602,9 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumcredit_debit_typeFilter<$PrismaModel = never> = {
-    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumcredit_debit_typeFilter<$PrismaModel> | $Enums.credit_debit_type
-  }
-
-  export type NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.credit_debit_type | Enumcredit_debit_typeFieldRefInput<$PrismaModel>
-    in?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.credit_debit_type[] | ListEnumcredit_debit_typeFieldRefInput<$PrismaModel>
-    not?: NestedEnumcredit_debit_typeWithAggregatesFilter<$PrismaModel> | $Enums.credit_debit_type
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
-    _max?: NestedEnumcredit_debit_typeFilter<$PrismaModel>
-  }
-
   export type transactionsCreateWithoutUsersInput = {
     id?: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
@@ -23818,13 +20614,12 @@ export namespace Prisma {
     updated_at?: Date | string
     accounts: accountsCreateNestedOneWithoutTransactionsInput
     members: membersCreateNestedOneWithoutTransactionsInput
-    transaction_types: transaction_typesCreateNestedOneWithoutTransactionsInput
   }
 
   export type transactionsUncheckedCreateWithoutUsersInput = {
     id?: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -23928,7 +20723,7 @@ export namespace Prisma {
     id?: UuidFilter<"transactions"> | string
     supervisor_id?: UuidFilter<"transactions"> | string
     member_id?: UuidFilter<"transactions"> | string
-    transaction_type_id?: UuidFilter<"transactions"> | string
+    transaction_type?: Enumcredit_debit_typeFilter<"transactions"> | $Enums.credit_debit_type
     account_id?: UuidFilter<"transactions"> | string
     amount?: IntFilter<"transactions"> | number
     comments?: StringNullableFilter<"transactions"> | string | null
@@ -24217,7 +21012,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members?: membersCreateNestedManyWithoutVillagesInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesUncheckedCreateWithoutMandalsInput = {
@@ -24226,7 +21020,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members?: membersUncheckedCreateNestedManyWithoutVillagesInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesCreateOrConnectWithoutMandalsInput = {
@@ -24300,7 +21093,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     mandals: mandalsCreateNestedOneWithoutVillagesInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesUncheckedCreateWithoutMembersInput = {
@@ -24309,7 +21101,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     mandal_id: string
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutVillagesInput
   }
 
   export type villagesCreateOrConnectWithoutMembersInput = {
@@ -24343,6 +21134,7 @@ export namespace Prisma {
 
   export type transactionsCreateWithoutMembersInput = {
     id?: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
@@ -24351,14 +21143,13 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     accounts: accountsCreateNestedOneWithoutTransactionsInput
-    transaction_types: transaction_typesCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
   }
 
   export type transactionsUncheckedCreateWithoutMembersInput = {
     id?: string
     supervisor_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -24425,7 +21216,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     mandals?: mandalsUpdateOneRequiredWithoutVillagesNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutVillagesNestedInput
   }
 
   export type villagesUncheckedUpdateWithoutMembersInput = {
@@ -24434,7 +21224,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     mandal_id?: StringFieldUpdateOperationsInput | string
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesNestedInput
   }
 
   export type members_accounts_onlinkUpsertWithWhereUniqueWithoutMembersInput = {
@@ -24567,7 +21356,6 @@ export namespace Prisma {
     updated_at?: Date | string
     account_types: account_typesCreateNestedOneWithoutAccountsInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsUncheckedCreateWithoutTransactionsInput = {
@@ -24581,7 +21369,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsCreateOrConnectWithoutTransactionsInput = {
@@ -24622,37 +21409,6 @@ export namespace Prisma {
   export type membersCreateOrConnectWithoutTransactionsInput = {
     where: membersWhereUniqueInput
     create: XOR<membersCreateWithoutTransactionsInput, membersUncheckedCreateWithoutTransactionsInput>
-  }
-
-  export type transaction_typesCreateWithoutTransactionsInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-    transaction_types?: transaction_typesCreateNestedOneWithoutOther_transaction_typesInput
-    other_transaction_types?: transaction_typesCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesUncheckedCreateWithoutTransactionsInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    parent_id?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    other_transaction_types?: transaction_typesUncheckedCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesCreateOrConnectWithoutTransactionsInput = {
-    where: transaction_typesWhereUniqueInput
-    create: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
   }
 
   export type usersCreateWithoutTransactionsInput = {
@@ -24706,7 +21462,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     account_types?: account_typesUpdateOneRequiredWithoutAccountsNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsUncheckedUpdateWithoutTransactionsInput = {
@@ -24720,7 +21475,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
   }
 
   export type membersUpsertWithoutTransactionsInput = {
@@ -24762,43 +21516,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     name_labels?: member_name_labelsUncheckedUpdateManyWithoutMemberNestedInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutMembersNestedInput
-  }
-
-  export type transaction_typesUpsertWithoutTransactionsInput = {
-    update: XOR<transaction_typesUpdateWithoutTransactionsInput, transaction_typesUncheckedUpdateWithoutTransactionsInput>
-    create: XOR<transaction_typesCreateWithoutTransactionsInput, transaction_typesUncheckedCreateWithoutTransactionsInput>
-    where?: transaction_typesWhereInput
-  }
-
-  export type transaction_typesUpdateToOneWithWhereWithoutTransactionsInput = {
-    where?: transaction_typesWhereInput
-    data: XOR<transaction_typesUpdateWithoutTransactionsInput, transaction_typesUncheckedUpdateWithoutTransactionsInput>
-  }
-
-  export type transaction_typesUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transaction_types?: transaction_typesUpdateOneWithoutOther_transaction_typesNestedInput
-    other_transaction_types?: transaction_typesUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUncheckedUpdateWithoutTransactionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    parent_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    other_transaction_types?: transaction_typesUncheckedUpdateManyWithoutTransaction_typesNestedInput
   }
 
   export type usersUpsertWithoutTransactionsInput = {
@@ -24895,30 +21612,6 @@ export namespace Prisma {
     create: XOR<mandalsCreateWithoutVillagesInput, mandalsUncheckedCreateWithoutVillagesInput>
   }
 
-  export type villages_accounts_onlinkCreateWithoutVillagesInput = {
-    id?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    accounts: accountsCreateNestedOneWithoutVillages_accounts_onlinkInput
-  }
-
-  export type villages_accounts_onlinkUncheckedCreateWithoutVillagesInput = {
-    id?: string
-    account_id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkCreateOrConnectWithoutVillagesInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    create: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput>
-  }
-
-  export type villages_accounts_onlinkCreateManyVillagesInputEnvelope = {
-    data: villages_accounts_onlinkCreateManyVillagesInput | villages_accounts_onlinkCreateManyVillagesInput[]
-    skipDuplicates?: boolean
-  }
-
   export type membersUpsertWithWhereUniqueWithoutVillagesInput = {
     where: membersWhereUniqueInput
     update: XOR<membersUpdateWithoutVillagesInput, membersUncheckedUpdateWithoutVillagesInput>
@@ -24976,222 +21669,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type villages_accounts_onlinkUpsertWithWhereUniqueWithoutVillagesInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    update: XOR<villages_accounts_onlinkUpdateWithoutVillagesInput, villages_accounts_onlinkUncheckedUpdateWithoutVillagesInput>
-    create: XOR<villages_accounts_onlinkCreateWithoutVillagesInput, villages_accounts_onlinkUncheckedCreateWithoutVillagesInput>
-  }
-
-  export type villages_accounts_onlinkUpdateWithWhereUniqueWithoutVillagesInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    data: XOR<villages_accounts_onlinkUpdateWithoutVillagesInput, villages_accounts_onlinkUncheckedUpdateWithoutVillagesInput>
-  }
-
-  export type villages_accounts_onlinkUpdateManyWithWhereWithoutVillagesInput = {
-    where: villages_accounts_onlinkScalarWhereInput
-    data: XOR<villages_accounts_onlinkUpdateManyMutationInput, villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesInput>
-  }
-
-  export type villages_accounts_onlinkScalarWhereInput = {
-    AND?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-    OR?: villages_accounts_onlinkScalarWhereInput[]
-    NOT?: villages_accounts_onlinkScalarWhereInput | villages_accounts_onlinkScalarWhereInput[]
-    id?: UuidFilter<"villages_accounts_onlink"> | string
-    village_id?: UuidFilter<"villages_accounts_onlink"> | string
-    account_id?: UuidFilter<"villages_accounts_onlink"> | string
-    created_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-    updated_at?: DateTimeFilter<"villages_accounts_onlink"> | Date | string
-  }
-
-  export type transaction_typesCreateWithoutOther_transaction_typesInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-    transaction_types?: transaction_typesCreateNestedOneWithoutOther_transaction_typesInput
-    transactions?: transactionsCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesUncheckedCreateWithoutOther_transaction_typesInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    parent_id?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    transactions?: transactionsUncheckedCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesCreateOrConnectWithoutOther_transaction_typesInput = {
-    where: transaction_typesWhereUniqueInput
-    create: XOR<transaction_typesCreateWithoutOther_transaction_typesInput, transaction_typesUncheckedCreateWithoutOther_transaction_typesInput>
-  }
-
-  export type transaction_typesCreateWithoutTransaction_typesInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-    other_transaction_types?: transaction_typesCreateNestedManyWithoutTransaction_typesInput
-    transactions?: transactionsCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesUncheckedCreateWithoutTransaction_typesInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-    other_transaction_types?: transaction_typesUncheckedCreateNestedManyWithoutTransaction_typesInput
-    transactions?: transactionsUncheckedCreateNestedManyWithoutTransaction_typesInput
-  }
-
-  export type transaction_typesCreateOrConnectWithoutTransaction_typesInput = {
-    where: transaction_typesWhereUniqueInput
-    create: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput>
-  }
-
-  export type transaction_typesCreateManyTransaction_typesInputEnvelope = {
-    data: transaction_typesCreateManyTransaction_typesInput | transaction_typesCreateManyTransaction_typesInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type transactionsCreateWithoutTransaction_typesInput = {
-    id?: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    accounts: accountsCreateNestedOneWithoutTransactionsInput
-    members: membersCreateNestedOneWithoutTransactionsInput
-    users: usersCreateNestedOneWithoutTransactionsInput
-  }
-
-  export type transactionsUncheckedCreateWithoutTransaction_typesInput = {
-    id?: string
-    supervisor_id: string
-    member_id: string
-    account_id: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type transactionsCreateOrConnectWithoutTransaction_typesInput = {
-    where: transactionsWhereUniqueInput
-    create: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput>
-  }
-
-  export type transactionsCreateManyTransaction_typesInputEnvelope = {
-    data: transactionsCreateManyTransaction_typesInput | transactionsCreateManyTransaction_typesInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type transaction_typesUpsertWithoutOther_transaction_typesInput = {
-    update: XOR<transaction_typesUpdateWithoutOther_transaction_typesInput, transaction_typesUncheckedUpdateWithoutOther_transaction_typesInput>
-    create: XOR<transaction_typesCreateWithoutOther_transaction_typesInput, transaction_typesUncheckedCreateWithoutOther_transaction_typesInput>
-    where?: transaction_typesWhereInput
-  }
-
-  export type transaction_typesUpdateToOneWithWhereWithoutOther_transaction_typesInput = {
-    where?: transaction_typesWhereInput
-    data: XOR<transaction_typesUpdateWithoutOther_transaction_typesInput, transaction_typesUncheckedUpdateWithoutOther_transaction_typesInput>
-  }
-
-  export type transaction_typesUpdateWithoutOther_transaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transaction_types?: transaction_typesUpdateOneWithoutOther_transaction_typesNestedInput
-    transactions?: transactionsUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUncheckedUpdateWithoutOther_transaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    parent_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    transactions?: transactionsUncheckedUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUpsertWithWhereUniqueWithoutTransaction_typesInput = {
-    where: transaction_typesWhereUniqueInput
-    update: XOR<transaction_typesUpdateWithoutTransaction_typesInput, transaction_typesUncheckedUpdateWithoutTransaction_typesInput>
-    create: XOR<transaction_typesCreateWithoutTransaction_typesInput, transaction_typesUncheckedCreateWithoutTransaction_typesInput>
-  }
-
-  export type transaction_typesUpdateWithWhereUniqueWithoutTransaction_typesInput = {
-    where: transaction_typesWhereUniqueInput
-    data: XOR<transaction_typesUpdateWithoutTransaction_typesInput, transaction_typesUncheckedUpdateWithoutTransaction_typesInput>
-  }
-
-  export type transaction_typesUpdateManyWithWhereWithoutTransaction_typesInput = {
-    where: transaction_typesScalarWhereInput
-    data: XOR<transaction_typesUpdateManyMutationInput, transaction_typesUncheckedUpdateManyWithoutTransaction_typesInput>
-  }
-
-  export type transaction_typesScalarWhereInput = {
-    AND?: transaction_typesScalarWhereInput | transaction_typesScalarWhereInput[]
-    OR?: transaction_typesScalarWhereInput[]
-    NOT?: transaction_typesScalarWhereInput | transaction_typesScalarWhereInput[]
-    id?: UuidFilter<"transaction_types"> | string
-    name?: StringFilter<"transaction_types"> | string
-    label_english?: StringFilter<"transaction_types"> | string
-    description?: StringNullableFilter<"transaction_types"> | string | null
-    is_active?: BoolFilter<"transaction_types"> | boolean
-    debit_or_credit?: Enumcredit_debit_typeFilter<"transaction_types"> | $Enums.credit_debit_type
-    parent_id?: UuidNullableFilter<"transaction_types"> | string | null
-    created_at?: DateTimeFilter<"transaction_types"> | Date | string
-    updated_at?: DateTimeFilter<"transaction_types"> | Date | string
-  }
-
-  export type transactionsUpsertWithWhereUniqueWithoutTransaction_typesInput = {
-    where: transactionsWhereUniqueInput
-    update: XOR<transactionsUpdateWithoutTransaction_typesInput, transactionsUncheckedUpdateWithoutTransaction_typesInput>
-    create: XOR<transactionsCreateWithoutTransaction_typesInput, transactionsUncheckedCreateWithoutTransaction_typesInput>
-  }
-
-  export type transactionsUpdateWithWhereUniqueWithoutTransaction_typesInput = {
-    where: transactionsWhereUniqueInput
-    data: XOR<transactionsUpdateWithoutTransaction_typesInput, transactionsUncheckedUpdateWithoutTransaction_typesInput>
-  }
-
-  export type transactionsUpdateManyWithWhereWithoutTransaction_typesInput = {
-    where: transactionsScalarWhereInput
-    data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutTransaction_typesInput>
-  }
-
   export type accountsCreateWithoutAccount_typesInput = {
     id?: string
     name: string
@@ -25203,7 +21680,6 @@ export namespace Prisma {
     updated_at?: Date | string
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutAccountsInput
     transactions?: transactionsCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsUncheckedCreateWithoutAccount_typesInput = {
@@ -25217,7 +21693,6 @@ export namespace Prisma {
     updated_at?: Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsCreateOrConnectWithoutAccount_typesInput = {
@@ -25312,6 +21787,7 @@ export namespace Prisma {
 
   export type transactionsCreateWithoutAccountsInput = {
     id?: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
@@ -25320,7 +21796,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     members: membersCreateNestedOneWithoutTransactionsInput
-    transaction_types: transaction_typesCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
   }
 
@@ -25328,7 +21803,7 @@ export namespace Prisma {
     id?: string
     supervisor_id: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
@@ -25345,30 +21820,6 @@ export namespace Prisma {
 
   export type transactionsCreateManyAccountsInputEnvelope = {
     data: transactionsCreateManyAccountsInput | transactionsCreateManyAccountsInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type villages_accounts_onlinkCreateWithoutAccountsInput = {
-    id?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    villages: villagesCreateNestedOneWithoutVillages_accounts_onlinkInput
-  }
-
-  export type villages_accounts_onlinkUncheckedCreateWithoutAccountsInput = {
-    id?: string
-    village_id: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkCreateOrConnectWithoutAccountsInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    create: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput>
-  }
-
-  export type villages_accounts_onlinkCreateManyAccountsInputEnvelope = {
-    data: villages_accounts_onlinkCreateManyAccountsInput | villages_accounts_onlinkCreateManyAccountsInput[]
     skipDuplicates?: boolean
   }
 
@@ -25435,22 +21886,6 @@ export namespace Prisma {
     data: XOR<transactionsUpdateManyMutationInput, transactionsUncheckedUpdateManyWithoutAccountsInput>
   }
 
-  export type villages_accounts_onlinkUpsertWithWhereUniqueWithoutAccountsInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    update: XOR<villages_accounts_onlinkUpdateWithoutAccountsInput, villages_accounts_onlinkUncheckedUpdateWithoutAccountsInput>
-    create: XOR<villages_accounts_onlinkCreateWithoutAccountsInput, villages_accounts_onlinkUncheckedCreateWithoutAccountsInput>
-  }
-
-  export type villages_accounts_onlinkUpdateWithWhereUniqueWithoutAccountsInput = {
-    where: villages_accounts_onlinkWhereUniqueInput
-    data: XOR<villages_accounts_onlinkUpdateWithoutAccountsInput, villages_accounts_onlinkUncheckedUpdateWithoutAccountsInput>
-  }
-
-  export type villages_accounts_onlinkUpdateManyWithWhereWithoutAccountsInput = {
-    where: villages_accounts_onlinkScalarWhereInput
-    data: XOR<villages_accounts_onlinkUpdateManyMutationInput, villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsInput>
-  }
-
   export type accountsCreateWithoutMembers_accounts_onlinkInput = {
     id?: string
     name: string
@@ -25462,7 +21897,6 @@ export namespace Prisma {
     updated_at?: Date | string
     account_types: account_typesCreateNestedOneWithoutAccountsInput
     transactions?: transactionsCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsUncheckedCreateWithoutMembers_accounts_onlinkInput = {
@@ -25476,7 +21910,6 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     transactions?: transactionsUncheckedCreateNestedManyWithoutAccountsInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
   }
 
   export type accountsCreateOrConnectWithoutMembers_accounts_onlinkInput = {
@@ -25541,7 +21974,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     account_types?: account_typesUpdateOneRequiredWithoutAccountsNestedInput
     transactions?: transactionsUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsUncheckedUpdateWithoutMembers_accounts_onlinkInput = {
@@ -25555,7 +21987,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: transactionsUncheckedUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
   }
 
   export type membersUpsertWithoutMembers_accounts_onlinkInput = {
@@ -25599,134 +22030,10 @@ export namespace Prisma {
     transactions?: transactionsUncheckedUpdateManyWithoutMembersNestedInput
   }
 
-  export type accountsCreateWithoutVillages_accounts_onlinkInput = {
-    id?: string
-    name: string
-    account_number: string
-    balance?: number
-    description?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    account_types: account_typesCreateNestedOneWithoutAccountsInput
-    members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutAccountsInput
-    transactions?: transactionsCreateNestedManyWithoutAccountsInput
-  }
-
-  export type accountsUncheckedCreateWithoutVillages_accounts_onlinkInput = {
-    id?: string
-    name: string
-    account_number: string
-    balance?: number
-    account_type_id: string
-    description?: string | null
-    is_active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutAccountsInput
-    transactions?: transactionsUncheckedCreateNestedManyWithoutAccountsInput
-  }
-
-  export type accountsCreateOrConnectWithoutVillages_accounts_onlinkInput = {
-    where: accountsWhereUniqueInput
-    create: XOR<accountsCreateWithoutVillages_accounts_onlinkInput, accountsUncheckedCreateWithoutVillages_accounts_onlinkInput>
-  }
-
-  export type villagesCreateWithoutVillages_accounts_onlinkInput = {
-    id?: string
-    label_english: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    members?: membersCreateNestedManyWithoutVillagesInput
-    mandals: mandalsCreateNestedOneWithoutVillagesInput
-  }
-
-  export type villagesUncheckedCreateWithoutVillages_accounts_onlinkInput = {
-    id?: string
-    label_english: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    mandal_id: string
-    members?: membersUncheckedCreateNestedManyWithoutVillagesInput
-  }
-
-  export type villagesCreateOrConnectWithoutVillages_accounts_onlinkInput = {
-    where: villagesWhereUniqueInput
-    create: XOR<villagesCreateWithoutVillages_accounts_onlinkInput, villagesUncheckedCreateWithoutVillages_accounts_onlinkInput>
-  }
-
-  export type accountsUpsertWithoutVillages_accounts_onlinkInput = {
-    update: XOR<accountsUpdateWithoutVillages_accounts_onlinkInput, accountsUncheckedUpdateWithoutVillages_accounts_onlinkInput>
-    create: XOR<accountsCreateWithoutVillages_accounts_onlinkInput, accountsUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    where?: accountsWhereInput
-  }
-
-  export type accountsUpdateToOneWithWhereWithoutVillages_accounts_onlinkInput = {
-    where?: accountsWhereInput
-    data: XOR<accountsUpdateWithoutVillages_accounts_onlinkInput, accountsUncheckedUpdateWithoutVillages_accounts_onlinkInput>
-  }
-
-  export type accountsUpdateWithoutVillages_accounts_onlinkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    account_number?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    account_types?: account_typesUpdateOneRequiredWithoutAccountsNestedInput
-    members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutAccountsNestedInput
-    transactions?: transactionsUpdateManyWithoutAccountsNestedInput
-  }
-
-  export type accountsUncheckedUpdateWithoutVillages_accounts_onlinkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    account_number?: StringFieldUpdateOperationsInput | string
-    balance?: IntFieldUpdateOperationsInput | number
-    account_type_id?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
-    transactions?: transactionsUncheckedUpdateManyWithoutAccountsNestedInput
-  }
-
-  export type villagesUpsertWithoutVillages_accounts_onlinkInput = {
-    update: XOR<villagesUpdateWithoutVillages_accounts_onlinkInput, villagesUncheckedUpdateWithoutVillages_accounts_onlinkInput>
-    create: XOR<villagesCreateWithoutVillages_accounts_onlinkInput, villagesUncheckedCreateWithoutVillages_accounts_onlinkInput>
-    where?: villagesWhereInput
-  }
-
-  export type villagesUpdateToOneWithWhereWithoutVillages_accounts_onlinkInput = {
-    where?: villagesWhereInput
-    data: XOR<villagesUpdateWithoutVillages_accounts_onlinkInput, villagesUncheckedUpdateWithoutVillages_accounts_onlinkInput>
-  }
-
-  export type villagesUpdateWithoutVillages_accounts_onlinkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    members?: membersUpdateManyWithoutVillagesNestedInput
-    mandals?: mandalsUpdateOneRequiredWithoutVillagesNestedInput
-  }
-
-  export type villagesUncheckedUpdateWithoutVillages_accounts_onlinkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    mandal_id?: StringFieldUpdateOperationsInput | string
-    members?: membersUncheckedUpdateManyWithoutVillagesNestedInput
-  }
-
   export type transactionsCreateManyUsersInput = {
     id?: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -25759,6 +22066,7 @@ export namespace Prisma {
 
   export type transactionsUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25768,13 +22076,12 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    transaction_types?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
   export type transactionsUncheckedUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25788,7 +22095,7 @@ export namespace Prisma {
   export type transactionsUncheckedUpdateManyWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25912,7 +22219,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUpdateManyWithoutVillagesNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutVillagesNestedInput
   }
 
   export type villagesUncheckedUpdateWithoutMandalsInput = {
@@ -25921,7 +22227,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUncheckedUpdateManyWithoutVillagesNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesNestedInput
   }
 
   export type villagesUncheckedUpdateManyWithoutMandalsInput = {
@@ -25950,7 +22255,7 @@ export namespace Prisma {
   export type transactionsCreateManyMembersInput = {
     id?: string
     supervisor_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     account_id: string
     amount: number
     comments?: string | null
@@ -26011,6 +22316,7 @@ export namespace Prisma {
 
   export type transactionsUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26019,14 +22325,13 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
-    transaction_types?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
   export type transactionsUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26040,7 +22345,7 @@ export namespace Prisma {
   export type transactionsUncheckedUpdateManyWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     account_id?: StringFieldUpdateOperationsInput | string
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26059,13 +22364,6 @@ export namespace Prisma {
     phone_number: string
     husband_or_father_name: string
     aadhar_number: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkCreateManyVillagesInput = {
-    id?: string
-    account_id: string
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -26112,131 +22410,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type villages_accounts_onlinkUpdateWithoutVillagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: accountsUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateWithoutVillagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateManyWithoutVillagesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type transaction_typesCreateManyTransaction_typesInput = {
-    id?: string
-    name: string
-    label_english: string
-    description?: string | null
-    is_active?: boolean
-    debit_or_credit: $Enums.credit_debit_type
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type transactionsCreateManyTransaction_typesInput = {
-    id?: string
-    supervisor_id: string
-    member_id: string
-    account_id: string
-    amount: number
-    comments?: string | null
-    transaction_date: Date | string
-    receipt_number: string
-    is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type transaction_typesUpdateWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    other_transaction_types?: transaction_typesUpdateManyWithoutTransaction_typesNestedInput
-    transactions?: transactionsUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUncheckedUpdateWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    other_transaction_types?: transaction_typesUncheckedUpdateManyWithoutTransaction_typesNestedInput
-    transactions?: transactionsUncheckedUpdateManyWithoutTransaction_typesNestedInput
-  }
-
-  export type transaction_typesUncheckedUpdateManyWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    label_english?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    is_active?: BoolFieldUpdateOperationsInput | boolean
-    debit_or_credit?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type transactionsUpdateWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
-    members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
-  }
-
-  export type transactionsUncheckedUpdateWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    supervisor_id?: StringFieldUpdateOperationsInput | string
-    member_id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type transactionsUncheckedUpdateManyWithoutTransaction_typesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    supervisor_id?: StringFieldUpdateOperationsInput | string
-    member_id?: StringFieldUpdateOperationsInput | string
-    account_id?: StringFieldUpdateOperationsInput | string
-    amount?: IntFieldUpdateOperationsInput | number
-    comments?: NullableStringFieldUpdateOperationsInput | string | null
-    transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    receipt_number?: StringFieldUpdateOperationsInput | string
-    is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type accountsCreateManyAccount_typesInput = {
     id?: string
     name: string
@@ -26259,7 +22432,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutAccountsNestedInput
     transactions?: transactionsUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsUncheckedUpdateWithoutAccount_typesInput = {
@@ -26273,7 +22445,6 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutAccountsNestedInput
-    villages_accounts_onlink?: villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsNestedInput
   }
 
   export type accountsUncheckedUpdateManyWithoutAccount_typesInput = {
@@ -26298,19 +22469,12 @@ export namespace Prisma {
     id?: string
     supervisor_id: string
     member_id: string
-    transaction_type_id: string
+    transaction_type: $Enums.credit_debit_type
     amount: number
     comments?: string | null
     transaction_date: Date | string
     receipt_number: string
     is_archived?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type villages_accounts_onlinkCreateManyAccountsInput = {
-    id?: string
-    village_id: string
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -26338,6 +22502,7 @@ export namespace Prisma {
 
   export type transactionsUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26346,7 +22511,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
-    transaction_types?: transaction_typesUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
 
@@ -26354,7 +22518,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26368,33 +22532,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     supervisor_id?: StringFieldUpdateOperationsInput | string
     member_id?: StringFieldUpdateOperationsInput | string
-    transaction_type_id?: StringFieldUpdateOperationsInput | string
+    transaction_type?: Enumcredit_debit_typeFieldUpdateOperationsInput | $Enums.credit_debit_type
     amount?: IntFieldUpdateOperationsInput | number
     comments?: NullableStringFieldUpdateOperationsInput | string | null
     transaction_date?: DateTimeFieldUpdateOperationsInput | Date | string
     receipt_number?: StringFieldUpdateOperationsInput | string
     is_archived?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    villages?: villagesUpdateOneRequiredWithoutVillages_accounts_onlinkNestedInput
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    village_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type villages_accounts_onlinkUncheckedUpdateManyWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    village_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
