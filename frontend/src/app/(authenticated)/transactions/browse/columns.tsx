@@ -13,8 +13,10 @@ import {
 
 export function getTransactionColumns(opts?: {
   onInvalidate?: (transactionId: string) => Promise<void> | void;
+  onValidate?: (transactionId: string) => Promise<void> | void;
 }): ColumnDef<TransactionWithNames>[] {
   const onInvalidate = opts?.onInvalidate;
+  const onValidate = opts?.onValidate;
 
   return [
     {
@@ -55,31 +57,52 @@ export function getTransactionColumns(opts?: {
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         String(info.getValue() ?? "-") as React.ReactNode,
     },
-    ...(onInvalidate
+    ...(onInvalidate || onValidate
       ? ([
           {
             id: "actions",
             header: "Actions",
             cell: ({ row }) => {
               const t = row.original as TransactionWithNames;
-              const isInvalid = !!t.is_archived;
+              const isArchived = !!t.is_archived;
 
               return (
-                <Button
-                  size="sm"
-                  variant={isInvalid ? "secondary" : "destructive"}
-                  disabled={isInvalid}
-                  onClick={async () => {
-                    if (isInvalid) return;
-                    const ok = window.confirm(
-                      "Invalidate this transaction? This will reverse its balance effect.",
-                    );
-                    if (!ok) return;
-                    await onInvalidate(t.id);
-                  }}
-                >
-                  {isInvalid ? "Invalid" : "Invalidate"}
-                </Button>
+                <div className="flex gap-2">
+                  {onValidate && (
+                    <Button
+                      size="sm"
+                      variant={isArchived ? "default" : "secondary"}
+                      disabled={!isArchived}
+                      onClick={async () => {
+                        if (!isArchived) return;
+                        const ok = window.confirm(
+                          "Validate this transaction?",
+                        );
+                        if (!ok) return;
+                        await onValidate(t.id);
+                      }}
+                    >
+                      {isArchived ? "Validate" : "Validated"}
+                    </Button>
+                  )}
+                  {onInvalidate && (
+                    <Button
+                      size="sm"
+                      variant={isArchived ? "secondary" : "destructive"}
+                      disabled={isArchived}
+                      onClick={async () => {
+                        if (isArchived) return;
+                        const ok = window.confirm(
+                          "Invalidate this transaction? This will reverse its balance effect.",
+                        );
+                        if (!ok) return;
+                        await onInvalidate(t.id);
+                      }}
+                    >
+                      {isArchived ? "Invalid" : "Invalidate"}
+                    </Button>
+                  )}
+                </div>
               );
             },
           } satisfies ColumnDef<TransactionWithNames>,
