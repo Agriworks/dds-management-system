@@ -213,6 +213,7 @@ export async function getTransactions(params: {
   amount?: number;
   startDate?: string;
   endDate?: string;
+  isArchived?: boolean;
 }): Promise<GetTransactionsApiResponse> {
   const searchParams = new URLSearchParams();
 
@@ -240,6 +241,9 @@ export async function getTransactions(params: {
   }
   if (params.endDate) {
     searchParams.append("endDate", params.endDate);
+  }
+  if (params.isArchived !== undefined) {
+    searchParams.append("isArchived", params.isArchived.toString());
   }
 
   const response = await apiRequest<unknown>(`/transactions?${searchParams}`);
@@ -375,6 +379,47 @@ export async function invalidateTransaction(
 
   if (!data.success) {
     throw new Error(data.error?.message || "Failed to invalidate transaction");
+  }
+
+  return data.data;
+}
+
+export async function validateTransaction(
+  transactionId: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(
+    `${API_BASE_URL}/transactions/${transactionId}/validate`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const contentType = response.headers.get("content-type") || "";
+    const errorData =
+      contentType.includes("application/json")
+        ? await response.json().catch(() => ({}))
+        : {};
+    const errorText = !contentType.includes("application/json")
+      ? await response.text().catch(() => "")
+      : "";
+    throw new Error(
+      errorData.error?.message ||
+        errorText ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json().catch(async () => {
+    const text = await response.text().catch(() => "");
+    throw new Error(text || "Invalid JSON response from server");
+  });
+
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to validate transaction");
   }
 
   return data.data;

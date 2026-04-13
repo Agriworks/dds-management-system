@@ -3,8 +3,6 @@ import {
   LucideIcon,
   CreditCard,
   Users,
-  UserPlus,
-  Settings,
   LayoutDashboard,
 } from "lucide-react";
 
@@ -38,6 +36,21 @@ export function getMenuList(): Group[] {
           icon: LayoutDashboard,
         },
         {
+          href: "/members/browse",
+          label: "Members",
+          icon: Users,
+          submenus: [
+            {
+              href: "/members/browse",
+              label: "Browse",
+            },
+            {
+              href: "/members/add",
+              label: "Add",
+            },
+          ],
+        },
+        {
           href: "/transactions/browse",
           label: "Transactions",
           icon: CreditCard,
@@ -61,16 +74,6 @@ export function getMenuList(): Group[] {
           href: "/customers",
           label: "Roles Management",
           icon: Users,
-        },
-        {
-          href: "/members",
-          label: "Add Members",
-          icon: UserPlus,
-        },
-        {
-          href: "/transaction_types",
-          label: "Transaction Types",
-          icon: Settings,
         },
       ],
     },
