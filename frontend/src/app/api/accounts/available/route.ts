@@ -41,14 +41,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return createSuccessResponse([], "No accounts linked to this member");
     }
 
-    const villageAccounts = await prisma.villages_accounts_onlink.findMany({
-      where: { village_id: villageId!, account_id: { in: accountIds } },
-      select: { account_id: true },
-    });
-    const availableIds = new Set(villageAccounts.map((v) => v.account_id));
-
     const accounts = await prisma.accounts.findMany({
-      where: { id: { in: Array.from(availableIds) } },
+      where: { id: { in: accountIds } },
       select: {
         id: true,
         name: true,

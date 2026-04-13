@@ -11,8 +11,9 @@ type RouteParams = { params: Promise<{ transactionId: string }> };
 const transactionIdSchema = z.string().uuid();
 
 /**
- * POST /api/transactions/:transactionId/invalidate
- * Marks a transaction invalid by setting is_archived=true and reverses its balance effect.
+ * POST /api/transactions/:transactionId/validate
+ * Marks a transaction as validated by setting is_archived=false.
+ * This should only be done by accountants on pending transactions (is_archived=true).
  */
 export async function POST(
   _request: NextRequest,
@@ -38,9 +39,6 @@ export async function POST(
       select: {
         id: true,
         is_archived: true,
-        amount: true,
-        account_id: true,
-        transaction_type: true,
       },
     });
 
@@ -52,53 +50,30 @@ export async function POST(
       );
     }
 
-    if (transaction.is_archived) {
+    if (!transaction.is_archived) {
       return createSuccessResponse(
-        { id: transaction.id, is_archived: true },
-        "Transaction already invalidated",
+        { id: transaction.id, is_archived: false },
+        "Transaction already validated",
       );
     }
 
-    if (!transaction.transaction_type) {
-      return createErrorResponse(
-        "INTERNAL_ERROR",
-        "Transaction type is missing",
-        500,
-      );
-    }
-
-    const reverseAdjustment =
-      transaction.transaction_type === "credit" ? -transaction.amount : transaction.amount;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (prisma.$transaction as any)(async (tx: any) => {
-      await tx.transactions.update({
-        where: { id: transactionId },
-        data: { is_archived: true },
-      });
-
-      await tx.accounts.update({
-        where: { id: transaction.account_id },
-        data: {
-          balance: {
-            increment: reverseAdjustment,
-          },
-        },
-      });
+    // Update transaction to mark as validated
+    await prisma.transactions.update({
+      where: { id: transactionId },
+      data: { is_archived: false },
     });
 
     return createSuccessResponse(
-      { id: transactionId, is_archived: true },
-      "Transaction invalidated successfully",
+      { id: transactionId, is_archived: false },
+      "Transaction validated successfully",
     );
   } catch (error) {
-    console.error("Error invalidating transaction:", error);
+    console.error("Error validating transaction:", error);
     return createErrorResponse(
       "INTERNAL_ERROR",
-      "Failed to invalidate transaction",
+      "Failed to validate transaction",
       500,
       { error: error instanceof Error ? error.message : "Unknown error" },
     );
   }
 }
-

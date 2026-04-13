@@ -239,21 +239,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ],
     });
 
-    await prisma.villages_accounts_onlink.createMany({
-      data: [
-        {
-          id: crypto.randomUUID(),
-          village_id: village_id,
-          account_id: newSavingsAccount.id,
-        },
-        {
-          id: crypto.randomUUID(),
-          village_id: village_id,
-          account_id: newLoanAccount.id,
-        },
-      ],
-    });
-
     return createSuccessResponse(
       {
         message:
