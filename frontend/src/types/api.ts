@@ -19,6 +19,7 @@ export interface Village {
 export interface Customer {
   id: string;
   full_name_english: string;
+  full_name_telugu?: string;
   village_id: string;
   house_number: string;
   phone_number: string;

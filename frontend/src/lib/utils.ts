@@ -10,15 +10,10 @@ export function getTransactionTypeColor(type: string): string {
   const normalized = String(type || "").toUpperCase();
 
   switch (normalized) {
-    case "DEPOSIT":
+    case "CREDIT":
       return "bg-green-100 text-green-800 border-green-200";
-    case "WITHDRAWL":
-    case "WITHDRAWAL":
+    case "DEBIT":
       return "bg-red-100 text-red-800 border-red-200";
-    case "LOAN":
-      return "bg-amber-100 text-amber-800 border-amber-200";
-    case "PAYBACK":
-      return "bg-blue-100 text-blue-800 border-blue-200";
     default:
       return "bg-gray-100 text-gray-800 border-gray-200";
   }
