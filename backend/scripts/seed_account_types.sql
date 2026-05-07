@@ -12,10 +12,10 @@ ON CONFLICT (name) DO UPDATE SET
 
 -- Seed Telugu labels as i18n entries for account types
 INSERT INTO public.i18n_labels (entity_table, entity_id, field, language_code, text)
-SELECT 'account_types', id, 'label_telugu', 'te', 'చేతనాభాగం ఖాతా'
+SELECT 'account_types', id, 'label_telugu', 'te', 'సంఘం అప్పులు జమలు'
 FROM public.account_types WHERE name = 'SAVINGS'
 UNION ALL
-SELECT 'account_types', id, 'label_telugu', 'te', 'రుణ ఖాతా'
+SELECT 'account_types', id, 'label_telugu', 'te', 'లాగోడి ఖాతా'
 FROM public.account_types WHERE name = 'LOANS'
 ON CONFLICT (entity_table, entity_id, field, language_code) DO UPDATE SET
   text = EXCLUDED.text;

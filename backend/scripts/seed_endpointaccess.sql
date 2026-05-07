@@ -32,7 +32,6 @@ VALUES
   ('accountant','/members/add',true,true,false,'2025-10-06 05:47:22.569238','2025-10-06 05:47:22.569238'),
   ('accountant','/customers',true,false,false,'2025-10-06 05:47:22.569238','2025-10-06 05:47:22.569238'),
   ('accountant','/accounts',true,false,false,'2025-10-06 05:47:22.569238','2025-10-06 05:47:22.569238'),
-  ('accountant','/transaction_types',true,true,false,'2025-10-06 05:47:22.569238','2025-10-06 05:47:22.569238'),
   ('admin','/dashboard',true,true,true,'2025-10-06 05:47:22.644224','2025-10-06 05:47:22.644224'),
   ('admin','/transactions/browse',true,true,true,'2025-10-06 05:47:22.644224','2025-10-06 05:47:22.644224'),
   ('admin','/transactions/add',true,true,true,'2025-10-06 05:47:22.644224','2025-10-06 05:47:22.644224'),
