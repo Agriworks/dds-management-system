@@ -48,7 +48,7 @@ export default function AccountsPage() {
   };
 
   return (
-    <ContentLayout title="Accounts">
+    <ContentLayout title="అకౌంట్లు">
           <div className="overflow-x-auto p-4 sm:p-6 lg:p-8">
             <DataTable
               columns={getTransactionColumns({

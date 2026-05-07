@@ -1,128 +1,92 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { prisma } from "@/lib/prisma";
+import { MembersTableClient } from "./members-table-client";
+import { MembersFiltersClient } from "./members-filters-client";
 
-async function getVillageMembers() {
-  return prisma.villages.findMany({
-    orderBy: {
-      label_english: "asc",
+async function getMembers(mandalId?: string, villageId?: string) {
+  return prisma.members.findMany({
+    where: {
+      ...(mandalId
+        ? {
+          villages: {
+            mandal_id: mandalId,
+          },
+        }
+        : {}),
+      ...(villageId
+        ? {
+            village_id: villageId,
+          }
+        : {}),
     },
-    include: {
-      members: {
-        orderBy: {
-          given_name: "asc",
-        },
+    orderBy: {
+      given_name: "asc",
+    },
+    select: {
+      id: true,
+      given_name: true,
+      family_name: true,
+      aadhar_number: true,
+      phone_number: true,
+      house_number: true,
+      husband_or_father_name: true,
+      villages: {
         select: {
-          id: true,
+          label_english: true,
+          mandals: {
+            select: {
+              label_english: true,
+            },
+          },
+        },
+      },
+      name_labels: {
+        where: { language_code: "te" },
+        select: {
           given_name: true,
           family_name: true,
-          phone_number: true,
-          house_number: true,
-          husband_or_father_name: true,
-          created_at: true,
         },
+        take: 1,
       },
     },
   });
 }
 
-export default async function MembersBrowsePage() {
-  const villages = await getVillageMembers();
-  const totalMembers = villages.reduce(
-    (count, village) => count + village.members.length,
-    0,
+export default async function MembersBrowsePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ mandalId?: string; villageId?: string }>;
+}) {
+  const params = searchParams ? await searchParams : {};
+  const selectedMandalId = params?.mandalId || "";
+  const selectedVillageId = params?.villageId || "";
+  const members = await getMembers(
+    selectedMandalId || undefined,
+    selectedVillageId || undefined,
   );
+  const rows = members.map((member) => {
+    const teluguName = member.name_labels.length > 0 ? member.name_labels[0] : null;
+    return {
+      id: member.id,
+      givenName: teluguName ? teluguName.given_name : member.given_name,
+      familyName: teluguName ? teluguName.family_name : member.family_name,
+      husbandOrFatherName: member.husband_or_father_name,
+      aadharNumber: member.aadhar_number,
+      mandal: member.villages.mandals.label_english,
+      phoneNumber: member.phone_number,
+      village: member.villages.label_english,
+    };
+  });
 
   return (
-    <ContentLayout title="Members">
-      <div className="p-4 sm:p-6 lg:p-8">
+    <ContentLayout title="సంఘం సభ్యులు">
         <div className="shadow-md rounded-lg bg-background p-4 sm:p-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold">Village-wise Members</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Browse the current members grouped by village.
-            </p>
+            <MembersFiltersClient
+              initialMandalId={selectedMandalId}
+              initialVillageId={selectedVillageId}
+            />
+            <MembersTableClient data={rows} />
           </div>
-
-          <div className="grid gap-4 sm:grid-cols-3 mb-8">
-            <div className="rounded-lg border border-border bg-card p-4">
-              <p className="text-sm text-muted-foreground">Villages</p>
-              <p className="mt-2 text-3xl font-semibold">{villages.length}</p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-4">
-              <p className="text-sm text-muted-foreground">Total Members</p>
-              <p className="mt-2 text-3xl font-semibold">{totalMembers}</p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-4">
-              <p className="text-sm text-muted-foreground">Villages with members</p>
-              <p className="mt-2 text-3xl font-semibold">
-                {villages.filter((village) => village.members.length > 0).length}
-              </p>
-            </div>
-          </div>
-
-          {villages.length === 0 ? (
-            <div className="rounded-lg border border-border bg-card p-6 text-center text-sm text-muted-foreground">
-              No villages found.
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {villages.map((village) => (
-                <section
-                  key={village.id}
-                  className="rounded-2xl border border-border bg-card p-4"
-                >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Village</p>
-                      <h2 className="text-lg font-semibold">
-                        {village.label_english}
-                      </h2>
-                    </div>
-                    <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-foreground">
-                      {village.members.length} member{village.members.length === 1 ? "" : "s"}
-                    </span>
-                  </div>
-
-                  {village.members.length === 0 ? (
-                    <div className="mt-4 rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">
-                      No members found for this village.
-                    </div>
-                  ) : (
-                    <div className="mt-4 overflow-x-auto rounded-lg border border-border">
-                      <table className="min-w-full text-left text-sm">
-                        <thead className="bg-muted text-muted-foreground">
-                          <tr>
-                            <th className="px-4 py-3">Name</th>
-                            <th className="px-4 py-3">Phone</th>
-                            <th className="px-4 py-3">House No.</th>
-                            <th className="px-4 py-3">Father / Husband</th>
-                            <th className="px-4 py-3">Created</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {village.members.map((member) => (
-                            <tr key={member.id} className="border-t border-border/70">
-                              <td className="px-4 py-3">
-                                {`${member.given_name} ${member.family_name}`.trim()}
-                              </td>
-                              <td className="px-4 py-3">{member.phone_number}</td>
-                              <td className="px-4 py-3">{member.house_number}</td>
-                              <td className="px-4 py-3">{member.husband_or_father_name}</td>
-                              <td className="px-4 py-3">
-                                {new Date(member.created_at).toLocaleDateString("en-IN")}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </section>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
     </ContentLayout>
   );
 }

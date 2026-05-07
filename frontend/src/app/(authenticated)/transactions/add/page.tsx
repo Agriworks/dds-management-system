@@ -75,8 +75,8 @@ export default function AddTransactionForm() {
       // Get the supervisor ID from the logged-in user's session
       if (!session?.user?.id) {
         theToast.toast({
-          title: "Error",
-          description: "User session not found. Please log in again.",
+          title: "లోపం",
+          description: "వాడుకరి సెషన్ కనబడలేదు. దయచేసి మళ్లీ లాగిన్ అవ్వండి.",
           variant: "destructive",
           duration: 5000,
         });
@@ -110,8 +110,8 @@ export default function AddTransactionForm() {
 
       // Show the created transaction details in a single toast
       theToast.toast({
-        title: "Transaction created successfully!",
-        description: `ID: ${result.id}\nAmount: ₹${result.amount}\nType: ${result.type}\nMember: ${result.member_name}`,
+        title: "ట్రాన్సాక్షన్ విజయవంతంగా నమోదు అయింది!",
+        description: `ఐడి: ${result.id}\nమొత్తం: ₹${result.amount}\nరకం: ${result.type}\nసభ్యుడు: ${result.member_name}`,
         duration: 5000,
       });
 
@@ -120,8 +120,8 @@ export default function AddTransactionForm() {
     } catch (error) {
       console.error("Form submission error", error);
       theToast.toast({
-        title: "Error",
-        description: "Failed to submit the transaction. Please try again.",
+        title: "లోపం",
+        description: "ట్రాన్సాక్షన్ సమర్పించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
         variant: "destructive",
         duration: 5000,
       });
@@ -131,7 +131,7 @@ export default function AddTransactionForm() {
   }
 
   return (
-    <ContentLayout title="Add New Transaction">
+    <ContentLayout title="కొత్త ట్రాన్సాక్షన్">
       {loading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-md">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />

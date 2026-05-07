@@ -115,7 +115,7 @@ export default function CustomersPage() {
   const columns = createColumns(handleUpdateRoles, userPermissions);
 
   return (
-    <ContentLayout title="Roles Management">
+    <ContentLayout title="పాత్రల నిర్వహణ">
       <div className="shadow-md bg-background rounded-lg">
         <div className="p-4">
           {loading ? (
