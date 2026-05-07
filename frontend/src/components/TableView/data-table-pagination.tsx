@@ -13,7 +13,7 @@ export function DataTablePagination<TData>({
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-sm text-muted-foreground">
-        Page {table.getState().pagination.pageIndex + 1} of{" "}
+        పేజీ {table.getState().pagination.pageIndex + 1} /{" "}
         {table.getPageCount()}
       </div>
       <div className="flex items-center space-x-2">
@@ -23,7 +23,7 @@ export function DataTablePagination<TData>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          <span className="sr-only">Go to previous page</span>
+          <span className="sr-only">మునుపటి పేజీకి వెళ్లండి</span>
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <Button
@@ -32,7 +32,7 @@ export function DataTablePagination<TData>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          <span className="sr-only">Go to next page</span>
+          <span className="sr-only">తర్వాతి పేజీకి వెళ్లండి</span>
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
