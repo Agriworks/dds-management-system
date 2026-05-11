@@ -45,24 +45,9 @@ export async function GET(): Promise<NextResponse> {
             _sum: { amount: true },
             where: {
               is_archived: false,
-              accounts: {
-                villages_accounts_onlink: {
-                  some: {
-                    village_id: village.id,
-                  },
-                },
-              },
-              transaction_types: {
-                OR: [
-                  // Leaf type with name DEPOSIT
-                  { name: "DEPOSIT" },
-                  // Subtype whose parent is DEPOSIT (e.g. HEALTH_DEPOSIT)
-                  {
-                    transaction_types: {
-                      name: "DEPOSIT",
-                    },
-                  },
-                ],
+              transaction_type: "credit",
+              members: {
+                village_id: village.id,
               },
             },
           }),
@@ -70,22 +55,9 @@ export async function GET(): Promise<NextResponse> {
             _sum: { amount: true },
             where: {
               is_archived: false,
-              accounts: {
-                villages_accounts_onlink: {
-                  some: {
-                    village_id: village.id,
-                  },
-                },
-              },
-              transaction_types: {
-                OR: [
-                  { name: "LOAN" },
-                  {
-                    transaction_types: {
-                      name: "LOAN",
-                    },
-                  },
-                ],
+              transaction_type: "debit",
+              members: {
+                village_id: village.id,
               },
             },
           }),

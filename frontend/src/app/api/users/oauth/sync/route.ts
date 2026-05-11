@@ -87,41 +87,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       console.warn("Default 'user' role not found in database");
     }
 
-    // Assign default endpoint permissions for new users
-    const defaultEndpoints = [
-      "/dashboard",
-      "/transactions/browse",
-      "/members",
-      "/customers",
-      "/transaction_types",
-    ];
-
-    for (const endpoint of defaultEndpoints) {
-      // Check if endpoint access already exists for 'user' role
-      const existingAccess = await prisma.endpointaccess.findFirst({
-        where: {
-          role: "user",
-          endpoint: endpoint,
-        },
-      });
-
-      if (!existingAccess) {
-        await prisma.endpointaccess.create({
-          data: {
-            role: "user",
-            endpoint: endpoint,
-            viewer: true,
-            contributor: false,
-            admin: false,
-          },
-        });
-        console.log(`Created default permissions for endpoint: ${endpoint}`);
-      }
-    }
-
     return NextResponse.json({
       id: newUser.id,
-      message: "User created successfully with default permissions",
+      message: "User created successfully",
     });
   } catch (error) {
     console.error("Error in OAuth sync:", error);

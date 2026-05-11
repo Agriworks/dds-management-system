@@ -15,6 +15,7 @@ type Account = {
   account_type_id: string;
   account_type_name: string | null;
   account_type_label_english: string | null;
+  account_type_label_telugu?: string | null;
 };
 
 interface AccountsDropdownProps {
@@ -120,8 +121,10 @@ export function AccountsDropdown({
           accounts.map((account) => {
             const label =
               `(${account.account_number})` +
-              (account.account_type_label_english
-                ? ` - ${account.account_type_label_english}`
+              (account.account_type_label_telugu
+                ? ` - ${account.account_type_label_telugu}`
+                : account.account_type_label_english
+                  ? ` - ${account.account_type_label_english}`
                 : "");
             return (
               <SelectItem key={account.id} value={account.id} title={label}>

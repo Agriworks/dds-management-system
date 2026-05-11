@@ -41,14 +41,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return createSuccessResponse([], "No accounts linked to this member");
     }
 
-    const villageAccounts = await prisma.villages_accounts_onlink.findMany({
-      where: { village_id: villageId!, account_id: { in: accountIds } },
-      select: { account_id: true },
-    });
-    const availableIds = new Set(villageAccounts.map((v) => v.account_id));
-
     const accounts = await prisma.accounts.findMany({
-      where: { id: { in: Array.from(availableIds) } },
+      where: { id: { in: accountIds } },
       select: {
         id: true,
         name: true,
@@ -59,6 +53,24 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       orderBy: { name: "asc" },
     });
 
+    const accountTypeIds = Array.from(
+      new Set(accounts.map((a) => a.account_type_id)),
+    );
+
+    const teLabels = accountTypeIds.length
+      ? await prisma.i18n_labels.findMany({
+          where: {
+            entity_table: "account_types",
+            field: "label_telugu",
+            language_code: "te",
+            entity_id: { in: accountTypeIds },
+          },
+          select: { entity_id: true, text: true },
+        })
+      : [];
+
+    const teByAccountTypeId = new Map(teLabels.map((l) => [l.entity_id, l.text]));
+
     const transformed = accounts.map((a) => ({
       id: a.id,
       name: a.name,
@@ -66,6 +78,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       account_type_id: a.account_type_id,
       account_type_name: a.account_types?.name ?? null,
       account_type_label_english: a.account_types?.label_english ?? null,
+      account_type_label_telugu: teByAccountTypeId.get(a.account_type_id) ?? null,
     }));
 
     return createSuccessResponse(transformed, "Available accounts fetched");

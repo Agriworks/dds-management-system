@@ -1,11 +1,11 @@
 import {
   Group,
   LucideIcon,
-  CreditCard,
   Users,
-  UserPlus,
-  Settings,
   LayoutDashboard,
+  Wallet,
+  ShieldUser,
+  ReceiptText,
 } from "lucide-react";
 
 type Submenu = {
@@ -34,43 +34,48 @@ export function getMenuList(): Group[] {
       menus: [
         {
           href: "/dashboard",
-          label: "Dashboard",
+          label: "డ్యాష్‌బోర్డ్",
           icon: LayoutDashboard,
         },
         {
+          href: "/members/browse",
+          label: "సభ్యులు",
+          icon: Users,
+          submenus: [
+            {
+              href: "/members/browse",
+              label: "సంఘం సభ్యులు",
+            },
+            {
+              href: "/members/add",
+              label: "కొత్త సభ్యుడు",
+            },
+          ],
+        },
+        {
           href: "/transactions/browse",
-          label: "Transactions",
-          icon: CreditCard,
+          label: "ట్రాన్సాక్షన్లు",
+          icon: ReceiptText,
           submenus: [
             {
               href: "/transactions/browse",
-              label: "Browse",
+              label: "ట్రాన్సాక్షన్లు చూడండి",
             },
             {
               href: "/transactions/add",
-              label: "Add",
+              label: "కొత్త ట్రాన్సాక్షన్",
             },
           ],
         },
         {
           href: "/accounts",
-          label: "Accounts",
-          icon: CreditCard,
+          label: "అకౌంట్లు",
+          icon: Wallet,
         },
         {
           href: "/customers",
-          label: "Roles Management",
-          icon: Users,
-        },
-        {
-          href: "/members",
-          label: "Add Members",
-          icon: UserPlus,
-        },
-        {
-          href: "/transaction_types",
-          label: "Transaction Types",
-          icon: Settings,
+          label: "పాత్రల నిర్వహణ",
+          icon: ShieldUser,
         },
       ],
     },

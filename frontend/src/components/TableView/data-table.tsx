@@ -153,7 +153,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <span className="loader" /> Loading...
+                  <span className="loader" /> లోడ్ అవుతోంది...
                 </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
@@ -162,7 +162,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center overflow-hidden text-ellipsis"
                 >
-                  {isLastPage ? "End of the Table" : "No results found"}
+                  {isLastPage ? "పట్టిక ముగిసింది" : "ఫలితాలు లభించలేదు"}
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
@@ -203,7 +203,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  ఫలితాలు లభించలేదు.
                 </TableCell>
               </TableRow>
             )}

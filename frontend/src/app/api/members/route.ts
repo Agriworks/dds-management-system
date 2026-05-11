@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSuccessResponse, createErrorResponse } from "@/lib/api-utils";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma";
 
 interface CreateMemberRequest {
   given_name: string;
@@ -239,21 +240,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ],
     });
 
-    await prisma.villages_accounts_onlink.createMany({
-      data: [
-        {
-          id: crypto.randomUUID(),
-          village_id: village_id,
-          account_id: newSavingsAccount.id,
-        },
-        {
-          id: crypto.randomUUID(),
-          village_id: village_id,
-          account_id: newLoanAccount.id,
-        },
-      ],
-    });
-
     return createSuccessResponse(
       {
         message:
@@ -285,6 +271,35 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   } catch (error) {
     console.error("Error creating member:", error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      const targetFields = Array.isArray(error.meta?.target)
+        ? error.meta.target.map((value) => String(value))
+        : [];
+
+      if (targetFields.includes("phone_number")) {
+        return createErrorResponse(
+          "VALIDATION_ERROR",
+          "Member with this phone number already exists",
+          409,
+        );
+      }
+
+      if (targetFields.includes("aadhar_number")) {
+        return createErrorResponse(
+          "VALIDATION_ERROR",
+          "Member with this Aadhar number already exists",
+          409,
+        );
+      }
+
+      return createErrorResponse(
+        "VALIDATION_ERROR",
+        "Member with this information already exists",
+        409,
+      );
+    }
+
     return createErrorResponse(
       "INTERNAL_ERROR",
       "Failed to create member",

@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -45,12 +44,9 @@ const formSchema = z
       .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
         message: "Amount must be a positive number",
       }),
-    transactionType: z
-      .string()
-      .min(1, { message: "Please select a transaction type" }),
-    transactionTypeId: z
-      .string()
-      .min(1, { message: "Please select a transaction type" }),
+    transactionType: z.enum(["credit", "debit"], {
+      errorMap: () => ({ message: "Please select a transaction type" }),
+    }),
     comments: z.string().nullable(),
   });
 
@@ -58,18 +54,6 @@ export default function AddTransactionForm() {
   const { data: session } = useSession();
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
-  // Backend-driven types
-  type TransactionType = {
-    id: string;
-    name: string;
-    label_english: string;
-    label_telugu: string;
-    parent_id?: string | null;
-    description?: string;
-  };
-  const [mainTypes, setMainTypes] = useState<TransactionType[]>([]);
-  const [loadingTypes, setLoadingTypes] = useState<boolean>(false);
-  
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,33 +63,10 @@ export default function AddTransactionForm() {
       customer: "",
       accountId: "",
       amount: "",
-      transactionType: "",
-      transactionTypeId: "",
+      transactionType: undefined,
       comments: null,
     },
   });
-
-  // Load main transaction types from backend
-  useEffect(() => {
-    const loadMainTypes = async () => {
-      try {
-        setLoadingTypes(true);
-        const typesRes = await fetch("/api/transaction-types");
-        if (typesRes.ok) {
-          const typesData = await typesRes.json();
-          const types: TransactionType[] = typesData?.data?.mainTypes ?? [];
-          setMainTypes(types);
-        }
-      } catch (e) {
-        console.error("Failed loading main transaction types", e);
-      } finally {
-        setLoadingTypes(false);
-      }
-    };
-    loadMainTypes();
-  }, []);
-
-  // account types are loaded inside the dropdown component
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -114,8 +75,8 @@ export default function AddTransactionForm() {
       // Get the supervisor ID from the logged-in user's session
       if (!session?.user?.id) {
         theToast.toast({
-          title: "Error",
-          description: "User session not found. Please log in again.",
+          title: "లోపం",
+          description: "వాడుకరి సెషన్ కనబడలేదు. దయచేసి మళ్లీ లాగిన్ అవ్వండి.",
           variant: "destructive",
           duration: 5000,
         });
@@ -139,7 +100,7 @@ export default function AddTransactionForm() {
         amount: parseInt(values.amount, 10),
         transaction_date: transactionDate.toISOString(),
         comments: values.comments || null,
-        transaction_type_id: values.transactionTypeId,
+        transaction_type: values.transactionType,
       };
 
       console.log("Submitting transaction:", transactionData);
@@ -149,8 +110,8 @@ export default function AddTransactionForm() {
 
       // Show the created transaction details in a single toast
       theToast.toast({
-        title: "Transaction created successfully!",
-        description: `ID: ${result.id}\nAmount: ₹${result.amount}\nType: ${result.type}\nMember: ${result.member_name}`,
+        title: "ట్రాన్సాక్షన్ విజయవంతంగా నమోదు అయింది!",
+        description: `ఐడి: ${result.id}\nమొత్తం: ₹${result.amount}\nరకం: ${result.type}\nసభ్యుడు: ${result.member_name}`,
         duration: 5000,
       });
 
@@ -159,8 +120,8 @@ export default function AddTransactionForm() {
     } catch (error) {
       console.error("Form submission error", error);
       theToast.toast({
-        title: "Error",
-        description: "Failed to submit the transaction. Please try again.",
+        title: "లోపం",
+        description: "ట్రాన్సాక్షన్ సమర్పించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
         variant: "destructive",
         duration: 5000,
       });
@@ -170,7 +131,7 @@ export default function AddTransactionForm() {
   }
 
   return (
-    <ContentLayout title="Add New Transaction">
+    <ContentLayout title="కొత్త ట్రాన్సాక్షన్">
       {loading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-md">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -278,35 +239,6 @@ export default function AddTransactionForm() {
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
-                    name="accountId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          ఖాతా
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <AccountsDropdown
-                            memberId={form.watch("customer")}
-                            villageId={form.watch("village")}
-                            value={field.value}
-                            onChange={(accountId) => {
-                              field.onChange(accountId);
-                            }}
-                            disabled={
-                              !form.watch("customer") || !form.watch("village")
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
                     name="comments"
                     render={({ field }) => (
                       <FormItem>
@@ -359,6 +291,35 @@ export default function AddTransactionForm() {
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
+                    name="accountId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          ఖాతా
+                          <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <AccountsDropdown
+                            memberId={form.watch("customer")}
+                            villageId={form.watch("village")}
+                            value={field.value}
+                            onChange={(accountId) => {
+                              field.onChange(accountId);
+                            }}
+                            disabled={
+                              !form.watch("customer") || !form.watch("village")
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
                     name="transactionType"
                     render={({ field }) => (
                       <FormItem>
@@ -368,41 +329,15 @@ export default function AddTransactionForm() {
                         </FormLabel>
                         <FormControl>
                           <Select
-                            onValueChange={(value) => {
-                              const selectedType = mainTypes.find(
-                                (t) => t.name === value,
-                              );
-                              field.onChange(value);
-                              form.setValue(
-                                "transactionTypeId",
-                                selectedType?.id || "",
-                              );
-                            }}
+                            onValueChange={field.onChange}
                             value={field.value || undefined}
-                            disabled={loadingTypes}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue
-                                placeholder={
-                                  loadingTypes
-                                    ? "Loading transaction types..."
-                                    : "ట్రాన్సాక్షన్ టైప్ ఎంచుకోండి"
-                                }
-                              />
+                              <SelectValue placeholder="ట్రాన్సాక్షన్ టైప్ ఎంచుకోండి" />
                             </SelectTrigger>
                             <SelectContent>
-                              {loadingTypes ? (
-                                <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-                                  <Loader2 className="h-4 w-4 animate-spin mr-2" />{" "}
-                                  Loading...
-                                </div>
-                              ) : (
-                                mainTypes.map((t) => (
-                                  <SelectItem key={t.id} value={t.name}>
-                                    {t.label_english} ({t.label_telugu})
-                                  </SelectItem>
-                                ))
-                              )}
+                              <SelectItem value="credit">Credit - సభ్యులు ఇస్తున్నారు</SelectItem>
+                              <SelectItem value="debit">Debit - సభ్యులు తీసుకున్నారు</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>

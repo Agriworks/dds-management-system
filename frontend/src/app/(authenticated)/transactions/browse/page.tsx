@@ -24,7 +24,7 @@ export default function TransactionsPage() {
     setLoading(true);
 
     try {
-      const result = await getTransactions(params);
+      const result = await getTransactions({ ...params, isArchived: false });
       setTransactions(result.transactions);
       setPagination(result.pagination);
     } catch (err) {
@@ -46,7 +46,7 @@ export default function TransactionsPage() {
   };
 
   return (
-    <ContentLayout title="Transactions">
+    <ContentLayout title="ట్రాన్సాక్షన్లు">
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="shadow-md bg-background rounded-lg p-2">
             <div className="text-lg sm:text-xl font-semibold py-2">

@@ -76,8 +76,8 @@ export function CustomerDropdown({
   // Convert customers to options
   const options: SearchableSelectOption[] = customers.map((customer) => ({
     value: customer.id,
-    label: `${customer.full_name_english} (${customer.phone_number})`,
-    searchText: `${customer.full_name_english} ${customer.phone_number}`,
+    label: `${customer.full_name_telugu || customer.full_name_english} (${customer.phone_number})`,
+    searchText: `${customer.full_name_telugu || ""} ${customer.full_name_english} ${customer.phone_number}`,
   }));
 
   return (
@@ -92,8 +92,8 @@ export function CustomerDropdown({
       }
       searchPlaceholder="సంఘం సభ్యుని పేరు లేదా ఫోను ద్వారా వెతకండి..."
       emptyMessage="సంఘం సభ్యుని కనుగొనబడలేదు"
-      loadingMessage="Loading customers..."
-      errorMessage="Failed to load customers"
+      loadingMessage="సభ్యుల వివరాలు లోడ్ అవుతున్నాయి..."
+      errorMessage="సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం"
       options={options}
       onSearch={handleSearch}
       loading={loading}

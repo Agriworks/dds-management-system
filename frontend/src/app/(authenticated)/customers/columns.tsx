@@ -72,7 +72,7 @@ function RolesEditor({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <label className="text-sm font-medium">Select roles</label>
+        <label className="text-sm font-medium">పాత్రలను ఎంచుకోండి</label>
         <MultiSelector
           values={localRoles}
           onValuesChange={setLocalRoles}
@@ -81,13 +81,13 @@ function RolesEditor({
           )}
         >
           <MultiSelectorTrigger>
-            <MultiSelectorInput placeholder="Search roles..." />
+            <MultiSelectorInput placeholder="పాత్రల కోసం వెతకండి..." />
           </MultiSelectorTrigger>
           <MultiSelectorContent>
             <MultiSelectorList>
               {loading ? (
                 <div className="flex items-center justify-center py-4 px-3 text-sm text-muted-foreground">
-                  Loading roles...
+                  పాత్రలు లోడ్ అవుతున్నాయి...
                 </div>
               ) : error ? (
                 <div className="py-4 px-3 text-sm text-destructive text-center">
@@ -95,7 +95,7 @@ function RolesEditor({
                 </div>
               ) : allRoles.length === 0 ? (
                 <div className="py-4 px-3 text-sm text-muted-foreground text-center">
-                  No roles available
+                  పాత్రలు లభించలేదు
                 </div>
               ) : (
                 allRoles.map((role) => (
@@ -114,10 +114,10 @@ function RolesEditor({
           variant="outline"
           onClick={() => onChange(currentRoles)}
         >
-          Cancel
+          రద్దు
         </Button>
         <Button type="button" onClick={() => onChange(localRoles)}>
-          Save
+          సేవ్ చేయి
         </Button>
       </div>
     </div>
@@ -154,7 +154,7 @@ function ActionsCell({
               }
             }}
           >
-            Edit roles
+            పాత్రలు మార్చు
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -162,8 +162,8 @@ function ActionsCell({
       <Dialog
         isOpen={open}
         onClose={() => setOpen(false)}
-        dialogTitle="Edit roles"
-        dialogDescription={`add or remove the roles to the user`}
+        dialogTitle="పాత్రలు మార్చు"
+        dialogDescription={`వాడుకరికి పాత్రలను జోడించండి లేదా తొలగించండి`}
       >
         <RolesEditor
           currentRoles={row.roles}
@@ -184,18 +184,18 @@ export function createColumns(
   return [
     {
       accessorKey: "name",
-      header: "Name",
+      header: "పేరు",
       cell: ({ row }) => (
         <span className="font-medium">{row.original.name}</span>
       ),
     },
     {
       accessorKey: "email",
-      header: "Email",
+      header: "ఈమెయిల్",
     },
     {
       accessorKey: "roles",
-      header: "Roles",
+      header: "పాత్రలు",
       cell: ({ row }) => (
         <span className="text-muted-foreground">
           {row.original.roles.length > 0 ? row.original.roles.join(", ") : "-"}

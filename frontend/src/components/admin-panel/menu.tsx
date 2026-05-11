@@ -160,7 +160,7 @@ export function Menu({ isOpen }: MenuProps) {
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="right">Account</TooltipContent>
+                <TooltipContent side="right">ఖాతా</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <TooltipProvider disableHoverableContent>
@@ -180,12 +180,12 @@ export function Menu({ isOpen }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100",
                       )}
                     >
-                      Sign out
+                      లాగ్ అవుట్
                     </p>
                   </Button>
                 </TooltipTrigger>
                 {isOpen === false && (
-                  <TooltipContent side="right">Sign out</TooltipContent>
+                  <TooltipContent side="right">లాగ్ అవుట్</TooltipContent>
                 )}
               </Tooltip>
             </TooltipProvider>

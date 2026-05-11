@@ -66,7 +66,7 @@ export default function DashboardPage() {
   }));
 
   return (
-    <ContentLayout title="Dashboard">
+    <ContentLayout title="డ్యాష్‌బోర్డ్">
       {loading ? (
         <div className="flex items-center justify-center h-full">
           <Loader2 className="h-8 w-8 animate-spin" />

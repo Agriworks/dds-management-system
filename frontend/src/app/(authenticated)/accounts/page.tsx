@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { DataTable } from "@/components/TableView/data-table";
-import { getTransactions, invalidateTransaction } from "@/lib/api-client";
+import { getTransactions, validateTransaction } from "@/lib/api-client";
 import { TransactionWithNames } from "@/types/transaction";
 import { getTransactionColumns } from "../transactions/browse/columns";
 
@@ -23,7 +23,10 @@ export default function AccountsPage() {
   }) => {
     setLoading(true);
     try {
-      const result = await getTransactions(params);
+      const result = await getTransactions({
+        ...params,
+        isArchived: true,
+      });
       setTransactions(result.transactions);
       setPagination(result.pagination);
     } catch (error) {
@@ -45,12 +48,12 @@ export default function AccountsPage() {
   };
 
   return (
-    <ContentLayout title="Accounts">
+    <ContentLayout title="అకౌంట్లు">
           <div className="overflow-x-auto p-4 sm:p-6 lg:p-8">
             <DataTable
               columns={getTransactionColumns({
-                onInvalidate: async (transactionId) => {
-                  await invalidateTransaction(transactionId);
+                onValidate: async (transactionId) => {
+                  await validateTransaction(transactionId);
                   await fetchTransactions({
                     limit: pagination.limit,
                     offset: pagination.offset,

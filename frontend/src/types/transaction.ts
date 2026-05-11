@@ -1,6 +1,6 @@
 // Transaction related types based on the database schema
 
-export type TransactionType = "DEPOSIT" | "WITHDRAWL" | "LOAN" | "PAYBACK";
+export type TransactionType = "credit" | "debit";
 
 export interface TransactionFormData {
   mandal: string;
@@ -20,7 +20,7 @@ export interface CreateTransactionRequest {
   amount: number; // Integer amount in database
   transaction_date?: string; // ISO datetime string, optional (defaults to now)
   comments: string | null;
-  transaction_type_id: string; // UUID of transaction type (points to deepest level)
+  transaction_type: TransactionType;
   receipt_number?: string; // Optional receipt number
   // created_at and updated_at are handled by database
 }
@@ -31,7 +31,7 @@ export interface Transaction {
   member: string;
   amount: number;
   comments: string | null;
-  transaction_type_id: string;
+  transaction_type: TransactionType;
   is_archived?: boolean;
   created_at: string;
   updated_at: string;

@@ -75,6 +75,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             { family_name: { contains: search, mode: "insensitive" as const } },
             { phone_number: { contains: search } },
             {
+              name_labels: {
+                some: {
+                  language_code: "te",
+                  OR: [
+                    { given_name: { contains: search, mode: "insensitive" as const } },
+                    { family_name: { contains: search, mode: "insensitive" as const } },
+                  ],
+                },
+              },
+            },
+            {
               husband_or_father_name: {
                 contains: search,
                 mode: "insensitive" as const,
@@ -95,6 +106,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           id: true,
           given_name: true,
           family_name: true,
+          name_labels: {
+            where: { language_code: "te" },
+            select: {
+              given_name: true,
+              family_name: true,
+            },
+            take: 1,
+          },
           village_id: true,
           phone_number: true,
           house_number: true,
@@ -118,6 +137,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     // Transform the data to match the API response format
     const transformedCustomers = customers.map((customer) => ({
+      full_name_telugu:
+        customer.name_labels.length > 0
+          ? `${customer.name_labels[0].given_name} ${customer.name_labels[0].family_name}`.trim()
+          : `${customer.given_name} ${customer.family_name}`.trim(),
       id: customer.id,
       full_name_english: `${customer.given_name} ${customer.family_name}`.trim(),
       village_id: customer.village_id,

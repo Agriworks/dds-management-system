@@ -70,6 +70,37 @@ export default function AddMemberPage() {
     try {
       setLoading(true);
       console.log("Submitting form with values:", values);
+      const cleanPhoneNumber = values.phone_number.replace(/\D/g, "");
+      const cleanAadharNumber = values.aadhar_number.replace(/\D/g, "");
+
+      const uniquenessResponse = await fetch(
+        `/api/members/check-unique?phone_number=${encodeURIComponent(cleanPhoneNumber)}&aadhar_number=${encodeURIComponent(cleanAadharNumber)}`,
+      );
+      const uniquenessData = await uniquenessResponse.json();
+
+      if (!uniquenessResponse.ok) {
+        throw new Error(uniquenessData.error?.message || "సభ్యుని ధృవీకరించలేకపోయాం");
+      }
+
+      if (uniquenessData.data?.phoneExists) {
+        theToast.toast({
+          title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
+          description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
+
+      if (uniquenessData.data?.aadharExists) {
+        theToast.toast({
+          title: "ఆధార్ నంబర్ ఇప్పటికే ఉంది",
+          description: "ఈ ఆధార్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఆధార్ నంబర్ ఇవ్వండి.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
 
       const response = await fetch("/api/members", {
         method: "POST",
@@ -83,9 +114,9 @@ export default function AddMemberPage() {
           family_name_telugu: values.family_name_telugu.trim(),
           village_id: values.village,
           house_number: values.house_number.trim(),
-          phone_number: values.phone_number.replace(/\D/g, ""),
+          phone_number: cleanPhoneNumber,
           husband_or_father_name: values.husband_or_father_name.trim(),
-          aadhar_number: values.aadhar_number.replace(/\D/g, ""),
+          aadhar_number: cleanAadharNumber,
         }),
       });
 
@@ -95,12 +126,11 @@ export default function AddMemberPage() {
         // Check if it's a phone number conflict
         if (
           response.status === 409 &&
-          errorData.error?.message?.includes("phone number already exists")
+          errorData.error?.message?.toLowerCase()?.includes("phone number already exists")
         ) {
           theToast.toast({
-            title: "Phone number already exists",
-            description:
-              "A member with this phone number already exists. Please use a different phone number.",
+            title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
+            description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
             variant: "destructive",
             duration: 5000,
           });
@@ -110,12 +140,11 @@ export default function AddMemberPage() {
         // Check if it's an Aadhar number conflict
         if (
           response.status === 409 &&
-          errorData.error?.message?.includes("Aadhar number already exists")
+          errorData.error?.message?.toLowerCase()?.includes("aadhar number already exists")
         ) {
           theToast.toast({
-            title: "Aadhar number already exists",
-            description:
-              "A member with this Aadhar number already exists. Please use a different Aadhar number.",
+            title: "ఆధార్ నంబర్ ఇప్పటికే ఉంది",
+            description: "ఈ ఆధార్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఆధార్ నంబర్ ఇవ్వండి.",
             variant: "destructive",
             duration: 5000,
           });
@@ -128,7 +157,7 @@ export default function AddMemberPage() {
       await response.json();
 
       theToast.toast({
-        title: "Member created successfully!",
+        title: "సభ్యుడు విజయవంతంగా నమోదు అయ్యారు!",
         duration: 5000,
       });
 
@@ -137,11 +166,11 @@ export default function AddMemberPage() {
     } catch (error) {
       console.error("Form submission error", error);
       theToast.toast({
-        title: "Error",
+        title: "లోపం",
         description:
           error instanceof Error
             ? error.message
-            : "Failed to create member. Please try again.",
+            : "సభ్యుని నమోదు చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
         variant: "destructive",
         duration: 5000,
       });
@@ -151,7 +180,7 @@ export default function AddMemberPage() {
   }
 
   return (
-    <ContentLayout title="Add New Member">
+    <ContentLayout title="కొత్త సభ్యుడు">
       {loading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-md">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />

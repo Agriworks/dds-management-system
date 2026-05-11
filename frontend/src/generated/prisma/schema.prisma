@@ -62,9 +62,9 @@ model members {
   family_name             String
   village_id              String                    @db.Uuid
   house_number            String
-  phone_number            String
+  phone_number            String                    @unique(map: "members_phone_number_unique")
   husband_or_father_name  String
-  aadhar_number           String
+  aadhar_number           String                    @unique(map: "members_aadhar_number_unique")
   created_at              DateTime                  @default(now()) @db.Timestamp(6)
   updated_at              DateTime                  @default(now()) @db.Timestamp(6)
   name_labels             member_name_labels[]
@@ -87,48 +87,31 @@ model member_name_labels {
 }
 
 model transactions {
-  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  supervisor_id       String            @db.Uuid
-  member_id           String            @db.Uuid
-  transaction_type_id String            @db.Uuid
-  account_id          String            @db.Uuid
-  amount              Int
-  comments            String?
-  transaction_date    DateTime          @db.Date
-  receipt_number      String            @db.VarChar(255)
-  is_archived         Boolean           @default(false)
-  created_at          DateTime          @default(now()) @db.Timestamp(6)
-  updated_at          DateTime          @default(now()) @db.Timestamp(6)
-  accounts            accounts          @relation(fields: [account_id], references: [id], onUpdate: NoAction, map: "fk_transactions_account")
-  members             members           @relation(fields: [member_id], references: [id], onUpdate: NoAction, map: "fk_transactions_member")
-  transaction_types   transaction_types @relation(fields: [transaction_type_id], references: [id], onUpdate: NoAction, map: "fk_transactions_type")
-  users               users             @relation(fields: [supervisor_id], references: [id], onUpdate: NoAction, map: "fk_transactions_user")
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  supervisor_id    String            @db.Uuid
+  member_id        String            @db.Uuid
+  transaction_type credit_debit_type
+  account_id       String            @db.Uuid
+  amount           Int
+  comments         String?
+  transaction_date DateTime          @db.Date
+  receipt_number   String            @db.VarChar(255)
+  is_archived      Boolean           @default(false)
+  created_at       DateTime          @default(now()) @db.Timestamp(6)
+  updated_at       DateTime          @default(now()) @db.Timestamp(6)
+  accounts         accounts          @relation(fields: [account_id], references: [id], onUpdate: NoAction, map: "fk_transactions_account")
+  members          members           @relation(fields: [member_id], references: [id], onUpdate: NoAction, map: "fk_transactions_member")
+  users            users             @relation(fields: [supervisor_id], references: [id], onUpdate: NoAction, map: "fk_transactions_user")
 }
 
 model villages {
-  id                       String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  label_english            String
-  created_at               DateTime                   @default(now()) @db.Timestamp(6)
-  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
-  mandal_id                String                     @db.Uuid
-  members                  members[]
-  mandals                  mandals                    @relation(fields: [mandal_id], references: [id], onUpdate: NoAction, map: "fk_villages_mandal")
-  villages_accounts_onlink villages_accounts_onlink[]
-}
-
-model transaction_types {
-  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                    String              @unique(map: "transaction_types_name_unique") @db.VarChar(255)
-  label_english           String              @db.VarChar(255)
-  description             String?
-  is_active               Boolean             @default(true)
-  debit_or_credit         credit_debit_type
-  parent_id               String?             @db.Uuid
-  created_at              DateTime            @default(now()) @db.Timestamp(6)
-  updated_at              DateTime            @default(now()) @db.Timestamp(6)
-  transaction_types       transaction_types?  @relation("transaction_typesTotransaction_types", fields: [parent_id], references: [id], onDelete: Restrict, onUpdate: NoAction, map: "fk_transaction_types_parent")
-  other_transaction_types transaction_types[] @relation("transaction_typesTotransaction_types")
-  transactions            transactions[]
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  label_english String
+  created_at    DateTime  @default(now()) @db.Timestamp(6)
+  updated_at    DateTime  @default(now()) @db.Timestamp(6)
+  mandal_id     String    @db.Uuid
+  members       members[]
+  mandals       mandals   @relation(fields: [mandal_id], references: [id], onUpdate: NoAction, map: "fk_villages_mandal")
 }
 
 model endpointaccess {
@@ -156,19 +139,18 @@ model account_types {
 }
 
 model accounts {
-  id                       String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                     String                     @db.VarChar(255)
-  account_number           String                     @db.VarChar(255)
-  balance                  Int                        @default(0)
-  account_type_id          String                     @db.Uuid
-  description              String?
-  is_active                Boolean                    @default(true)
-  created_at               DateTime                   @default(now()) @db.Timestamp(6)
-  updated_at               DateTime                   @default(now()) @db.Timestamp(6)
-  account_types            account_types              @relation(fields: [account_type_id], references: [id], onUpdate: NoAction, map: "fk_accounts_account_type")
-  members_accounts_onlink  members_accounts_onlink[]
-  transactions             transactions[]
-  villages_accounts_onlink villages_accounts_onlink[]
+  id                      String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String                    @db.VarChar(255)
+  account_number          String                    @db.VarChar(255)
+  balance                 Int                       @default(0)
+  account_type_id         String                    @db.Uuid
+  description             String?
+  is_active               Boolean                   @default(true)
+  created_at              DateTime                  @default(now()) @db.Timestamp(6)
+  updated_at              DateTime                  @default(now()) @db.Timestamp(6)
+  account_types           account_types             @relation(fields: [account_type_id], references: [id], onUpdate: NoAction, map: "fk_accounts_account_type")
+  members_accounts_onlink members_accounts_onlink[]
+  transactions            transactions[]
 }
 
 model i18n_labels {
@@ -194,18 +176,6 @@ model members_accounts_onlink {
   members    members  @relation(fields: [member_id], references: [id], onUpdate: NoAction, map: "fk_member_account_member")
 
   @@unique([member_id, account_id], map: "member_account_unique")
-}
-
-model villages_accounts_onlink {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  village_id String   @db.Uuid
-  account_id String   @db.Uuid
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  accounts   accounts @relation(fields: [account_id], references: [id], onUpdate: NoAction, map: "fk_village_account_account")
-  villages   villages @relation(fields: [village_id], references: [id], onUpdate: NoAction, map: "fk_village_account_village")
-
-  @@unique([village_id, account_id], map: "village_account_unique")
 }
 
 enum credit_debit_type {
