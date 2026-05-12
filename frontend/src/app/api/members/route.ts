@@ -6,8 +6,6 @@ import { Prisma } from "@/generated/prisma";
 interface CreateMemberRequest {
   given_name: string;
   family_name: string;
-  given_name_telugu: string;
-  family_name_telugu: string;
   village_id: string;
   house_number: string;
   phone_number: string;
@@ -23,8 +21,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const {
       given_name,
       family_name,
-      given_name_telugu,
-      family_name_telugu,
       village_id,
       house_number,
       phone_number,
@@ -36,8 +32,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     if (
       !given_name ||
       !family_name ||
-      !given_name_telugu ||
-      !family_name_telugu ||
       !village_id ||
       !house_number ||
       !phone_number ||
@@ -142,22 +136,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       },
     });
 
-    // Create Telugu name labels for the member
+    // Telugu labels use the same text as English names for display consistency
     await prisma.member_name_labels.create({
       data: {
         id: crypto.randomUUID(),
         member_id: newMember.id,
         language_code: "te",
-        given_name: given_name_telugu.trim(),
-        family_name: family_name_telugu.trim(),
+        given_name: given_name.trim(),
+        family_name: family_name.trim(),
       },
     });
 
     const savingsAccountType = await prisma.account_types.findUnique({
       where: { name: "SAVINGS" },
     });
-    const loansAccountType = await prisma.account_types.findUnique({
-      where: { name: "LOANS" },
+    const withdrawAccountType = await prisma.account_types.findUnique({
+      where: { name: "WITHDRAW" },
+    });
+    const laagodiAccountType = await prisma.account_types.findUnique({
+      where: { name: "LAAGODI" },
     });
 
     if (!savingsAccountType) {
@@ -167,15 +164,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         500,
       );
     }
-    if (!loansAccountType) {
+    if (!withdrawAccountType) {
       return createErrorResponse(
         "INTERNAL_ERROR",
-        "LOANS account type not found in database",
+        "WITHDRAW account type not found in database",
+        500,
+      );
+    }
+    if (!laagodiAccountType) {
+      return createErrorResponse(
+        "INTERNAL_ERROR",
+        "LAAGODI account type not found in database",
         500,
       );
     }
 
-    // Next two sequential ACC### numbers (savings then loan)
+    // Next three sequential ACC### numbers (savings, withdrawal, laagodi)
     const existingAccounts = await prisma.accounts.findMany({
       where: {
         account_number: {
@@ -197,7 +201,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     }
     const savingsAccountNumber = `ACC${seq.toString().padStart(3, "0")}`;
-    const loanAccountNumber = `ACC${(seq + 1).toString().padStart(3, "0")}`;
+    const withdrawAccountNumber = `ACC${(seq + 1).toString().padStart(3, "0")}`;
+    const laagodiAccountNumber = `ACC${(seq + 2).toString().padStart(3, "0")}`;
 
     const memberFullName = `${given_name.trim()} ${family_name.trim()}`;
 
@@ -208,19 +213,31 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         account_number: savingsAccountNumber,
         balance: 0,
         account_type_id: savingsAccountType.id,
-        description: `Main savings account for ${memberFullName}`,
+        description: `Savings account for ${memberFullName}`,
         is_active: true,
       },
     });
 
-    const newLoanAccount = await prisma.accounts.create({
+    const newWithdrawAccount = await prisma.accounts.create({
       data: {
         id: crypto.randomUUID(),
         name: memberFullName,
-        account_number: loanAccountNumber,
+        account_number: withdrawAccountNumber,
         balance: 0,
-        account_type_id: loansAccountType.id,
-        description: `Loan account for ${memberFullName}`,
+        account_type_id: withdrawAccountType.id,
+        description: `Withdrawal account for ${memberFullName}`,
+        is_active: true,
+      },
+    });
+
+    const newLaagodiAccount = await prisma.accounts.create({
+      data: {
+        id: crypto.randomUUID(),
+        name: memberFullName,
+        account_number: laagodiAccountNumber,
+        balance: 0,
+        account_type_id: laagodiAccountType.id,
+        description: `Laagodi account for ${memberFullName}`,
         is_active: true,
       },
     });
@@ -235,7 +252,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         {
           id: crypto.randomUUID(),
           member_id: newMember.id,
-          account_id: newLoanAccount.id,
+          account_id: newWithdrawAccount.id,
+        },
+        {
+          id: crypto.randomUUID(),
+          member_id: newMember.id,
+          account_id: newLaagodiAccount.id,
         },
       ],
     });
@@ -243,7 +265,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return createSuccessResponse(
       {
         message:
-          "Member created successfully with savings and loan accounts",
+          "Member created successfully with savings, withdrawal, and Laagodi accounts",
         member: {
           id: newMember.id,
           given_name: newMember.given_name,
@@ -261,13 +283,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           account_number: newSavingsAccount.account_number,
           name: newSavingsAccount.name,
         },
-        loan_account: {
-          id: newLoanAccount.id,
-          account_number: newLoanAccount.account_number,
-          name: newLoanAccount.name,
+        withdraw_account: {
+          id: newWithdrawAccount.id,
+          account_number: newWithdrawAccount.account_number,
+          name: newWithdrawAccount.name,
+        },
+        laagodi_account: {
+          id: newLaagodiAccount.id,
+          account_number: newLaagodiAccount.account_number,
+          name: newLaagodiAccount.name,
         },
       },
-      "Member created successfully with savings and loan accounts",
+      "Member created successfully with savings, withdrawal, and Laagodi accounts",
     );
   } catch (error) {
     console.error("Error creating member:", error);
