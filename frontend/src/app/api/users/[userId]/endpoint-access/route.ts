@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { validateAccessToken } from "@/lib/auth-utils";
+import { normalizeEndpointForAccess } from "@/lib/endpoint-normalize";
 
 interface EndpointAccessRequest {
   endpoint: string;
@@ -22,9 +23,10 @@ export async function POST(
 
     const { userId } = await params;
     const { endpoint }: EndpointAccessRequest = await request.json();
+    const resolvedEndpoint = normalizeEndpointForAccess(endpoint);
 
     console.log(
-      `Checking endpoint access for user ${userId} on endpoint ${endpoint}`,
+      `Checking endpoint access for user ${userId} on endpoint ${endpoint} (resolved: ${resolvedEndpoint})`,
     );
 
     // Get user's active roles
@@ -49,7 +51,7 @@ export async function POST(
     // Get endpoint access permissions for ALL user's roles
     const endpointAccessList = await prisma.endpointaccess.findMany({
       where: {
-        endpoint: endpoint,
+        endpoint: resolvedEndpoint,
         role: {
           in: roleNames,
         },
@@ -57,7 +59,7 @@ export async function POST(
     });
 
     if (!endpointAccessList || endpointAccessList.length === 0) {
-      console.log("No endpoint access found for endpoint:", endpoint);
+      console.log("No endpoint access found for endpoint:", resolvedEndpoint);
       return NextResponse.json(null);
     }
 

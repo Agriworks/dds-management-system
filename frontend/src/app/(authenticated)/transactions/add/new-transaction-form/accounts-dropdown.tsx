@@ -120,11 +120,10 @@ export function AccountsDropdown({
         ) : (
           accounts.map((account) => {
             const label =
-              `(${account.account_number})` +
               (account.account_type_label_telugu
-                ? ` - ${account.account_type_label_telugu}`
+                ? `${account.account_type_label_telugu}`
                 : account.account_type_label_english
-                  ? ` - ${account.account_type_label_english}`
+                  ? `${account.account_type_label_english}`
                 : "");
             return (
               <SelectItem key={account.id} value={account.id} title={label}>

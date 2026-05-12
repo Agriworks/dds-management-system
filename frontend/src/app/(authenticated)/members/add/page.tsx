@@ -24,8 +24,6 @@ import { Loader2 } from "lucide-react";
 const formSchema = z.object({
   given_name: z.string().min(1, { message: "Given name is required" }),
   family_name: z.string().min(1, { message: "Family name is required" }),
-  given_name_telugu: z.string().min(1, { message: "Given name in Telugu is required" }),
-  family_name_telugu: z.string().min(1, { message: "Family name in Telugu is required" }),
   mandal: z.string().min(1, { message: "Please select a mandal" }),
   village: z.string().min(1, { message: "Please select a village" }),
   house_number: z.string().min(1, { message: "House number is required" }),
@@ -55,8 +53,6 @@ export default function AddMemberPage() {
     defaultValues: {
       given_name: "",
       family_name: "",
-      given_name_telugu: "",
-      family_name_telugu: "",
       mandal: "",
       village: "",
       house_number: "",
@@ -110,8 +106,6 @@ export default function AddMemberPage() {
         body: JSON.stringify({
           given_name: values.given_name.trim(),
           family_name: values.family_name.trim(),
-          given_name_telugu: values.given_name_telugu.trim(),
-          family_name_telugu: values.family_name_telugu.trim(),
           village_id: values.village,
           house_number: values.house_number.trim(),
           phone_number: cleanPhoneNumber,
@@ -234,52 +228,6 @@ export default function AddMemberPage() {
                           <Input
                             type="text"
                             placeholder="ఇంటి పేరు ఇంగ్లీషులో ఇవ్వండి"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="given_name_telugu"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          పేరు (తెలుగు)
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="పేరు తెలుగులో ఇవ్వండి"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="family_name_telugu"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          ఇంటి పేరు (తెలుగు)
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="ఇంటి పేరు తెలుగులో ఇవ్వండి"
                             {...field}
                           />
                         </FormControl>

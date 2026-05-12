@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 export type MemberRow = {
   id: string;
@@ -9,13 +10,29 @@ export type MemberRow = {
   phoneNumber: string;
   mandal: string;
   village: string;
+  savingsBalance: number;
+  withdrawBalance: number;
+  laagodiBalance: number;
 };
+
+function formatInr(amount: number): string {
+  return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
+}
 
 export function getMemberColumns(): ColumnDef<MemberRow>[] {
   return [
     {
-      accessorKey: "givenName",
+      id: "memberName",
+      accessorFn: (row) => `${row.givenName} ${row.familyName}`.trim(),
       header: "సభ్యుని పేరు",
+      cell: ({ row }) => (
+        <Link
+          href={`/members/${row.original.id}`}
+          className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+        >
+          {row.original.givenName}
+        </Link>
+      ),
     },
     {
       accessorKey: "familyName",
@@ -40,6 +57,27 @@ export function getMemberColumns(): ColumnDef<MemberRow>[] {
     {
       accessorKey: "village",
       header: "ఊరు",
+    },
+    {
+      accessorKey: "savingsBalance",
+      header: "సేవింగ్స్ బ్యాలెన్స్",
+      cell: ({ row }) => (
+        <span className="tabular-nums">{formatInr(row.original.savingsBalance)}</span>
+      ),
+    },
+    {
+      accessorKey: "withdrawBalance",
+      header: "విత్‌డ్రాల్ బ్యాలెన్స్",
+      cell: ({ row }) => (
+        <span className="tabular-nums">{formatInr(row.original.withdrawBalance)}</span>
+      ),
+    },
+    {
+      accessorKey: "laagodiBalance",
+      header: "లాగోడి బ్యాలెన్స్",
+      cell: ({ row }) => (
+        <span className="tabular-nums">{formatInr(row.original.laagodiBalance)}</span>
+      ),
     },
   ];
 }

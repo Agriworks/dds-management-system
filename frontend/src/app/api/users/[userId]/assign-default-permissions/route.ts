@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { v4 as uuidv4 } from "uuid";
 import { validateAccessToken } from "@/lib/auth-utils";
+import { normalizeEndpointForAccess } from "@/lib/endpoint-normalize";
 
 interface AssignPermissionsRequest {
   endpoint: string;
@@ -23,9 +24,10 @@ export async function POST(
 
     const { userId } = await params;
     const { endpoint }: AssignPermissionsRequest = await request.json();
+    const resolvedEndpoint = normalizeEndpointForAccess(endpoint);
 
     console.log(
-      `Assigning default permissions for user ${userId} on endpoint ${endpoint}`,
+      `Assigning default permissions for user ${userId} on endpoint ${endpoint} (resolved: ${resolvedEndpoint})`,
     );
 
     // Check if user exists
@@ -68,7 +70,7 @@ export async function POST(
     const existingAccess = await prisma.endpointaccess.findFirst({
       where: {
         role: "user",
-        endpoint: endpoint,
+        endpoint: resolvedEndpoint,
       },
     });
 
@@ -76,13 +78,13 @@ export async function POST(
       await prisma.endpointaccess.create({
         data: {
           role: "user",
-          endpoint: endpoint,
+          endpoint: resolvedEndpoint,
           viewer: true,
           contributor: false,
           admin: false,
         },
       });
-      console.log(`Created default permissions for endpoint: ${endpoint}`);
+      console.log(`Created default permissions for endpoint: ${resolvedEndpoint}`);
     }
 
     // Return the permissions
