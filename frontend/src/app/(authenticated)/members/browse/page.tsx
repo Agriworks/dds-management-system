@@ -2,6 +2,7 @@ import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { prisma } from "@/lib/prisma";
 import { MembersTableClient } from "./members-table-client";
 import { MembersFiltersClient } from "./members-filters-client";
+import { getMemberBalancesForMembers } from "@/lib/member-account-balances";
 
 async function getMembers(mandalId?: string, villageId?: string) {
   return prisma.members.findMany({
@@ -64,8 +65,10 @@ export default async function MembersBrowsePage({
     selectedMandalId || undefined,
     selectedVillageId || undefined,
   );
+  const balanceByMember = await getMemberBalancesForMembers(members.map((m) => m.id));
   const rows = members.map((member) => {
     const teluguName = member.name_labels.length > 0 ? member.name_labels[0] : null;
+    const bal = balanceByMember.get(member.id)!;
     return {
       id: member.id,
       givenName: teluguName ? teluguName.given_name : member.given_name,
@@ -75,6 +78,9 @@ export default async function MembersBrowsePage({
       mandal: member.villages.mandals.label_english,
       phoneNumber: member.phone_number,
       village: member.villages.label_english,
+      savingsBalance: bal.savingsBalance,
+      withdrawBalance: bal.withdrawBalance,
+      laagodiBalance: bal.laagodiBalance,
     };
   });
 
@@ -85,7 +91,9 @@ export default async function MembersBrowsePage({
               initialMandalId={selectedMandalId}
               initialVillageId={selectedVillageId}
             />
-            <MembersTableClient data={rows} />
+            <div className="mt-4 overflow-x-auto">
+              <MembersTableClient data={rows} />
+            </div>
           </div>
     </ContentLayout>
   );
