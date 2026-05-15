@@ -200,9 +200,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         seq = parseInt(match[1], 10) + 1;
       }
     }
-    const savingsAccountNumber = `ACC${seq.toString().padStart(3, "0")}`;
-    const withdrawAccountNumber = `ACC${(seq + 1).toString().padStart(3, "0")}`;
-    const laagodiAccountNumber = `ACC${(seq + 2).toString().padStart(3, "0")}`;
+    const savingsAccountNumber = `ACC${seq.toString().padStart(6, "0")}`;
+    const withdrawAccountNumber = `ACC${(seq + 1).toString().padStart(6, "0")}`;
+    const laagodiAccountNumber = `ACC${(seq + 2).toString().padStart(6, "0")}`;
 
     const memberFullName = `${given_name.trim()} ${family_name.trim()}`;
 
