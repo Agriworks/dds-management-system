@@ -83,22 +83,12 @@ export default function AddMemberPage() {
       const cleanAadharNumber = values.aadhar_number.replace(/\D/g, "");
 
       const uniquenessResponse = await fetch(
-        `/api/members/check-unique?phone_number=${encodeURIComponent(cleanPhoneNumber)}&aadhar_number=${encodeURIComponent(cleanAadharNumber)}`,
+        `/api/members/check-unique?aadhar_number=${encodeURIComponent(cleanAadharNumber)}`,
       );
       const uniquenessData = await uniquenessResponse.json();
 
       if (!uniquenessResponse.ok) {
         throw new Error(uniquenessData.error?.message || t.memberAdd.verifyError);
-      }
-
-      if (uniquenessData.data?.phoneExists) {
-        theToast.toast({
-          title: t.memberAdd.phoneExistsTitle,
-          description: t.memberAdd.phoneExistsDesc,
-          variant: "destructive",
-          duration: 5000,
-        });
-        return;
       }
 
       if (uniquenessData.data?.aadharExists) {
@@ -130,19 +120,7 @@ export default function AddMemberPage() {
       if (!response.ok) {
         const errorData = await response.json();
 
-        if (
-          response.status === 409 &&
-          errorData.error?.message?.toLowerCase()?.includes("phone number already exists")
-        ) {
-          theToast.toast({
-            title: t.memberAdd.phoneExistsTitle,
-            description: t.memberAdd.phoneExistsDesc,
-            variant: "destructive",
-            duration: 5000,
-          });
-          return;
-        }
-
+        // Check if it's an Aadhar number conflict
         if (
           response.status === 409 &&
           errorData.error?.message?.toLowerCase()?.includes("aadhar number already exists")

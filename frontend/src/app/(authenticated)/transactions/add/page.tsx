@@ -29,7 +29,8 @@ import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
 import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
 import { useState, useMemo } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
+import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -219,20 +220,34 @@ export default function AddTransactionForm() {
                           {t.transactionAdd.member}
                           <span className="text-destructive">*</span>
                         </FormLabel>
-                        <FormControl>
-                          <CustomerDropdown
-                            mandalId={form.watch("mandal")}
-                            villageId={form.watch("village")}
-                            value={field.value}
-                            onChange={(val) => {
-                              field.onChange(val);
-                              form.setValue("accountId", "");
-                            }}
-                            disabled={
-                              !form.watch("mandal") || !form.watch("village")
-                            }
-                          />
-                        </FormControl>
+                        <div className="flex gap-2 items-start">
+                          <FormControl className="flex-1">
+                            <CustomerDropdown
+                              mandalId={form.watch("mandal")}
+                              villageId={form.watch("village")}
+                              value={field.value}
+                              onChange={(val) => {
+                                field.onChange(val);
+                                form.setValue("accountId", "");
+                              }}
+                              disabled={
+                                !form.watch("mandal") || !form.watch("village")
+                              }
+                            />
+                          </FormControl>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="shrink-0"
+                            asChild
+                            disabled={!form.watch("mandal") || !form.watch("village")}
+                          >
+                            <Link href="/members/add" title={t.nav.addMember}>
+                              <Plus className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

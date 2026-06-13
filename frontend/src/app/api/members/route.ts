@@ -80,25 +80,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Check if member with same phone number already exists
-    const existingMember = await prisma.members.findFirst({
-      where: {
-        phone_number: cleanPhoneNumber,
-      },
-    });
-
-    if (existingMember) {
-      return createErrorResponse(
-        "VALIDATION_ERROR",
-        "Member with this phone number already exists",
-        409,
-      );
-    }
-
-    // Check if member with same Aadhar number already exists
+    // Check if member with same Aadhar number already exists (among non-archived members)
     const existingAadharMember = await prisma.members.findFirst({
       where: {
         aadhar_number: cleanAadharNumber,
+        is_archived: false,
       },
     });
 
@@ -303,14 +289,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const targetFields = Array.isArray(error.meta?.target)
         ? error.meta.target.map((value) => String(value))
         : [];
-
-      if (targetFields.includes("phone_number")) {
-        return createErrorResponse(
-          "VALIDATION_ERROR",
-          "Member with this phone number already exists",
-          409,
-        );
-      }
 
       if (targetFields.includes("aadhar_number")) {
         return createErrorResponse(

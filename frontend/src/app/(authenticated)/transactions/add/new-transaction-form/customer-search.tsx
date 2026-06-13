@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   SearchableSelect,
   SearchableSelectOption,
@@ -28,11 +28,16 @@ export function CustomerDropdown({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Debounced search function
   const debouncedSearch = useDebouncedCallback(
     useCallback(
       async (search: string) => {
         if (!mandalId || !villageId) {
+          setCustomers([]);
+          return;
+        }
+
+        const cleanSearch = search.replace(/\D/g, "");
+        if (!cleanSearch) {
           setCustomers([]);
           return;
         }
@@ -44,7 +49,8 @@ export function CustomerDropdown({
           const data = await getCustomers({
             mandalId,
             villageId,
-            search: search.trim() || undefined,
+            search: cleanSearch,
+            limit: "100",
           });
           setCustomers(data.customers);
         } catch {
@@ -56,21 +62,9 @@ export function CustomerDropdown({
       },
       [mandalId, villageId],
     ),
-    300, // 300ms delay
+    300,
   );
 
-  // Initial load when mandalId or villageId changes
-  useEffect(() => {
-    if (!mandalId || !villageId) {
-      setCustomers([]);
-      return;
-    }
-
-    // Load initial data
-    debouncedSearch("");
-  }, [mandalId, villageId, debouncedSearch]);
-
-  // Handle search
   const handleSearch = (search: string) => {
     debouncedSearch(search);
   };
@@ -83,8 +77,8 @@ export function CustomerDropdown({
         : customer.full_name_english || customer.full_name_telugu;
     return {
       value: customer.id,
-      label: `${name} (${customer.phone_number})`,
-      searchText: `${customer.full_name_telugu || ""} ${customer.full_name_english} ${customer.phone_number}`,
+      label: `${name} (${customer.aadhar_number})`,
+      searchText: customer.aadhar_number,
     };
   });
 
@@ -106,6 +100,7 @@ export function CustomerDropdown({
       onSearch={handleSearch}
       loading={loading}
       error={error}
+      serverSideSearch
     />
   );
 }

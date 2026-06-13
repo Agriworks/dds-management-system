@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 export type MemberRow = {
@@ -29,8 +30,15 @@ function formatInr(amount: number): string {
 // The columns need access to translations - we pass t and lang as parameters
 export function getMemberColumns(
   t: ReturnType<typeof useLanguage>["t"],
-  lang: ReturnType<typeof useLanguage>["lang"]
+  lang: ReturnType<typeof useLanguage>["lang"],
+  opts?: {
+    onArchive?: (memberId: string) => Promise<void> | void;
+    canArchive?: boolean;
+  }
 ): ColumnDef<MemberRow>[] {
+  const onArchive = opts?.onArchive;
+  const canArchive = opts?.canArchive;
+
   return [
     {
       id: "memberName",
@@ -100,5 +108,28 @@ export function getMemberColumns(
         <span className="tabular-nums">{formatInr(row.original.laagodiBalance)}</span>
       ),
     },
+    ...(canArchive && onArchive
+      ? ([
+          {
+            id: "actions",
+            header: t.membersBrowse.colActions,
+            cell: ({ row }) => (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={async () => {
+                  const ok = window.confirm(
+                    t.membersBrowse.archiveConfirm,
+                  );
+                  if (!ok) return;
+                  await onArchive(row.original.id);
+                }}
+              >
+                {t.membersBrowse.archiveBtn}
+              </Button>
+            ),
+          } satisfies ColumnDef<MemberRow>,
+        ] as ColumnDef<MemberRow>[])
+      : []),
   ];
 }

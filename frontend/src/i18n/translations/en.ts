@@ -48,7 +48,6 @@ const en: Translations = {
     loans: "Loans",
   },
 
-  // Members – Browse
   membersBrowse: {
     title: "Members",
     mandal: "Mandal",
@@ -65,6 +64,11 @@ const en: Translations = {
     colSavings: "Savings Balance",
     colWithdraw: "Withdrawal Balance",
     colLaagodi: "Laagodi Balance",
+    colActions: "Actions",
+    archiveConfirm: "Archive this member? They will no longer appear in the list.",
+    archiveBtn: "Archive",
+    archiveSuccess: "Member archived successfully",
+    archiveError: "Failed to archive member. Please try again.",
   },
 
   // Member – Add
@@ -133,6 +137,10 @@ const en: Translations = {
     approve: "Approve",
     cancel: "Cancel",
     cancelDone: "Cancelled",
+    archiveConfirm: "Archive this transaction? It will no longer appear in the list.",
+    archiveBtn: "Archive",
+    archiveSuccess: "Transaction archived successfully",
+    archiveError: "Failed to archive transaction",
   },
 
   // Transactions – Add
@@ -201,8 +209,8 @@ const en: Translations = {
   customerDropdown: {
     placeholder: "Select Member",
     selectMandaVillageFirst: "Select mandal and village first",
-    searchPlaceholder: "Search by member name or phone...",
-    emptyMessage: "No members found",
+    searchPlaceholder: "Search by Aadhar number...",
+    emptyMessage: "Search for a member by entering their Aadhar number",
     loadingMessage: "Loading members...",
     errorMessage: "Failed to load members",
   },

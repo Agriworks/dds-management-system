@@ -425,6 +425,65 @@ export async function validateTransaction(
   return data.data;
 }
 
+export async function archiveMember(
+  memberId: string,
+  accessToken: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(`${API_BASE_URL}/members/${memberId}/archive`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to archive member");
+  }
+
+  return data.data;
+}
+
+export async function archiveTransaction(
+  transactionId: string,
+  accessToken: string,
+): Promise<{ id: string; is_deleted: boolean }> {
+  const response = await fetch(
+    `${API_BASE_URL}/transactions/${transactionId}/archive`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to archive transaction");
+  }
+
+  return data.data;
+}
+
 // Typed hooks for React components (if using SWR or React Query later)
 export type MandalApiHook = () => {
   mandals: Mandal[] | undefined;

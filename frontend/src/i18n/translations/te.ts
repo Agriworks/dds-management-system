@@ -18,6 +18,8 @@ export type Translations = {
     colName: string; colFamilyName: string; colHusbandFather: string; colAadhar: string;
     colPhone: string; colMandal: string; colVillage: string; colSavings: string;
     colWithdraw: string; colLaagodi: string;
+    colActions: string; archiveConfirm: string; archiveBtn: string;
+    archiveSuccess: string; archiveError: string;
   };
   memberAdd: {
     title: string; cardPersonal: string; cardLocation: string; givenName: string;
@@ -38,6 +40,7 @@ export type Translations = {
     title: string; colMember: string; colType: string; colAmount: string; colDate: string;
     colSupervisor: string; colComments: string; colActions: string; confirmValidate: string;
     confirmInvalidate: string; approved: string; approve: string; cancel: string; cancelDone: string;
+    archiveConfirm: string; archiveBtn: string; archiveSuccess: string; archiveError: string;
   };
   transactionAdd: {
     title: string; cardMember: string; cardTransaction: string; mandal: string; village: string;
@@ -155,6 +158,11 @@ const te: Translations = {
     colSavings: "సేవింగ్స్ బ్యాలెన్స్",
     colWithdraw: "విత్‌డ్రాల్ బ్యాలెన్స్",
     colLaagodi: "లాగోడి బ్యాలెన్స్",
+    colActions: "చర్యలు",
+    archiveConfirm: "ఈ సభ్యుని ఆర్కైవ్ చేయాలా? వారు జాబితాలో కనిపించరు.",
+    archiveBtn: "ఆర్కైవ్",
+    archiveSuccess: "సభ్యుడు ఆర్కైవ్ అయ్యారు",
+    archiveError: "సభ్యుని ఆర్కైవ్ చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
   },
 
   // Member – Add
@@ -223,6 +231,10 @@ const te: Translations = {
     approve: "Approve",
     cancel: "రద్దు",
     cancelDone: "రద్దు చేయి",
+    archiveConfirm: "ఈ ట్రాన్సాక్షన్‌ను ఆర్కైవ్ చేయాలా? ఇది జాబితాలో కనిపించదు.",
+    archiveBtn: "ఆర్కైవ్",
+    archiveSuccess: "ట్రాన్సాక్షన్ ఆర్కైవ్ అయింది",
+    archiveError: "ట్రాన్సాక్షన్ ఆర్కైవ్ చేయలేకపోయాం",
   },
 
   // Transactions – Add
@@ -291,8 +303,8 @@ const te: Translations = {
   customerDropdown: {
     placeholder: "సంఘం సభ్యుని ఎంచుకోండి",
     selectMandaVillageFirst: "ముందు మండలం మరియు ఊరు ఎంచుకోండి",
-    searchPlaceholder: "సంఘం సభ్యుని పేరు లేదా ఫోను ద్వారా వెతకండి...",
-    emptyMessage: "సంఘం సభ్యుని కనుగొనబడలేదు",
+    searchPlaceholder: "ఆధార్ నంబర్ ద్వారా వెతకండి...",
+    emptyMessage: "ఆధార్ నంబర్ ఇచ్చి సభ్యుని వెతకండి",
     loadingMessage: "సభ్యుల వివరాలు లోడ్ అవుతున్నాయి...",
     errorMessage: "సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం",
   },

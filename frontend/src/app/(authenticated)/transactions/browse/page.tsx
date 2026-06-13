@@ -2,16 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import { getTransactions } from "@/lib/api-client";
+import { getTransactions, archiveTransaction } from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
 import { getTransactionColumns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useSession } from "next-auth/react";
+import { type AccessObject } from "@/lib/roles";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TransactionsPage() {
   const { t } = useLanguage();
+  const { data: session } = useSession();
+  const theToast = useToast();
   const [transactions, setTransactions] = useState<TransactionWithNames[]>([]);
   const [loading, setLoading] = useState(false);
+  const [userPermissions, setUserPermissions] = useState<AccessObject | null>(null);
   const [pagination, setPagination] = useState({
     total: 0,
     limit: 10,
@@ -40,11 +46,65 @@ export default function TransactionsPage() {
     fetchTransactions({ limit: 10, offset: 0 });
   }, []);
 
+  useEffect(() => {
+    if (!session?.user?.id || !session?.user?.accessToken) return;
+
+    let mounted = true;
+    (async () => {
+      try {
+        const response = await fetch(
+          `/api/users/${session.user.id}/permissions?endpoint=${encodeURIComponent("/transactions/browse")}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${session.user.accessToken}`,
+            },
+          },
+        );
+
+        if (!response.ok) return;
+        const permissions = await response.json();
+        if (mounted) setUserPermissions(permissions);
+      } catch (error) {
+        console.error("Failed to fetch user permissions:", error);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [session?.user?.id, session?.user?.accessToken]);
+
   const handlePageChange = (pageIndex: number, pageSize: number) => {
     fetchTransactions({
       limit: pageSize,
       offset: pageIndex * pageSize,
     });
+  };
+
+  const handleArchive = async (transactionId: string) => {
+    if (!session?.user?.accessToken) return;
+
+    try {
+      await archiveTransaction(transactionId, session.user.accessToken);
+      setTransactions((prev) => prev.filter((t) => t.id !== transactionId));
+      setPagination((prev) => ({
+        ...prev,
+        total: Math.max(0, prev.total - 1),
+      }));
+      theToast.toast({
+        title: t.transactionsBrowse.archiveSuccess,
+        duration: 3000,
+      });
+    } catch (error) {
+      theToast.toast({
+        title: t.common.error,
+        description:
+          error instanceof Error ? error.message : t.transactionsBrowse.archiveError,
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   return (
@@ -56,7 +116,10 @@ export default function TransactionsPage() {
             </div>
           <div className="overflow-x-auto">
             <DataTable
-              columns={getTransactionColumns(t)}
+              columns={getTransactionColumns(t, {
+                canArchive: !!userPermissions?.admin,
+                onArchive: handleArchive,
+              })}
               data={transactions}
               pageCount={Math.ceil(pagination.total / pagination.limit)}
               pageIndex={Math.floor(pagination.offset / pagination.limit)}

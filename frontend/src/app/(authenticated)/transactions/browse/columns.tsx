@@ -17,10 +17,14 @@ export function getTransactionColumns(
   opts?: {
     onInvalidate?: (transactionId: string) => Promise<void> | void;
     onValidate?: (transactionId: string) => Promise<void> | void;
+    onArchive?: (transactionId: string) => Promise<void> | void;
+    canArchive?: boolean;
   },
 ): ColumnDef<TransactionWithNames>[] {
   const onInvalidate = opts?.onInvalidate;
   const onValidate = opts?.onValidate;
+  const onArchive = opts?.onArchive;
+  const canArchive = opts?.canArchive;
 
   return [
     {
@@ -61,7 +65,7 @@ export function getTransactionColumns(
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         String(info.getValue() ?? "-") as React.ReactNode,
     },
-    ...(onInvalidate || onValidate
+    ...(onInvalidate || onValidate || (canArchive && onArchive)
       ? ([
           {
             id: "actions",
@@ -71,7 +75,7 @@ export function getTransactionColumns(
               const isArchived = !!tx.is_archived;
 
               return (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {onValidate && (
                     <Button
                       size="sm"
@@ -100,6 +104,21 @@ export function getTransactionColumns(
                       }}
                     >
                       {isArchived ? t.transactionsBrowse.cancel : t.transactionsBrowse.cancelDone}
+                    </Button>
+                  )}
+                  {canArchive && onArchive && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={async () => {
+                        const ok = window.confirm(
+                          t.transactionsBrowse.archiveConfirm,
+                        );
+                        if (!ok) return;
+                        await onArchive(tx.id);
+                      }}
+                    >
+                      {t.transactionsBrowse.archiveBtn}
                     </Button>
                   )}
                 </div>
