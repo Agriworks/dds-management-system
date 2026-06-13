@@ -279,10 +279,6 @@ table "members" {
     null = false
   }
 
-  unique "members_phone_number_unique" {
-    columns = [column.phone_number]
-  }
-
   column "husband_or_father_name" {
     type = text
     null = false
@@ -295,6 +291,12 @@ table "members" {
 
   unique "members_aadhar_number_unique" {
     columns = [column.aadhar_number]
+  }
+
+  column "is_archived" {
+    type = boolean
+    null = false
+    default = false
   }
 
   column "created_at" {
@@ -426,6 +428,12 @@ table "transactions" {
   }
 
   column "is_archived" {
+    type = boolean
+    null = false
+    default = false
+  }
+
+  column "is_deleted" {
     type = boolean
     null = false
     default = false

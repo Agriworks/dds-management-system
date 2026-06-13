@@ -51,9 +51,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Validate that the member exists
-    const member = await prisma.members.findUnique({
-      where: { id: data.member_id },
+    // Validate that the member exists and is not archived
+    const member = await prisma.members.findFirst({
+      where: { id: data.member_id, is_archived: false },
     });
 
     if (!member) {
@@ -210,7 +210,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     // Build filter conditions
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const whereConditions: any = {};
+    const whereConditions: any = {
+      is_deleted: false,
+    };
 
     if (memberId) {
       whereConditions.member_id = memberId;
