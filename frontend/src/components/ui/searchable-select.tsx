@@ -166,16 +166,10 @@ export function SearchableSelect({
         position="popper"
         sideOffset={8}
         avoidCollisions={false}
-        onOpenAutoFocus={(event) => {
-          event.preventDefault();
-          searchInputRef.current?.focus({ preventScroll: true });
-        }}
         onCloseAutoFocus={(event) => {
           event.preventDefault();
         }}
         onPointerDownOutside={preventCloseOnSearchInteraction}
-        onInteractOutside={preventCloseOnSearchInteraction}
-        onFocusOutside={preventCloseOnSearchInteraction}
       >
         <div
           ref={searchContainerRef}
