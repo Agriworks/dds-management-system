@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   SearchableSelect,
   SearchableSelectOption,
@@ -26,11 +26,16 @@ export function CustomerDropdown({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Debounced search function
   const debouncedSearch = useDebouncedCallback(
     useCallback(
       async (search: string) => {
         if (!mandalId || !villageId) {
+          setCustomers([]);
+          return;
+        }
+
+        const cleanSearch = search.replace(/\D/g, "");
+        if (!cleanSearch) {
           setCustomers([]);
           return;
         }
@@ -42,7 +47,8 @@ export function CustomerDropdown({
           const data = await getCustomers({
             mandalId,
             villageId,
-            search: search.trim() || undefined,
+            search: cleanSearch,
+            limit: "100",
           });
           setCustomers(data.customers);
         } catch {
@@ -54,30 +60,17 @@ export function CustomerDropdown({
       },
       [mandalId, villageId],
     ),
-    300, // 300ms delay
+    300,
   );
 
-  // Initial load when mandalId or villageId changes
-  useEffect(() => {
-    if (!mandalId || !villageId) {
-      setCustomers([]);
-      return;
-    }
-
-    // Load initial data
-    debouncedSearch("");
-  }, [mandalId, villageId, debouncedSearch]);
-
-  // Handle search
   const handleSearch = (search: string) => {
     debouncedSearch(search);
   };
 
-  // Convert customers to options
   const options: SearchableSelectOption[] = customers.map((customer) => ({
     value: customer.id,
-    label: `${customer.full_name_telugu || customer.full_name_english} (${customer.phone_number})`,
-    searchText: `${customer.full_name_telugu || ""} ${customer.full_name_english} ${customer.phone_number}`,
+    label: `${customer.full_name_telugu || customer.full_name_english} (${customer.aadhar_number})`,
+    searchText: customer.aadhar_number,
   }));
 
   return (
@@ -90,14 +83,15 @@ export function CustomerDropdown({
           ? "ముందు మండలం మరియు ఊరు ఎంచుకోండి"
           : "సంఘం సభ్యుని ఎంచుకోండి"
       }
-      searchPlaceholder="సంఘం సభ్యుని పేరు లేదా ఫోను ద్వారా వెతకండి..."
-      emptyMessage="సంఘం సభ్యుని కనుగొనబడలేదు"
+      searchPlaceholder="ఆధార్ నంబర్ ద్వారా వెతకండి..."
+      emptyMessage="ఆధార్ నంబర్ ఇచ్చి సభ్యుని వెతకండి"
       loadingMessage="సభ్యుల వివరాలు లోడ్ అవుతున్నాయి..."
       errorMessage="సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం"
       options={options}
       onSearch={handleSearch}
       loading={loading}
       error={error}
+      serverSideSearch
     />
   );
 }

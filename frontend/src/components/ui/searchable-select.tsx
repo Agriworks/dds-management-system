@@ -14,7 +14,7 @@ import {
 export interface SearchableSelectOption {
   value: string;
   label: string;
-  searchText?: string; // Additional text to search in
+  searchText?: string;
 }
 
 export interface SearchableSelectProps {
@@ -31,6 +31,7 @@ export interface SearchableSelectProps {
   onSearch?: (searchTerm: string) => void;
   loading?: boolean;
   error?: string | null;
+  serverSideSearch?: boolean;
   renderOption?: (option: SearchableSelectOption) => React.ReactNode;
   renderValue?: (value: string, options: SearchableSelectOption[]) => string;
 }
@@ -49,6 +50,7 @@ export function SearchableSelect({
   onSearch,
   loading = false,
   error = null,
+  serverSideSearch = false,
   renderOption,
   renderValue,
 }: SearchableSelectProps) {
@@ -59,8 +61,12 @@ export function SearchableSelect({
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const searchContainerRef = React.useRef<HTMLDivElement>(null);
 
-  // Filter options based on search term
   React.useEffect(() => {
+    if (serverSideSearch) {
+      setFilteredOptions(options);
+      return;
+    }
+
     if (!searchTerm.trim()) {
       setFilteredOptions(options);
     } else {
@@ -71,45 +77,52 @@ export function SearchableSelect({
       });
       setFilteredOptions(filtered);
     }
-  }, [options, searchTerm]);
+  }, [options, searchTerm, serverSideSearch]);
 
-  // Handle search input change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = e.target.value;
     setSearchTerm(newSearchTerm);
-
-    // Call the onSearch callback if provided
-    if (onSearch) {
-      onSearch(newSearchTerm);
-    }
+    onSearch?.(newSearchTerm);
   };
 
-  // Clear search
-  const clearSearch = () => {
+  const clearSearch = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setSearchTerm("");
-    if (onSearch) {
-      onSearch("");
-    }
+    onSearch?.("");
     searchInputRef.current?.focus({ preventScroll: true });
   };
 
-  // Handle select open
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
-    if (!open) {
-      // Clear search when closing
+    if (open) {
+      setTimeout(() => {
+        searchInputRef.current?.focus({ preventScroll: true });
+      }, 0);
+    } else {
       setSearchTerm("");
     }
   };
 
-  // Handle option selection
   const handleValueChange = (newValue: string) => {
     onValueChange?.(newValue);
     setIsOpen(false);
     setSearchTerm("");
   };
 
-  // Get display value
+  const preventCloseOnSearchInteraction = (event: Event) => {
+    if (
+      searchContainerRef.current &&
+      searchContainerRef.current.contains(event.target as Node)
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  const stopEventPropagation = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+  };
+
   const getDisplayValue = () => {
     if (!value) return placeholder;
 
@@ -146,43 +159,58 @@ export function SearchableSelect({
         </SelectValue>
       </SelectTrigger>
       <SelectContent
+        searchable
         className="p-0 w-[var(--radix-select-trigger-width)] max-w-[90vw] sm:max-w-none z-[100000]"
         side="bottom"
         align="start"
         position="popper"
         sideOffset={8}
-        avoidCollisions
-        collisionPadding={16}
-        onPointerDownOutside={(event) => {
-          if (
-            searchContainerRef.current &&
-            searchContainerRef.current.contains(event.target as Node)
-          ) {
-            event.preventDefault();
-          }
+        avoidCollisions={false}
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          searchInputRef.current?.focus({ preventScroll: true });
         }}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+        }}
+        onPointerDownOutside={preventCloseOnSearchInteraction}
+        onInteractOutside={preventCloseOnSearchInteraction}
+        onFocusOutside={preventCloseOnSearchInteraction}
       >
-        {/* Search Input */}
-        <div ref={searchContainerRef} className="p-2 border-b">
+        <div
+          ref={searchContainerRef}
+          className="p-2 border-b sticky top-0 bg-popover z-10"
+          onPointerDown={stopEventPropagation}
+          onMouseDown={stopEventPropagation}
+          onTouchStart={stopEventPropagation}
+        >
           <div className="relative">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <input
               ref={searchInputRef}
               type="text"
+              inputMode="numeric"
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
-              inputMode="search"
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="none"
               enterKeyHint="search"
-              className="w-full pl-8 pr-8 py-2 text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+              onPointerDown={stopEventPropagation}
+              onMouseDown={stopEventPropagation}
+              onTouchStart={stopEventPropagation}
+              onClick={stopEventPropagation}
+              onKeyDown={stopEventPropagation}
+              className="w-full pl-8 pr-8 py-2 text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent touch-manipulation"
             />
             {searchTerm && (
               <button
                 type="button"
                 onClick={clearSearch}
+                onPointerDown={stopEventPropagation}
+                onMouseDown={stopEventPropagation}
+                onTouchStart={stopEventPropagation}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
@@ -191,8 +219,7 @@ export function SearchableSelect({
           </div>
         </div>
 
-        {/* Options List */}
-        <div className="max-h-[50vh] sm:max-h-60 overflow-y-auto">
+        <div className="max-h-[50vh] sm:max-h-60 overflow-y-auto overscroll-contain">
           {loading ? (
             <div className="flex items-center justify-center py-4 px-3 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
