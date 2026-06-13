@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export type MemberRow = {
   id: string;
@@ -19,7 +20,13 @@ function formatInr(amount: number): string {
   return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
 }
 
-export function getMemberColumns(): ColumnDef<MemberRow>[] {
+export function getMemberColumns(opts?: {
+  onArchive?: (memberId: string) => Promise<void> | void;
+  canArchive?: boolean;
+}): ColumnDef<MemberRow>[] {
+  const onArchive = opts?.onArchive;
+  const canArchive = opts?.canArchive;
+
   return [
     {
       id: "memberName",
@@ -79,5 +86,28 @@ export function getMemberColumns(): ColumnDef<MemberRow>[] {
         <span className="tabular-nums">{formatInr(row.original.laagodiBalance)}</span>
       ),
     },
+    ...(canArchive && onArchive
+      ? ([
+          {
+            id: "actions",
+            header: "చర్యలు",
+            cell: ({ row }) => (
+              <Button
+                size="sm"
+                variant="destructive"
+                onClick={async () => {
+                  const ok = window.confirm(
+                    "ఈ సభ్యుని ఆర్కైవ్ చేయాలా? వారు జాబితాలో కనిపించరు.",
+                  );
+                  if (!ok) return;
+                  await onArchive(row.original.id);
+                }}
+              >
+                ఆర్కైవ్
+              </Button>
+            ),
+          } satisfies ColumnDef<MemberRow>,
+        ] as ColumnDef<MemberRow>[])
+      : []),
   ];
 }

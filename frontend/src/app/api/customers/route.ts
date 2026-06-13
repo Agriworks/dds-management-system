@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 
 /**
  * GET /api/customers?villageId=string&mandalId=string&limit=number&offset=number&search=string
- * Returns paginated customers for a given village and mandal
+ * Returns members for a given village and mandal, searchable by Aadhar number only.
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
@@ -17,9 +17,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const mandalId = searchParams.get("mandalId");
     const limitParam = searchParams.get("limit");
     const offsetParam = searchParams.get("offset");
-    const search = searchParams.get("search");
+    const search = searchParams.get("search")?.replace(/\D/g, "") || "";
 
-    // Validate required parameters
     const validationError = validateRequiredParams(
       {
         villageId: villageId || undefined,
@@ -31,8 +30,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return createErrorResponse("VALIDATION_ERROR", validationError, 400);
     }
 
-    // Parse and validate optional parameters
-    const limit = limitParam ? parseInt(limitParam, 10) : 10;
+    if (!search) {
+      return createSuccessResponse(
+        {
+          items: [],
+          pagination: { total: 0, limit: 0, offset: 0, hasMore: false },
+        },
+        "Enter an Aadhar number to search for members",
+      );
+    }
+
+    const limit = limitParam ? parseInt(limitParam, 10) : 100;
     const offset = offsetParam ? parseInt(offsetParam, 10) : 0;
 
     if (isNaN(limit) || limit < 1 || limit > 100) {
@@ -51,7 +59,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Validate that the village exists and belongs to the specified mandal
     const village = await prisma.villages.findFirst({
       where: {
         id: villageId!,
@@ -67,41 +74,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Build search conditions
-    const searchConditions = search
-      ? {
-          OR: [
-            { given_name: { contains: search, mode: "insensitive" as const } },
-            { family_name: { contains: search, mode: "insensitive" as const } },
-            { phone_number: { contains: search } },
-            {
-              name_labels: {
-                some: {
-                  language_code: "te",
-                  OR: [
-                    { given_name: { contains: search, mode: "insensitive" as const } },
-                    { family_name: { contains: search, mode: "insensitive" as const } },
-                  ],
-                },
-              },
-            },
-            {
-              husband_or_father_name: {
-                contains: search,
-                mode: "insensitive" as const,
-              },
-            },
-          ],
-        }
-      : {};
+    const whereConditions = {
+      village_id: villageId!,
+      is_archived: false,
+      aadhar_number: { contains: search },
+    };
 
-    // Fetch customers from the database with pagination
     const [customers, total] = await Promise.all([
       prisma.members.findMany({
-        where: {
-          village_id: villageId!,
-          ...searchConditions,
-        },
+        where: whereConditions,
         select: {
           id: true,
           given_name: true,
@@ -117,25 +98,22 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           village_id: true,
           phone_number: true,
           house_number: true,
+          aadhar_number: true,
           husband_or_father_name: true,
           created_at: true,
           updated_at: true,
         },
         orderBy: {
-          given_name: "asc",
+          aadhar_number: "asc",
         },
         take: limit,
         skip: offset,
       }),
       prisma.members.count({
-        where: {
-          village_id: villageId!,
-          ...searchConditions,
-        },
+        where: whereConditions,
       }),
     ]);
 
-    // Transform the data to match the API response format
     const transformedCustomers = customers.map((customer) => ({
       full_name_telugu:
         customer.name_labels.length > 0
@@ -146,6 +124,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       village_id: customer.village_id,
       house_number: customer.house_number,
       phone_number: customer.phone_number,
+      aadhar_number: customer.aadhar_number,
       husband_or_father_name: customer.husband_or_father_name,
       created_at: customer.created_at.toISOString(),
       updated_at: customer.updated_at.toISOString(),

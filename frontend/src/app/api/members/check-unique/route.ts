@@ -5,21 +5,12 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
-    const phoneNumber = searchParams.get("phone_number")?.replace(/\D/g, "") || "";
     const aadharNumber = searchParams.get("aadhar_number")?.replace(/\D/g, "") || "";
 
-    if (!phoneNumber || !aadharNumber) {
+    if (!aadharNumber) {
       return createErrorResponse(
         "VALIDATION_ERROR",
-        "Phone number and Aadhar number are required",
-        400,
-      );
-    }
-
-    if (phoneNumber.length !== 10) {
-      return createErrorResponse(
-        "VALIDATION_ERROR",
-        "Phone number must be exactly 10 digits",
+        "Aadhar number is required",
         400,
       );
     }
@@ -32,19 +23,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const [phoneMember, aadharMember] = await Promise.all([
-      prisma.members.findFirst({
-        where: { phone_number: phoneNumber },
-        select: { id: true },
-      }),
-      prisma.members.findFirst({
-        where: { aadhar_number: aadharNumber },
-        select: { id: true },
-      }),
-    ]);
+    const aadharMember = await prisma.members.findFirst({
+      where: { aadhar_number: aadharNumber, is_archived: false },
+      select: { id: true },
+    });
 
     return createSuccessResponse({
-      phoneExists: !!phoneMember,
       aadharExists: !!aadharMember,
     });
   } catch (error) {

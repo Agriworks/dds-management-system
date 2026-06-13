@@ -23,6 +23,7 @@ export interface Customer {
   village_id: string;
   house_number: string;
   phone_number: string;
+  aadhar_number: string;
   husband_or_father_name: string;
   created_at: string;
   updated_at: string;
