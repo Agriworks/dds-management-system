@@ -38,6 +38,7 @@ export async function POST(
       select: {
         id: true,
         is_archived: true,
+        is_deleted: true,
         amount: true,
         account_id: true,
         transaction_type: true,
@@ -49,6 +50,14 @@ export async function POST(
         "NOT_FOUND",
         `Transaction with ID ${transactionId} not found`,
         404,
+      );
+    }
+
+    if (transaction.is_deleted) {
+      return createErrorResponse(
+        "VALIDATION_ERROR",
+        "Cannot invalidate an archived transaction",
+        400,
       );
     }
 

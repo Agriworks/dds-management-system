@@ -14,9 +14,13 @@ import {
 export function getTransactionColumns(opts?: {
   onInvalidate?: (transactionId: string) => Promise<void> | void;
   onValidate?: (transactionId: string) => Promise<void> | void;
+  onArchive?: (transactionId: string) => Promise<void> | void;
+  canArchive?: boolean;
 }): ColumnDef<TransactionWithNames>[] {
   const onInvalidate = opts?.onInvalidate;
   const onValidate = opts?.onValidate;
+  const onArchive = opts?.onArchive;
+  const canArchive = opts?.canArchive;
 
   return [
     {
@@ -57,7 +61,7 @@ export function getTransactionColumns(opts?: {
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         String(info.getValue() ?? "-") as React.ReactNode,
     },
-    ...(onInvalidate || onValidate
+    ...(onInvalidate || onValidate || (canArchive && onArchive)
       ? ([
           {
             id: "actions",
@@ -67,7 +71,7 @@ export function getTransactionColumns(opts?: {
               const isArchived = !!t.is_archived;
 
               return (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {onValidate && (
                     <Button
                       size="sm"
@@ -100,6 +104,21 @@ export function getTransactionColumns(opts?: {
                       }}
                     >
                       {isArchived ? "రద్దు" : "రద్దు చేయి"}
+                    </Button>
+                  )}
+                  {canArchive && onArchive && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={async () => {
+                        const ok = window.confirm(
+                          "ఈ ట్రాన్సాక్షన్‌ను ఆర్కైవ్ చేయాలా? ఇది జాబితాలో కనిపించదు.",
+                        );
+                        if (!ok) return;
+                        await onArchive(t.id);
+                      }}
+                    >
+                      ఆర్కైవ్
                     </Button>
                   )}
                 </div>

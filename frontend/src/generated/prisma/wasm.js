@@ -167,7 +167,8 @@ exports.Prisma.MembersScalarFieldEnum = {
   husband_or_father_name: 'husband_or_father_name',
   aadhar_number: 'aadhar_number',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  is_archived: 'is_archived'
 };
 
 exports.Prisma.Member_name_labelsScalarFieldEnum = {
@@ -192,7 +193,8 @@ exports.Prisma.TransactionsScalarFieldEnum = {
   receipt_number: 'receipt_number',
   is_archived: 'is_archived',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  is_deleted: 'is_deleted'
 };
 
 exports.Prisma.VillagesScalarFieldEnum = {

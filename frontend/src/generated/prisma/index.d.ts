@@ -6684,6 +6684,7 @@ export namespace Prisma {
     aadhar_number: string | null
     created_at: Date | null
     updated_at: Date | null
+    is_archived: boolean | null
   }
 
   export type MembersMaxAggregateOutputType = {
@@ -6697,6 +6698,7 @@ export namespace Prisma {
     aadhar_number: string | null
     created_at: Date | null
     updated_at: Date | null
+    is_archived: boolean | null
   }
 
   export type MembersCountAggregateOutputType = {
@@ -6710,6 +6712,7 @@ export namespace Prisma {
     aadhar_number: number
     created_at: number
     updated_at: number
+    is_archived: number
     _all: number
   }
 
@@ -6725,6 +6728,7 @@ export namespace Prisma {
     aadhar_number?: true
     created_at?: true
     updated_at?: true
+    is_archived?: true
   }
 
   export type MembersMaxAggregateInputType = {
@@ -6738,6 +6742,7 @@ export namespace Prisma {
     aadhar_number?: true
     created_at?: true
     updated_at?: true
+    is_archived?: true
   }
 
   export type MembersCountAggregateInputType = {
@@ -6751,6 +6756,7 @@ export namespace Prisma {
     aadhar_number?: true
     created_at?: true
     updated_at?: true
+    is_archived?: true
     _all?: true
   }
 
@@ -6837,6 +6843,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at: Date
     updated_at: Date
+    is_archived: boolean
     _count: MembersCountAggregateOutputType | null
     _min: MembersMinAggregateOutputType | null
     _max: MembersMaxAggregateOutputType | null
@@ -6867,6 +6874,7 @@ export namespace Prisma {
     aadhar_number?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_archived?: boolean
     name_labels?: boolean | members$name_labelsArgs<ExtArgs>
     villages?: boolean | villagesDefaultArgs<ExtArgs>
     members_accounts_onlink?: boolean | members$members_accounts_onlinkArgs<ExtArgs>
@@ -6885,6 +6893,7 @@ export namespace Prisma {
     aadhar_number?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_archived?: boolean
     villages?: boolean | villagesDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["members"]>
 
@@ -6899,6 +6908,7 @@ export namespace Prisma {
     aadhar_number?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_archived?: boolean
     villages?: boolean | villagesDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["members"]>
 
@@ -6913,9 +6923,10 @@ export namespace Prisma {
     aadhar_number?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_archived?: boolean
   }
 
-  export type membersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "given_name" | "family_name" | "village_id" | "house_number" | "phone_number" | "husband_or_father_name" | "aadhar_number" | "created_at" | "updated_at", ExtArgs["result"]["members"]>
+  export type membersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "given_name" | "family_name" | "village_id" | "house_number" | "phone_number" | "husband_or_father_name" | "aadhar_number" | "created_at" | "updated_at" | "is_archived", ExtArgs["result"]["members"]>
   export type membersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name_labels?: boolean | members$name_labelsArgs<ExtArgs>
     villages?: boolean | villagesDefaultArgs<ExtArgs>
@@ -6949,6 +6960,7 @@ export namespace Prisma {
       aadhar_number: string
       created_at: Date
       updated_at: Date
+      is_archived: boolean
     }, ExtArgs["result"]["members"]>
     composites: {}
   }
@@ -7386,6 +7398,7 @@ export namespace Prisma {
     readonly aadhar_number: FieldRef<"members", 'String'>
     readonly created_at: FieldRef<"members", 'DateTime'>
     readonly updated_at: FieldRef<"members", 'DateTime'>
+    readonly is_archived: FieldRef<"members", 'Boolean'>
   }
     
 
@@ -8989,6 +9002,7 @@ export namespace Prisma {
     is_archived: boolean | null
     created_at: Date | null
     updated_at: Date | null
+    is_deleted: boolean | null
   }
 
   export type TransactionsMaxAggregateOutputType = {
@@ -9004,6 +9018,7 @@ export namespace Prisma {
     is_archived: boolean | null
     created_at: Date | null
     updated_at: Date | null
+    is_deleted: boolean | null
   }
 
   export type TransactionsCountAggregateOutputType = {
@@ -9019,6 +9034,7 @@ export namespace Prisma {
     is_archived: number
     created_at: number
     updated_at: number
+    is_deleted: number
     _all: number
   }
 
@@ -9044,6 +9060,7 @@ export namespace Prisma {
     is_archived?: true
     created_at?: true
     updated_at?: true
+    is_deleted?: true
   }
 
   export type TransactionsMaxAggregateInputType = {
@@ -9059,6 +9076,7 @@ export namespace Prisma {
     is_archived?: true
     created_at?: true
     updated_at?: true
+    is_deleted?: true
   }
 
   export type TransactionsCountAggregateInputType = {
@@ -9074,6 +9092,7 @@ export namespace Prisma {
     is_archived?: true
     created_at?: true
     updated_at?: true
+    is_deleted?: true
     _all?: true
   }
 
@@ -9176,6 +9195,7 @@ export namespace Prisma {
     is_archived: boolean
     created_at: Date
     updated_at: Date
+    is_deleted: boolean
     _count: TransactionsCountAggregateOutputType | null
     _avg: TransactionsAvgAggregateOutputType | null
     _sum: TransactionsSumAggregateOutputType | null
@@ -9210,6 +9230,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_deleted?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
@@ -9228,6 +9249,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_deleted?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
@@ -9246,6 +9268,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_deleted?: boolean
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
     users?: boolean | usersDefaultArgs<ExtArgs>
@@ -9264,9 +9287,10 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: boolean
     updated_at?: boolean
+    is_deleted?: boolean
   }
 
-  export type transactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "supervisor_id" | "member_id" | "transaction_type" | "account_id" | "amount" | "comments" | "transaction_date" | "receipt_number" | "is_archived" | "created_at" | "updated_at", ExtArgs["result"]["transactions"]>
+  export type transactionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "supervisor_id" | "member_id" | "transaction_type" | "account_id" | "amount" | "comments" | "transaction_date" | "receipt_number" | "is_archived" | "created_at" | "updated_at" | "is_deleted", ExtArgs["result"]["transactions"]>
   export type transactionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | accountsDefaultArgs<ExtArgs>
     members?: boolean | membersDefaultArgs<ExtArgs>
@@ -9303,6 +9327,7 @@ export namespace Prisma {
       is_archived: boolean
       created_at: Date
       updated_at: Date
+      is_deleted: boolean
     }, ExtArgs["result"]["transactions"]>
     composites: {}
   }
@@ -9741,6 +9766,7 @@ export namespace Prisma {
     readonly is_archived: FieldRef<"transactions", 'Boolean'>
     readonly created_at: FieldRef<"transactions", 'DateTime'>
     readonly updated_at: FieldRef<"transactions", 'DateTime'>
+    readonly is_deleted: FieldRef<"transactions", 'Boolean'>
   }
     
 
@@ -16748,7 +16774,8 @@ export namespace Prisma {
     husband_or_father_name: 'husband_or_father_name',
     aadhar_number: 'aadhar_number',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    is_archived: 'is_archived'
   };
 
   export type MembersScalarFieldEnum = (typeof MembersScalarFieldEnum)[keyof typeof MembersScalarFieldEnum]
@@ -16779,7 +16806,8 @@ export namespace Prisma {
     receipt_number: 'receipt_number',
     is_archived: 'is_archived',
     created_at: 'created_at',
-    updated_at: 'updated_at'
+    updated_at: 'updated_at',
+    is_deleted: 'is_deleted'
   };
 
   export type TransactionsScalarFieldEnum = (typeof TransactionsScalarFieldEnum)[keyof typeof TransactionsScalarFieldEnum]
@@ -17244,6 +17272,7 @@ export namespace Prisma {
     aadhar_number?: StringFilter<"members"> | string
     created_at?: DateTimeFilter<"members"> | Date | string
     updated_at?: DateTimeFilter<"members"> | Date | string
+    is_archived?: BoolFilter<"members"> | boolean
     name_labels?: Member_name_labelsListRelationFilter
     villages?: XOR<VillagesScalarRelationFilter, villagesWhereInput>
     members_accounts_onlink?: Members_accounts_onlinkListRelationFilter
@@ -17261,6 +17290,7 @@ export namespace Prisma {
     aadhar_number?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_archived?: SortOrder
     name_labels?: member_name_labelsOrderByRelationAggregateInput
     villages?: villagesOrderByWithRelationInput
     members_accounts_onlink?: members_accounts_onlinkOrderByRelationAggregateInput
@@ -17269,7 +17299,6 @@ export namespace Prisma {
 
   export type membersWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    phone_number?: string
     aadhar_number?: string
     AND?: membersWhereInput | membersWhereInput[]
     OR?: membersWhereInput[]
@@ -17278,14 +17307,16 @@ export namespace Prisma {
     family_name?: StringFilter<"members"> | string
     village_id?: UuidFilter<"members"> | string
     house_number?: StringFilter<"members"> | string
+    phone_number?: StringFilter<"members"> | string
     husband_or_father_name?: StringFilter<"members"> | string
     created_at?: DateTimeFilter<"members"> | Date | string
     updated_at?: DateTimeFilter<"members"> | Date | string
+    is_archived?: BoolFilter<"members"> | boolean
     name_labels?: Member_name_labelsListRelationFilter
     villages?: XOR<VillagesScalarRelationFilter, villagesWhereInput>
     members_accounts_onlink?: Members_accounts_onlinkListRelationFilter
     transactions?: TransactionsListRelationFilter
-  }, "id" | "phone_number" | "aadhar_number">
+  }, "id" | "aadhar_number">
 
   export type membersOrderByWithAggregationInput = {
     id?: SortOrder
@@ -17298,6 +17329,7 @@ export namespace Prisma {
     aadhar_number?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_archived?: SortOrder
     _count?: membersCountOrderByAggregateInput
     _max?: membersMaxOrderByAggregateInput
     _min?: membersMinOrderByAggregateInput
@@ -17317,6 +17349,7 @@ export namespace Prisma {
     aadhar_number?: StringWithAggregatesFilter<"members"> | string
     created_at?: DateTimeWithAggregatesFilter<"members"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"members"> | Date | string
+    is_archived?: BoolWithAggregatesFilter<"members"> | boolean
   }
 
   export type member_name_labelsWhereInput = {
@@ -17401,6 +17434,7 @@ export namespace Prisma {
     is_archived?: BoolFilter<"transactions"> | boolean
     created_at?: DateTimeFilter<"transactions"> | Date | string
     updated_at?: DateTimeFilter<"transactions"> | Date | string
+    is_deleted?: BoolFilter<"transactions"> | boolean
     accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
@@ -17419,6 +17453,7 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_deleted?: SortOrder
     accounts?: accountsOrderByWithRelationInput
     members?: membersOrderByWithRelationInput
     users?: usersOrderByWithRelationInput
@@ -17440,6 +17475,7 @@ export namespace Prisma {
     is_archived?: BoolFilter<"transactions"> | boolean
     created_at?: DateTimeFilter<"transactions"> | Date | string
     updated_at?: DateTimeFilter<"transactions"> | Date | string
+    is_deleted?: BoolFilter<"transactions"> | boolean
     accounts?: XOR<AccountsScalarRelationFilter, accountsWhereInput>
     members?: XOR<MembersScalarRelationFilter, membersWhereInput>
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
@@ -17458,6 +17494,7 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_deleted?: SortOrder
     _count?: transactionsCountOrderByAggregateInput
     _avg?: transactionsAvgOrderByAggregateInput
     _max?: transactionsMaxOrderByAggregateInput
@@ -17481,6 +17518,7 @@ export namespace Prisma {
     is_archived?: BoolWithAggregatesFilter<"transactions"> | boolean
     created_at?: DateTimeWithAggregatesFilter<"transactions"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"transactions"> | Date | string
+    is_deleted?: BoolWithAggregatesFilter<"transactions"> | boolean
   }
 
   export type villagesWhereInput = {
@@ -18170,6 +18208,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsCreateNestedManyWithoutMemberInput
     villages: villagesCreateNestedOneWithoutMembersInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutMembersInput
@@ -18187,6 +18226,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsUncheckedCreateNestedManyWithoutMemberInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutMembersInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutMembersInput
@@ -18202,6 +18242,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUpdateManyWithoutMemberNestedInput
     villages?: villagesUpdateOneRequiredWithoutMembersNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutMembersNestedInput
@@ -18219,6 +18260,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUncheckedUpdateManyWithoutMemberNestedInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutMembersNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutMembersNestedInput
@@ -18235,6 +18277,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
   }
 
   export type membersUpdateManyMutationInput = {
@@ -18247,6 +18290,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type membersUncheckedUpdateManyInput = {
@@ -18260,6 +18304,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type member_name_labelsCreateInput = {
@@ -18341,6 +18386,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
     accounts: accountsCreateNestedOneWithoutTransactionsInput
     members: membersCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
@@ -18359,6 +18405,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type transactionsUpdateInput = {
@@ -18371,6 +18418,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
@@ -18389,6 +18437,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type transactionsCreateManyInput = {
@@ -18404,6 +18453,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type transactionsUpdateManyMutationInput = {
@@ -18416,6 +18466,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type transactionsUncheckedUpdateManyInput = {
@@ -18431,6 +18482,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type villagesCreateInput = {
@@ -19250,6 +19302,7 @@ export namespace Prisma {
     aadhar_number?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_archived?: SortOrder
   }
 
   export type membersMaxOrderByAggregateInput = {
@@ -19263,6 +19316,7 @@ export namespace Prisma {
     aadhar_number?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_archived?: SortOrder
   }
 
   export type membersMinOrderByAggregateInput = {
@@ -19276,6 +19330,7 @@ export namespace Prisma {
     aadhar_number?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_archived?: SortOrder
   }
 
   export type MembersScalarRelationFilter = {
@@ -19354,6 +19409,7 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_deleted?: SortOrder
   }
 
   export type transactionsAvgOrderByAggregateInput = {
@@ -19373,6 +19429,7 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_deleted?: SortOrder
   }
 
   export type transactionsMinOrderByAggregateInput = {
@@ -19388,6 +19445,7 @@ export namespace Prisma {
     is_archived?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+    is_deleted?: SortOrder
   }
 
   export type transactionsSumOrderByAggregateInput = {
@@ -20612,6 +20670,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
     accounts: accountsCreateNestedOneWithoutTransactionsInput
     members: membersCreateNestedOneWithoutTransactionsInput
   }
@@ -20628,6 +20687,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type transactionsCreateOrConnectWithoutUsersInput = {
@@ -20732,6 +20792,7 @@ export namespace Prisma {
     is_archived?: BoolFilter<"transactions"> | boolean
     created_at?: DateTimeFilter<"transactions"> | Date | string
     updated_at?: DateTimeFilter<"transactions"> | Date | string
+    is_deleted?: BoolFilter<"transactions"> | boolean
   }
 
   export type user_roles_mappingUpsertWithWhereUniqueWithoutAssigned_by_userInput = {
@@ -21142,6 +21203,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
     accounts: accountsCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
   }
@@ -21158,6 +21220,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type transactionsCreateOrConnectWithoutMembersInput = {
@@ -21279,6 +21342,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     villages: villagesCreateNestedOneWithoutMembersInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutMembersInput
     transactions?: transactionsCreateNestedManyWithoutMembersInput
@@ -21295,6 +21359,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutMembersInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutMembersInput
   }
@@ -21325,6 +21390,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     villages?: villagesUpdateOneRequiredWithoutMembersNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutMembersNestedInput
     transactions?: transactionsUpdateManyWithoutMembersNestedInput
@@ -21341,6 +21407,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutMembersNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutMembersNestedInput
   }
@@ -21386,6 +21453,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsCreateNestedManyWithoutMemberInput
     villages: villagesCreateNestedOneWithoutMembersInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutMembersInput
@@ -21402,6 +21470,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsUncheckedCreateNestedManyWithoutMemberInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutMembersInput
   }
@@ -21498,6 +21567,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUpdateManyWithoutMemberNestedInput
     villages?: villagesUpdateOneRequiredWithoutMembersNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutMembersNestedInput
@@ -21514,6 +21584,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUncheckedUpdateManyWithoutMemberNestedInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutMembersNestedInput
   }
@@ -21563,6 +21634,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsCreateNestedManyWithoutMemberInput
     members_accounts_onlink?: members_accounts_onlinkCreateNestedManyWithoutMembersInput
     transactions?: transactionsCreateNestedManyWithoutMembersInput
@@ -21578,6 +21650,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsUncheckedCreateNestedManyWithoutMemberInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedCreateNestedManyWithoutMembersInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutMembersInput
@@ -21642,6 +21715,7 @@ export namespace Prisma {
     aadhar_number?: StringFilter<"members"> | string
     created_at?: DateTimeFilter<"members"> | Date | string
     updated_at?: DateTimeFilter<"members"> | Date | string
+    is_archived?: BoolFilter<"members"> | boolean
   }
 
   export type mandalsUpsertWithoutVillagesInput = {
@@ -21795,6 +21869,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
     members: membersCreateNestedOneWithoutTransactionsInput
     users: usersCreateNestedOneWithoutTransactionsInput
   }
@@ -21811,6 +21886,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type transactionsCreateOrConnectWithoutAccountsInput = {
@@ -21927,6 +22003,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsCreateNestedManyWithoutMemberInput
     villages: villagesCreateNestedOneWithoutMembersInput
     transactions?: transactionsCreateNestedManyWithoutMembersInput
@@ -21943,6 +22020,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
     name_labels?: member_name_labelsUncheckedCreateNestedManyWithoutMemberInput
     transactions?: transactionsUncheckedCreateNestedManyWithoutMembersInput
   }
@@ -22010,6 +22088,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUpdateManyWithoutMemberNestedInput
     villages?: villagesUpdateOneRequiredWithoutMembersNestedInput
     transactions?: transactionsUpdateManyWithoutMembersNestedInput
@@ -22026,6 +22105,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUncheckedUpdateManyWithoutMemberNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutMembersNestedInput
   }
@@ -22042,6 +22122,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type user_roles_mappingCreateManyAssigned_by_userInput = {
@@ -22074,6 +22155,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
   }
@@ -22090,6 +22172,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type transactionsUncheckedUpdateManyWithoutUsersInput = {
@@ -22104,6 +22187,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type user_roles_mappingUpdateWithoutAssigned_by_userInput = {
@@ -22264,6 +22348,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type member_name_labelsUpdateWithoutMemberInput = {
@@ -22324,6 +22409,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
     accounts?: accountsUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
@@ -22340,6 +22426,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type transactionsUncheckedUpdateManyWithoutMembersInput = {
@@ -22354,6 +22441,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type membersCreateManyVillagesInput = {
@@ -22366,6 +22454,7 @@ export namespace Prisma {
     aadhar_number: string
     created_at?: Date | string
     updated_at?: Date | string
+    is_archived?: boolean
   }
 
   export type membersUpdateWithoutVillagesInput = {
@@ -22378,6 +22467,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUpdateManyWithoutMemberNestedInput
     members_accounts_onlink?: members_accounts_onlinkUpdateManyWithoutMembersNestedInput
     transactions?: transactionsUpdateManyWithoutMembersNestedInput
@@ -22393,6 +22483,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
     name_labels?: member_name_labelsUncheckedUpdateManyWithoutMemberNestedInput
     members_accounts_onlink?: members_accounts_onlinkUncheckedUpdateManyWithoutMembersNestedInput
     transactions?: transactionsUncheckedUpdateManyWithoutMembersNestedInput
@@ -22408,6 +22499,7 @@ export namespace Prisma {
     aadhar_number?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_archived?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type accountsCreateManyAccount_typesInput = {
@@ -22477,6 +22569,7 @@ export namespace Prisma {
     is_archived?: boolean
     created_at?: Date | string
     updated_at?: Date | string
+    is_deleted?: boolean
   }
 
   export type members_accounts_onlinkUpdateWithoutAccountsInput = {
@@ -22510,6 +22603,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
     members?: membersUpdateOneRequiredWithoutTransactionsNestedInput
     users?: usersUpdateOneRequiredWithoutTransactionsNestedInput
   }
@@ -22526,6 +22620,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type transactionsUncheckedUpdateManyWithoutAccountsInput = {
@@ -22540,6 +22635,7 @@ export namespace Prisma {
     is_archived?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
