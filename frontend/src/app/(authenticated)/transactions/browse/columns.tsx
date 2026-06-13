@@ -10,22 +10,26 @@ import {
   formatDateTime,
   formatAmount,
 } from "@/lib/utils";
+import { type Translations } from "@/i18n/translations/te";
 
-export function getTransactionColumns(opts?: {
-  onInvalidate?: (transactionId: string) => Promise<void> | void;
-  onValidate?: (transactionId: string) => Promise<void> | void;
-}): ColumnDef<TransactionWithNames>[] {
+export function getTransactionColumns(
+  t: Translations,
+  opts?: {
+    onInvalidate?: (transactionId: string) => Promise<void> | void;
+    onValidate?: (transactionId: string) => Promise<void> | void;
+  },
+): ColumnDef<TransactionWithNames>[] {
   const onInvalidate = opts?.onInvalidate;
   const onValidate = opts?.onValidate;
 
   return [
     {
       accessorKey: "member_name",
-      header: "సభ్యుని పేరు",
+      header: t.transactionsBrowse.colMember,
     },
     {
       accessorKey: "type",
-      header: "ట్రాన్సాక్షన్ రకం",
+      header: t.transactionsBrowse.colType,
       cell: (info: CellContext<TransactionWithNames, unknown>) => (
         <Badge className={getTransactionTypeColor(String(info.getValue() ?? ""))}>
           {String(info.getValue() ?? "")}
@@ -34,13 +38,13 @@ export function getTransactionColumns(opts?: {
     },
     {
       accessorKey: "amount",
-      header: "మొత్తం",
+      header: t.transactionsBrowse.colAmount,
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         formatAmount(Number(info.getValue())),
     },
     {
       accessorKey: "transaction_date",
-      header: "ట్రాన్సాక్షన్ తేదీ",
+      header: t.transactionsBrowse.colDate,
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         formatDateTime(
           (info.row.original as TransactionWithNames).created_at ||
@@ -49,11 +53,11 @@ export function getTransactionColumns(opts?: {
     },
     {
       accessorKey: "supervisor_name",
-      header: "సూపర్‌వైజర్ పేరు",
+      header: t.transactionsBrowse.colSupervisor,
     },
     {
       accessorKey: "comments",
-      header: "వ్యాఖ్యలు",
+      header: t.transactionsBrowse.colComments,
       cell: (info: CellContext<TransactionWithNames, unknown>) =>
         String(info.getValue() ?? "-") as React.ReactNode,
     },
@@ -61,10 +65,10 @@ export function getTransactionColumns(opts?: {
       ? ([
           {
             id: "actions",
-            header: "చర్యలు",
+            header: t.transactionsBrowse.colActions,
             cell: ({ row }) => {
-              const t = row.original as TransactionWithNames;
-              const isArchived = !!t.is_archived;
+              const tx = row.original as TransactionWithNames;
+              const isArchived = !!tx.is_archived;
 
               return (
                 <div className="flex gap-2">
@@ -75,14 +79,12 @@ export function getTransactionColumns(opts?: {
                       disabled={!isArchived}
                       onClick={async () => {
                         if (!isArchived) return;
-                        const ok = window.confirm(
-                          "ఈ ట్రాన్సాక్షన్‌ను ధృవీకరించాలా?",
-                        );
+                        const ok = window.confirm(t.transactionsBrowse.confirmValidate);
                         if (!ok) return;
-                        await onValidate(t.id);
+                        await onValidate(tx.id);
                       }}
                     >
-                      {isArchived ? "Approve" : "Approved"}
+                      {isArchived ? t.transactionsBrowse.approve : t.transactionsBrowse.approved}
                     </Button>
                   )}
                   {onInvalidate && (
@@ -92,14 +94,12 @@ export function getTransactionColumns(opts?: {
                       disabled={isArchived}
                       onClick={async () => {
                         if (isArchived) return;
-                        const ok = window.confirm(
-                          "ఈ ట్రాన్సాక్షన్‌ను రద్దు చేయాలా? ఇది బ్యాలెన్స్ ప్రభావాన్ని తిరగమారుస్తుంది.",
-                        );
+                        const ok = window.confirm(t.transactionsBrowse.confirmInvalidate);
                         if (!ok) return;
-                        await onInvalidate(t.id);
+                        await onInvalidate(tx.id);
                       }}
                     >
-                      {isArchived ? "రద్దు" : "రద్దు చేయి"}
+                      {isArchived ? t.transactionsBrowse.cancel : t.transactionsBrowse.cancelDone}
                     </Button>
                   )}
                 </div>

@@ -3,10 +3,12 @@
 import { useMemo, useState } from "react";
 import { DataTable } from "@/components/TableView/data-table";
 import { MemberRow, getMemberColumns } from "./columns";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export function MembersTableClient({ data }: { data: MemberRow[] }) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const { t, lang } = useLanguage();
   const pagedData = useMemo(
     () => data.slice(pageIndex * pageSize, pageIndex * pageSize + pageSize),
     [data, pageIndex, pageSize],
@@ -15,7 +17,7 @@ export function MembersTableClient({ data }: { data: MemberRow[] }) {
 
   return (
     <DataTable<MemberRow, unknown>
-      columns={getMemberColumns()}
+      columns={getMemberColumns(t, lang)}
       data={pagedData}
       pageCount={pageCount}
       pageIndex={pageIndex}

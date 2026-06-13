@@ -1,4 +1,5 @@
 "use client";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -27,35 +28,47 @@ import { MandalDropdown } from "./new-transaction-form/mandals-dropdown";
 import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
 import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-const formSchema = z
-  .object({
-    mandal: z.string().min(1, { message: "Please select a mandal" }),
-    village: z.string().min(1, { message: "Please select a village" }),
-    customer: z.string().min(1, { message: "Please select a customer" }),
-    accountId: z.string().min(1, { message: "Please select an account" }),
-    amount: z
-      .string()
-      .min(1, { message: "Please enter an amount" })
-      .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-        message: "Amount must be a positive number",
-      }),
-    transactionType: z.enum(["credit", "debit"], {
-      errorMap: () => ({ message: "Please select a transaction type" }),
-    }),
-    comments: z.string().nullable(),
-  });
+interface FormSchemaValues {
+  mandal: string;
+  village: string;
+  customer: string;
+  accountId: string;
+  amount: string;
+  transactionType: "credit" | "debit";
+  comments: string | null;
+}
 
 export default function AddTransactionForm() {
   const { data: session } = useSession();
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const formSchema = useMemo(() => z
+    .object({
+      mandal: z.string().min(1, { message: t.validation.mandalRequired }),
+      village: z.string().min(1, { message: t.validation.villageRequired }),
+      customer: z.string().min(1, { message: t.validation.customerRequired }),
+      accountId: z.string().min(1, { message: t.validation.accountRequired }),
+      amount: z
+        .string()
+        .min(1, { message: t.validation.amountRequired })
+        .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+          message: t.validation.amountPositive,
+        }),
+      transactionType: z.enum(["credit", "debit"], {
+        errorMap: () => ({ message: t.validation.txTypeRequired }),
+      }),
+      comments: z.string().nullable(),
+    }), [t]);
+
+  const form = useForm<FormSchemaValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       mandal: "",
@@ -68,15 +81,14 @@ export default function AddTransactionForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormSchemaValues) {
     try {
       setLoading(true);
 
-      // Get the supervisor ID from the logged-in user's session
       if (!session?.user?.id) {
         theToast.toast({
-          title: "లోపం",
-          description: "వాడుకరి సెషన్ కనబడలేదు. దయచేసి మళ్లీ లాగిన్ అవ్వండి.",
+          title: t.transactionAdd.errorTitle,
+          description: t.transactionAdd.sessionError,
           variant: "destructive",
           duration: 5000,
         });
@@ -92,7 +104,6 @@ export default function AddTransactionForm() {
         now.getDate(),
       );
 
-      // Format the data for API submission
       const transactionData = {
         supervisor_id: supervisorId,
         member_id: values.customer,
@@ -103,25 +114,20 @@ export default function AddTransactionForm() {
         transaction_type: values.transactionType,
       };
 
-      console.log("Submitting transaction:", transactionData);
-
-      // Submit to API
       const result = await createTransaction(transactionData);
 
-      // Show the created transaction details in a single toast
       theToast.toast({
-        title: "ట్రాన్సాక్షన్ విజయవంతంగా నమోదు అయింది!",
-        description: `ఐడి: ${result.id}\nమొత్తం: ₹${result.amount}\nరకం: ${result.type}\nసభ్యుడు: ${result.member_name}`,
+        title: t.transactionAdd.successTitle,
+        description: `ID: ${result.id}\n${t.transactionsBrowse.colAmount}: ₹${result.amount}\n${t.transactionsBrowse.colType}: ${result.type}\n${t.membersBrowse.colName}: ${result.member_name}`,
         duration: 5000,
       });
 
-      // Reset form
       form.reset();
     } catch (error) {
       console.error("Form submission error", error);
       theToast.toast({
-        title: "లోపం",
-        description: "ట్రాన్సాక్షన్ సమర్పించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+        title: t.transactionAdd.errorTitle,
+        description: t.transactionAdd.errorDesc,
         variant: "destructive",
         duration: 5000,
       });
@@ -131,7 +137,7 @@ export default function AddTransactionForm() {
   }
 
   return (
-    <ContentLayout title="కొత్త ట్రాన్సాక్షన్">
+    <ContentLayout title={t.transactionAdd.title}>
       {loading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-md">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -145,7 +151,7 @@ export default function AddTransactionForm() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
+                <CardTitle>{t.transactionAdd.cardMember}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -155,7 +161,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          మండలం
+                          {t.transactionAdd.mandal}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -163,7 +169,6 @@ export default function AddTransactionForm() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset village, customer, and account when mandal changes
                               form.setValue("village", "");
                               form.setValue("customer", "");
                               form.setValue("accountId", "");
@@ -183,7 +188,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఊరు
+                          {t.transactionAdd.village}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -192,7 +197,6 @@ export default function AddTransactionForm() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset customer and account when village changes
                               form.setValue("customer", "");
                               form.setValue("accountId", "");
                             }}
@@ -212,7 +216,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          సంఘం సభ్యులు
+                          {t.transactionAdd.member}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -222,7 +226,6 @@ export default function AddTransactionForm() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset account when customer changes
                               form.setValue("accountId", "");
                             }}
                             disabled={
@@ -242,10 +245,10 @@ export default function AddTransactionForm() {
                     name="comments"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>ఇతర వివరములు</FormLabel>
+                        <FormLabel>{t.transactionAdd.comments}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="ఇతర వివరములు"
+                            placeholder={t.transactionAdd.commentsPlaceholder}
                             {...field}
                             value={field.value || ""}
                           />
@@ -260,7 +263,7 @@ export default function AddTransactionForm() {
 
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>ట్రాన్సాక్షన్ వివరములు</CardTitle>
+                <CardTitle>{t.transactionAdd.cardTransaction}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -270,13 +273,13 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          అమౌంట్
+                          {t.transactionAdd.amount}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="రూపాయల్లో అమౌంట్ ఇవ్వండి"
+                            placeholder={t.transactionAdd.amountPlaceholder}
                             min="0"
                             step="1"
                             {...field}
@@ -295,7 +298,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఖాతా
+                          {t.transactionAdd.account}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -324,7 +327,7 @@ export default function AddTransactionForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ట్రాన్సాక్షన్ టైప్
+                          {t.transactionAdd.txType}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -333,11 +336,11 @@ export default function AddTransactionForm() {
                             value={field.value || undefined}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="ట్రాన్సాక్షన్ టైప్ ఎంచుకోండి" />
+                              <SelectValue placeholder={t.transactionAdd.txTypePlaceholder} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="credit">Credit - సభ్యులు ఇస్తున్నారు</SelectItem>
-                              <SelectItem value="debit">Debit - సభ్యులు తీసుకున్నారు</SelectItem>
+                              <SelectItem value="credit">{t.transactionAdd.creditOption}</SelectItem>
+                              <SelectItem value="debit">{t.transactionAdd.debitOption}</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -353,7 +356,7 @@ export default function AddTransactionForm() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    {loading ? "ట్రాన్సాక్షన్ సృష్టించుతుంది..." : "ట్రాన్సాక్షన్ సృష్టించు"}
+                    {loading ? t.transactionAdd.submittingBtn : t.transactionAdd.submitBtn}
                   </Button>
                   <Button
                     type="button"
@@ -362,7 +365,7 @@ export default function AddTransactionForm() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    రీసెట్
+                    {t.transactionAdd.resetBtn}
                   </Button>
                 </div>
               </CardContent>

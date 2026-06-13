@@ -21,6 +21,7 @@ import {
 import { getRoles } from "@/lib/api-client";
 import { type AccessObject } from "@/lib/roles";
 import React, { useState, useEffect } from "react";
+import { type Translations } from "@/i18n/translations/te";
 
 type UserRow = {
   id: string;
@@ -38,9 +39,11 @@ interface Role {
 function RolesEditor({
   currentRoles,
   onChange,
+  t,
 }: {
   currentRoles: string[];
   onChange: (next: string[]) => void;
+  t: Translations;
 }) {
   const [localRoles, setLocalRoles] = useState<string[]>(currentRoles);
   const [allRoles, setAllRoles] = useState<Role[]>([]);
@@ -72,7 +75,7 @@ function RolesEditor({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <label className="text-sm font-medium">పాత్రలను ఎంచుకోండి</label>
+        <label className="text-sm font-medium">{t.customersPage.rolesLabel}</label>
         <MultiSelector
           values={localRoles}
           onValuesChange={setLocalRoles}
@@ -81,13 +84,13 @@ function RolesEditor({
           )}
         >
           <MultiSelectorTrigger>
-            <MultiSelectorInput placeholder="పాత్రల కోసం వెతకండి..." />
+            <MultiSelectorInput placeholder={t.customersPage.rolesSearch} />
           </MultiSelectorTrigger>
           <MultiSelectorContent>
             <MultiSelectorList>
               {loading ? (
                 <div className="flex items-center justify-center py-4 px-3 text-sm text-muted-foreground">
-                  పాత్రలు లోడ్ అవుతున్నాయి...
+                  {t.customersPage.rolesLoading}
                 </div>
               ) : error ? (
                 <div className="py-4 px-3 text-sm text-destructive text-center">
@@ -95,7 +98,7 @@ function RolesEditor({
                 </div>
               ) : allRoles.length === 0 ? (
                 <div className="py-4 px-3 text-sm text-muted-foreground text-center">
-                  పాత్రలు లభించలేదు
+                  {t.customersPage.rolesEmpty}
                 </div>
               ) : (
                 allRoles.map((role) => (
@@ -114,10 +117,10 @@ function RolesEditor({
           variant="outline"
           onClick={() => onChange(currentRoles)}
         >
-          రద్దు
+          {t.customersPage.cancelBtn}
         </Button>
         <Button type="button" onClick={() => onChange(localRoles)}>
-          సేవ్ చేయి
+          {t.customersPage.saveBtn}
         </Button>
       </div>
     </div>
@@ -128,10 +131,12 @@ function ActionsCell({
   row,
   onUpdateRoles,
   userPermissions,
+  t,
 }: {
   row: UserRow;
   onUpdateRoles: (id: string, roles: string[]) => void;
   userPermissions: AccessObject | null;
+  t: Translations;
 }) {
   const [open, setOpen] = useState(false);
   const canEditRoles = userPermissions?.contributor || userPermissions?.admin;
@@ -154,7 +159,7 @@ function ActionsCell({
               }
             }}
           >
-            పాత్రలు మార్చు
+            {t.customersPage.editRoles}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -162,8 +167,8 @@ function ActionsCell({
       <Dialog
         isOpen={open}
         onClose={() => setOpen(false)}
-        dialogTitle="పాత్రలు మార్చు"
-        dialogDescription={`వాడుకరికి పాత్రలను జోడించండి లేదా తొలగించండి`}
+        dialogTitle={t.customersPage.dialogTitle}
+        dialogDescription={t.customersPage.dialogDesc}
       >
         <RolesEditor
           currentRoles={row.roles}
@@ -171,6 +176,7 @@ function ActionsCell({
             onUpdateRoles(row.id, next);
             setOpen(false);
           }}
+          t={t}
         />
       </Dialog>
     </>
@@ -180,22 +186,23 @@ function ActionsCell({
 export function createColumns(
   onUpdateRoles: (id: string, roles: string[]) => void,
   userPermissions: AccessObject | null,
+  t: Translations,
 ): ColumnDef<UserRow>[] {
   return [
     {
       accessorKey: "name",
-      header: "పేరు",
+      header: t.customersPage.colName,
       cell: ({ row }) => (
         <span className="font-medium">{row.original.name}</span>
       ),
     },
     {
       accessorKey: "email",
-      header: "ఈమెయిల్",
+      header: t.customersPage.colEmail,
     },
     {
       accessorKey: "roles",
-      header: "పాత్రలు",
+      header: t.customersPage.colRoles,
       cell: ({ row }) => (
         <span className="text-muted-foreground">
           {row.original.roles.length > 0 ? row.original.roles.join(", ") : "-"}
@@ -210,6 +217,7 @@ export function createColumns(
           row={row.original}
           onUpdateRoles={onUpdateRoles}
           userPermissions={userPermissions}
+          t={t}
         />
       ),
       enableHiding: false,

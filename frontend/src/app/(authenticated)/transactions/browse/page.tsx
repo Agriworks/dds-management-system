@@ -6,8 +6,10 @@ import { getTransactions } from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
 import { getTransactionColumns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function TransactionsPage() {
+  const { t } = useLanguage();
   const [transactions, setTransactions] = useState<TransactionWithNames[]>([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -46,15 +48,15 @@ export default function TransactionsPage() {
   };
 
   return (
-    <ContentLayout title="ట్రాన్సాక్షన్లు">
+    <ContentLayout title={t.transactionsBrowse.title}>
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="shadow-md bg-background rounded-lg p-2">
             <div className="text-lg sm:text-xl font-semibold py-2">
-              ట్రాన్సాక్షన్లు
+              {t.transactionsBrowse.title}
             </div>
           <div className="overflow-x-auto">
             <DataTable
-              columns={getTransactionColumns()}
+              columns={getTransactionColumns(t)}
               data={transactions}
               pageCount={Math.ceil(pagination.total / pagination.limit)}
               pageIndex={Math.floor(pagination.offset / pagination.limit)}

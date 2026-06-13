@@ -20,35 +20,48 @@ import { useToast } from "@/hooks/use-toast";
 import { MandalDropdown } from "@/app/(authenticated)/transactions/add/new-transaction-form/mandals-dropdown";
 import { VillageDropdown } from "@/app/(authenticated)/transactions/add/new-transaction-form/villages-dropdown";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-const formSchema = z.object({
-  given_name: z.string().min(1, { message: "Given name is required" }),
-  family_name: z.string().min(1, { message: "Family name is required" }),
-  mandal: z.string().min(1, { message: "Please select a mandal" }),
-  village: z.string().min(1, { message: "Please select a village" }),
-  house_number: z.string().min(1, { message: "House number is required" }),
-  phone_number: z
-    .string()
-    .min(1, { message: "Phone number is required" })
-    .refine((val) => /^[0-9]{10}$/.test(val.replace(/\D/g, "")), {
-      message: "Please enter a valid 10-digit phone number",
-    }),
-  husband_or_father_name: z
-    .string()
-    .min(1, { message: "Husband/Father name is required" }),
-  aadhar_number: z
-    .string()
-    .min(1, { message: "Aadhar number is required" })
-    .refine((val) => /^[0-9]{12}$/.test(val.replace(/\D/g, "")), {
-      message: "Please enter a valid 12-digit Aadhar number",
-    }),
-});
+interface FormSchemaValues {
+  given_name: string;
+  family_name: string;
+  mandal: string;
+  village: string;
+  house_number: string;
+  phone_number: string;
+  husband_or_father_name: string;
+  aadhar_number: string;
+}
 
 export default function AddMemberPage() {
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
+  const { t } = useLanguage();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const formSchema = React.useMemo(() => z.object({
+    given_name: z.string().min(1, { message: t.validation.givenNameRequired }),
+    family_name: z.string().min(1, { message: t.validation.familyNameRequired }),
+    mandal: z.string().min(1, { message: t.validation.mandalRequired }),
+    village: z.string().min(1, { message: t.validation.villageRequired }),
+    house_number: z.string().min(1, { message: t.validation.houseNumberRequired }),
+    phone_number: z
+      .string()
+      .min(1, { message: t.validation.phoneRequired })
+      .refine((val) => /^[0-9]{10}$/.test(val.replace(/\D/g, "")), {
+        message: t.validation.phoneInvalid,
+      }),
+    husband_or_father_name: z
+      .string()
+      .min(1, { message: t.validation.husbandFatherRequired }),
+    aadhar_number: z
+      .string()
+      .min(1, { message: t.validation.aadharRequired })
+      .refine((val) => /^[0-9]{12}$/.test(val.replace(/\D/g, "")), {
+        message: t.validation.aadharInvalid,
+      }),
+  }), [t]);
+
+  const form = useForm<FormSchemaValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       given_name: "",
@@ -62,7 +75,7 @@ export default function AddMemberPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormSchemaValues) {
     try {
       setLoading(true);
       console.log("Submitting form with values:", values);
@@ -75,13 +88,13 @@ export default function AddMemberPage() {
       const uniquenessData = await uniquenessResponse.json();
 
       if (!uniquenessResponse.ok) {
-        throw new Error(uniquenessData.error?.message || "సభ్యుని ధృవీకరించలేకపోయాం");
+        throw new Error(uniquenessData.error?.message || t.memberAdd.verifyError);
       }
 
       if (uniquenessData.data?.phoneExists) {
         theToast.toast({
-          title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
-          description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
+          title: t.memberAdd.phoneExistsTitle,
+          description: t.memberAdd.phoneExistsDesc,
           variant: "destructive",
           duration: 5000,
         });
@@ -90,8 +103,8 @@ export default function AddMemberPage() {
 
       if (uniquenessData.data?.aadharExists) {
         theToast.toast({
-          title: "ఆధార్ నంబర్ ఇప్పటికే ఉంది",
-          description: "ఈ ఆధార్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఆధార్ నంబర్ ఇవ్వండి.",
+          title: t.memberAdd.aadharExistsTitle,
+          description: t.memberAdd.aadharExistsDesc,
           variant: "destructive",
           duration: 5000,
         });
@@ -117,28 +130,26 @@ export default function AddMemberPage() {
       if (!response.ok) {
         const errorData = await response.json();
 
-        // Check if it's a phone number conflict
         if (
           response.status === 409 &&
           errorData.error?.message?.toLowerCase()?.includes("phone number already exists")
         ) {
           theToast.toast({
-            title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
-            description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
+            title: t.memberAdd.phoneExistsTitle,
+            description: t.memberAdd.phoneExistsDesc,
             variant: "destructive",
             duration: 5000,
           });
           return;
         }
 
-        // Check if it's an Aadhar number conflict
         if (
           response.status === 409 &&
           errorData.error?.message?.toLowerCase()?.includes("aadhar number already exists")
         ) {
           theToast.toast({
-            title: "ఆధార్ నంబర్ ఇప్పటికే ఉంది",
-            description: "ఈ ఆధార్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఆధార్ నంబర్ ఇవ్వండి.",
+            title: t.memberAdd.aadharExistsTitle,
+            description: t.memberAdd.aadharExistsDesc,
             variant: "destructive",
             duration: 5000,
           });
@@ -151,20 +162,19 @@ export default function AddMemberPage() {
       await response.json();
 
       theToast.toast({
-        title: "సభ్యుడు విజయవంతంగా నమోదు అయ్యారు!",
+        title: t.memberAdd.successTitle,
         duration: 5000,
       });
 
-      // Reset form
       form.reset();
     } catch (error) {
       console.error("Form submission error", error);
       theToast.toast({
-        title: "లోపం",
+        title: t.memberAdd.errorTitle,
         description:
           error instanceof Error
             ? error.message
-            : "సభ్యుని నమోదు చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+            : t.memberAdd.errorDesc,
         variant: "destructive",
         duration: 5000,
       });
@@ -174,7 +184,7 @@ export default function AddMemberPage() {
   }
 
   return (
-    <ContentLayout title="కొత్త సభ్యుడు">
+    <ContentLayout title={t.memberAdd.title}>
       {loading && (
         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-md">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -188,7 +198,7 @@ export default function AddMemberPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>సంఘం సభ్యుని వివరములు</CardTitle>
+                <CardTitle>{t.memberAdd.cardPersonal}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -198,13 +208,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          పేరు (ఇంగ్లీషు)
+                          {t.memberAdd.givenName}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="పేరు ఇంగ్లీషులో ఇవ్వండి"
+                            placeholder={t.memberAdd.givenNamePlaceholder}
                             {...field}
                           />
                         </FormControl>
@@ -221,13 +231,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఇంటి పేరు (ఇంగ్లీషు)
+                          {t.memberAdd.familyName}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="ఇంటి పేరు ఇంగ్లీషులో ఇవ్వండి"
+                            placeholder={t.memberAdd.familyNamePlaceholder}
                             {...field}
                           />
                         </FormControl>
@@ -244,13 +254,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          భర్త/తండ్రి పేరు (ఇంగ్లీషు)
+                          {t.memberAdd.husbandFather}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="భర్త/తండ్రి పేరు ఇంగ్లీషులో ఇవ్వండి"
+                            placeholder={t.memberAdd.husbandFatherPlaceholder}
                             {...field}
                           />
                         </FormControl>
@@ -267,13 +277,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఫోన్ నంబర్
+                          {t.memberAdd.phone}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="tel"
-                            placeholder="ఫోన్ నంబర్ ఇవ్వండి"
+                            placeholder={t.memberAdd.phonePlaceholder}
                             maxLength={10}
                             {...field}
                           />
@@ -291,13 +301,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఆధార్ నంబర్
+                          {t.memberAdd.aadhar}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="ఆధార్ నంబర్ ఇవ్వండి"
+                            placeholder={t.memberAdd.aadharPlaceholder}
                             maxLength={12}
                             {...field}
                           />
@@ -312,7 +322,7 @@ export default function AddMemberPage() {
 
             <Card className="bg-background shadow-none">
               <CardHeader>
-                <CardTitle>స్థాన సమాచారం</CardTitle>
+                <CardTitle>{t.memberAdd.cardLocation}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
                 <div className="space-y-2">
@@ -322,7 +332,7 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          మండలం
+                          {t.memberAdd.mandal}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -330,7 +340,6 @@ export default function AddMemberPage() {
                             value={field.value}
                             onChange={(val) => {
                               field.onChange(val);
-                              // Reset village when mandal changes
                               form.setValue("village", "");
                             }}
                           />
@@ -348,7 +357,7 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఊరు
+                          {t.memberAdd.village}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
@@ -372,13 +381,13 @@ export default function AddMemberPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          ఇంటి నంబర్
+                          {t.memberAdd.houseNumber}
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="ఇంటి నంబర్ ఇవ్వండి"
+                            placeholder={t.memberAdd.houseNumberPlaceholder}
                             {...field}
                           />
                         </FormControl>
@@ -394,7 +403,7 @@ export default function AddMemberPage() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    {loading ? "సంఘం సభ్యుని సృష్టించుతుంది..." : "సంఘం సభ్యుని సృష్టించు"}
+                    {loading ? t.memberAdd.submittingBtn : t.memberAdd.submitBtn}
                   </Button>
                   <Button
                     type="button"
@@ -403,7 +412,7 @@ export default function AddMemberPage() {
                     className="w-full sm:w-auto font-medium"
                     disabled={loading}
                   >
-                    రీసెట్
+                    {t.memberAdd.resetBtn}
                   </Button>
                 </div>
               </CardContent>

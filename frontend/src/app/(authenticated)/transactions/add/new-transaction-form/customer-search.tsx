@@ -6,6 +6,7 @@ import {
 import { Customer } from "@/types/api";
 import { getCustomers } from "@/lib/api-client";
 import { useDebouncedCallback } from "@/hooks/use-debounce";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface CustomerDropdownProps {
   mandalId: string;
@@ -22,6 +23,7 @@ export function CustomerDropdown({
   disabled,
   onChange,
 }: CustomerDropdownProps) {
+  const { t, lang } = useLanguage();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,11 +76,17 @@ export function CustomerDropdown({
   };
 
   // Convert customers to options
-  const options: SearchableSelectOption[] = customers.map((customer) => ({
-    value: customer.id,
-    label: `${customer.full_name_telugu || customer.full_name_english} (${customer.phone_number})`,
-    searchText: `${customer.full_name_telugu || ""} ${customer.full_name_english} ${customer.phone_number}`,
-  }));
+  const options: SearchableSelectOption[] = customers.map((customer) => {
+    const name =
+      lang === "te"
+        ? customer.full_name_telugu || customer.full_name_english
+        : customer.full_name_english || customer.full_name_telugu;
+    return {
+      value: customer.id,
+      label: `${name} (${customer.phone_number})`,
+      searchText: `${customer.full_name_telugu || ""} ${customer.full_name_english} ${customer.phone_number}`,
+    };
+  });
 
   return (
     <SearchableSelect
@@ -87,13 +95,13 @@ export function CustomerDropdown({
       disabled={disabled || !mandalId || !villageId}
       placeholder={
         !mandalId || !villageId
-          ? "ముందు మండలం మరియు ఊరు ఎంచుకోండి"
-          : "సంఘం సభ్యుని ఎంచుకోండి"
+          ? t.customerDropdown.selectMandaVillageFirst
+          : t.customerDropdown.placeholder
       }
-      searchPlaceholder="సంఘం సభ్యుని పేరు లేదా ఫోను ద్వారా వెతకండి..."
-      emptyMessage="సంఘం సభ్యుని కనుగొనబడలేదు"
-      loadingMessage="సభ్యుల వివరాలు లోడ్ అవుతున్నాయి..."
-      errorMessage="సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం"
+      searchPlaceholder={t.customerDropdown.searchPlaceholder}
+      emptyMessage={t.customerDropdown.emptyMessage}
+      loadingMessage={t.customerDropdown.loadingMessage}
+      errorMessage={t.customerDropdown.errorMessage}
       options={options}
       onSearch={handleSearch}
       loading={loading}
