@@ -1,21 +1,90 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { DataTable } from "@/components/TableView/data-table";
 import { MemberRow, getMemberColumns } from "./columns";
+import { archiveMember } from "@/lib/api-client";
+import { type AccessObject } from "@/lib/roles";
+import { useToast } from "@/hooks/use-toast";
 
 export function MembersTableClient({ data }: { data: MemberRow[] }) {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const theToast = useToast();
+  const [rows, setRows] = useState(data);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const [userPermissions, setUserPermissions] = useState<AccessObject | null>(null);
+
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (!session?.user?.id || !session?.user?.accessToken) return;
+
+    let mounted = true;
+    (async () => {
+      try {
+        const response = await fetch(
+          `/api/users/${session.user.id}/permissions?endpoint=${encodeURIComponent("/members/browse")}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${session.user.accessToken}`,
+            },
+          },
+        );
+
+        if (!response.ok) return;
+        const permissions = await response.json();
+        if (mounted) setUserPermissions(permissions);
+      } catch (error) {
+        console.error("Failed to fetch user permissions:", error);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [session?.user?.id, session?.user?.accessToken]);
+
   const pagedData = useMemo(
-    () => data.slice(pageIndex * pageSize, pageIndex * pageSize + pageSize),
-    [data, pageIndex, pageSize],
+    () => rows.slice(pageIndex * pageSize, pageIndex * pageSize + pageSize),
+    [rows, pageIndex, pageSize],
   );
-  const pageCount = Math.max(1, Math.ceil(data.length / pageSize));
+  const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
+
+  const handleArchive = async (memberId: string) => {
+    if (!session?.user?.accessToken) return;
+
+    try {
+      await archiveMember(memberId, session.user.accessToken);
+      setRows((prev) => prev.filter((row) => row.id !== memberId));
+      theToast.toast({
+        title: "సభ్యుడు ఆర్కైవ్ అయ్యారు",
+        duration: 3000,
+      });
+      router.refresh();
+    } catch (error) {
+      theToast.toast({
+        title: "లోపం",
+        description:
+          error instanceof Error ? error.message : "సభ్యుని ఆర్కైవ్ చేయలేకపోయాం",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
+  };
 
   return (
     <DataTable<MemberRow, unknown>
-      columns={getMemberColumns()}
+      columns={getMemberColumns({
+        canArchive: !!userPermissions?.admin,
+        onArchive: handleArchive,
+      })}
       data={pagedData}
       pageCount={pageCount}
       pageIndex={pageIndex}
