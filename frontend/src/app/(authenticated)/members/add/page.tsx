@@ -70,22 +70,12 @@ export default function AddMemberPage() {
       const cleanAadharNumber = values.aadhar_number.replace(/\D/g, "");
 
       const uniquenessResponse = await fetch(
-        `/api/members/check-unique?phone_number=${encodeURIComponent(cleanPhoneNumber)}&aadhar_number=${encodeURIComponent(cleanAadharNumber)}`,
+        `/api/members/check-unique?aadhar_number=${encodeURIComponent(cleanAadharNumber)}`,
       );
       const uniquenessData = await uniquenessResponse.json();
 
       if (!uniquenessResponse.ok) {
         throw new Error(uniquenessData.error?.message || "సభ్యుని ధృవీకరించలేకపోయాం");
-      }
-
-      if (uniquenessData.data?.phoneExists) {
-        theToast.toast({
-          title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
-          description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
-          variant: "destructive",
-          duration: 5000,
-        });
-        return;
       }
 
       if (uniquenessData.data?.aadharExists) {
@@ -116,20 +106,6 @@ export default function AddMemberPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-
-        // Check if it's a phone number conflict
-        if (
-          response.status === 409 &&
-          errorData.error?.message?.toLowerCase()?.includes("phone number already exists")
-        ) {
-          theToast.toast({
-            title: "ఫోన్ నంబర్ ఇప్పటికే ఉంది",
-            description: "ఈ ఫోన్ నంబర్‌తో సభ్యుడు ఇప్పటికే ఉన్నారు. దయచేసి వేరే ఫోన్ నంబర్ ఇవ్వండి.",
-            variant: "destructive",
-            duration: 5000,
-          });
-          return;
-        }
 
         // Check if it's an Aadhar number conflict
         if (
