@@ -96,9 +96,17 @@ export function SearchableSelect({
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (open) {
-      setTimeout(() => {
-        searchInputRef.current?.focus({ preventScroll: true });
-      }, 0);
+      // On mobile, calling focus() on the search input triggers the soft keyboard,
+      // which resizes the viewport and causes Radix UI to close the dropdown immediately.
+      // Only auto-focus on non-touch devices (desktop). On mobile the user taps manually.
+      const isTouchDevice =
+        typeof window !== "undefined" &&
+        ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+      if (!isTouchDevice) {
+        setTimeout(() => {
+          searchInputRef.current?.focus({ preventScroll: true });
+        }, 0);
+      }
     } else {
       setSearchTerm("");
     }
