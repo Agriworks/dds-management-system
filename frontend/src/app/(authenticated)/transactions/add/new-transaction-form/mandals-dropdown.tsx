@@ -9,6 +9,7 @@ import {
 import { Mandal } from "@/types/api";
 import { getMandals } from "@/lib/api-client";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface MandalDropdownProps {
   value: string;
@@ -21,6 +22,7 @@ export function MandalDropdown({
   disabled,
   onChange,
 }: MandalDropdownProps) {
+  const { t, lang } = useLanguage();
   const [mandals, setMandals] = useState<Mandal[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,12 +51,12 @@ export function MandalDropdown({
           placeholder={
             loading ? (
               <span className="inline-flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" /> Loading mandals...
+                <Loader2 className="h-4 w-4 animate-spin" /> {t.common.loading}
               </span>
             ) : error ? (
               error
             ) : (
-              "మండలం ఎంచుకోండి"
+              t.mandalDropdown.placeholder
             )
           }
         />
@@ -62,7 +64,7 @@ export function MandalDropdown({
       <SelectContent>
         {loading ? (
           <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+            <Loader2 className="h-4 w-4 animate-spin mr-2" /> {t.common.loading}
           </div>
         ) : error ? (
           <div className="py-2 px-3 text-sm text-destructive text-center">
@@ -70,12 +72,12 @@ export function MandalDropdown({
           </div>
         ) : mandals.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            మండలం కనుగొనబడలేదు
+            {t.mandalDropdown.notFound}
           </div>
         ) : (
           mandals.map((mandal) => (
             <SelectItem key={mandal.id} value={mandal.id}>
-              {mandal.label_telugu}
+              {lang === "te" ? mandal.label_telugu : (mandal.label_english || mandal.label_telugu)}
             </SelectItem>
           ))
         )}

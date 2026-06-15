@@ -7,6 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export type VillageChartItem = {
   village: string;
@@ -14,24 +15,26 @@ export type VillageChartItem = {
   loans: number;
 };
 
-const chartConfig: ChartConfig = {
-  deposits: {
-    label: "Deposits",
-    color: "hsl(var(--chart-1))",
-  },
-  loans: {
-    label: "Loans",
-    color: "hsl(var(--chart-2))",
-  },
-};
-
 interface VillageTransactionsChartProps {
   data: VillageChartItem[];
 }
 
 export function VillageTransactionsChart({ data }: VillageTransactionsChartProps) {
+  const { t } = useLanguage();
+
+  const config = {
+    deposits: {
+      label: t.dashboard.deposits,
+      color: "hsl(var(--chart-1))",
+    },
+    loans: {
+      label: t.dashboard.loans,
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig;
+
   return (
-      <ChartContainer config={chartConfig}>
+      <ChartContainer config={config}>
         <BarChart
           data={data}
           layout="vertical"
@@ -58,7 +61,7 @@ export function VillageTransactionsChart({ data }: VillageTransactionsChartProps
             fill="#3b82f6"
             radius={4}
             barSize={30}
-            name="Deposits"
+            name={t.dashboard.deposits}
           >
             <LabelList
               dataKey="deposits"
@@ -74,7 +77,7 @@ export function VillageTransactionsChart({ data }: VillageTransactionsChartProps
             fill="#60a5fa"
             radius={4}
             barSize={30}
-            name="Loans"
+            name={t.dashboard.loans}
           >
             <LabelList
               dataKey="loans"

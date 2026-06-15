@@ -7,6 +7,7 @@ import {
   ShieldUser,
   ReceiptText,
 } from "lucide-react";
+import { Translations } from "@/i18n/translations/te";
 
 type Submenu = {
   href: string;
@@ -27,57 +28,58 @@ type Group = {
   menus: Menu[];
 };
 
-export function getMenuList(): Group[] {
+export function getMenuList(t: Translations): Group[] {
   return [
     {
       groupLabel: "",
       menus: [
         {
           href: "/dashboard",
-          label: "డ్యాష్‌బోర్డ్",
+          label: t.nav.dashboard,
           icon: LayoutDashboard,
         },
         {
           href: "/members/browse",
-          label: "సభ్యులు",
+          label: t.nav.members,
           icon: Users,
           submenus: [
             {
               href: "/members/browse",
-              label: "సంఘం సభ్యులు",
+              label: t.nav.browseMembers,
             },
             {
               href: "/members/add",
-              label: "కొత్త సభ్యుడు",
+              label: t.nav.addMember,
             },
           ],
         },
         {
           href: "/transactions/browse",
-          label: "ట్రాన్సాక్షన్లు",
+          label: t.nav.transactions,
           icon: ReceiptText,
           submenus: [
             {
               href: "/transactions/browse",
-              label: "ట్రాన్సాక్షన్లు చూడండి",
+              label: t.nav.browseTransactions,
             },
             {
               href: "/transactions/add",
-              label: "కొత్త ట్రాన్సాక్షన్",
+              label: t.nav.addTransaction,
             },
           ],
         },
         {
           href: "/accounts",
-          label: "అకౌంట్లు",
+          label: t.nav.accounts,
           icon: Wallet,
         },
         {
           href: "/customers",
-          label: "పాత్రల నిర్వహణ",
+          label: t.nav.rolesManagement,
           icon: ShieldUser,
         },
       ],
     },
   ];
 }
+

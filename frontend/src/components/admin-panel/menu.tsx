@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Ellipsis, LogOut } from "lucide-react";
+import { Ellipsis, LogOut, Settings, Languages } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -16,8 +16,16 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -26,14 +34,11 @@ interface MenuProps {
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const menuList = getMenuList();
+  const { lang, setLang, t } = useLanguage();
+  const menuList = getMenuList(t);
 
   const handleLogout = async () => {
-    // Clear local session using NextAuth
     await signOut({ redirect: true, callbackUrl: "/" });
-
-    // Redirect to server-side logout handler
-    // window.location.href = "/api/logout";
   };
 
   return (
@@ -128,17 +133,58 @@ export function Menu({ isOpen }: MenuProps) {
           ))}
 
           <li className="w-full grow flex flex-col justify-end items-center">
+            {/* Language Selector */}
+            {isOpen !== false ? (
+              <div className="w-full px-3 mb-4 space-y-1.5">
+                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <Settings className="w-4 h-4" />
+                  <span>{t.nav.language}</span>
+                </div>
+                <Select value={lang} onValueChange={(v) => setLang(v as "te" | "en")}>
+                  <SelectTrigger className="w-full h-9 bg-background border-input">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="te">తెలుగు (Telugu)</SelectItem>
+                    <SelectItem value="en">English</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <div className="mb-4">
+                <TooltipProvider disableHoverableContent>
+                  <Tooltip delayDuration={100}>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <Select value={lang} onValueChange={(v) => setLang(v as "te" | "en")}>
+                          <SelectTrigger className="w-10 h-10 p-0 flex items-center justify-center border-input bg-background [&>span:last-child]:hidden">
+                            <Languages className="w-5 h-5 text-muted-foreground" />
+                            <span className="sr-only">{t.nav.language}</span>
+                          </SelectTrigger>
+                          <SelectContent side="right" align="start">
+                            <SelectItem value="te">తెలుగు (Telugu)</SelectItem>
+                            <SelectItem value="en">English</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">భాష / Language</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            )}
+
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full  h-10 mt-5"
+                    className="w-full h-10 mt-5"
                     disabled
                   >
                     <Link
                       href="/account"
-                      className="w-full flex justify-cente items-centerr h-10"
+                      className="w-full flex justify-center items-center h-10"
                     >
                       <Avatar className="h-full w-10 flex items-center justify-center">
                         <AvatarImage src="#" alt="Avatar" />
@@ -160,9 +206,10 @@ export function Menu({ isOpen }: MenuProps) {
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="right">ఖాతా</TooltipContent>
+                <TooltipContent side="right">{t.nav.account}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
+
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
@@ -180,12 +227,12 @@ export function Menu({ isOpen }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100",
                       )}
                     >
-                      లాగ్ అవుట్
+                      {t.nav.logout}
                     </p>
                   </Button>
                 </TooltipTrigger>
                 {isOpen === false && (
-                  <TooltipContent side="right">లాగ్ అవుట్</TooltipContent>
+                  <TooltipContent side="right">{t.nav.logout}</TooltipContent>
                 )}
               </Tooltip>
             </TooltipProvider>

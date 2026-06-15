@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { MandalDropdown } from "@/app/(authenticated)/transactions/add/new-transaction-form/mandals-dropdown";
 import { VillageDropdown } from "@/app/(authenticated)/transactions/add/new-transaction-form/villages-dropdown";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export function MembersFiltersClient({
   initialMandalId,
@@ -18,6 +19,7 @@ export function MembersFiltersClient({
   const searchParams = useSearchParams();
   const [mandalId, setMandalId] = useState(initialMandalId);
   const [villageId, setVillageId] = useState(initialVillageId);
+  const { t } = useLanguage();
 
   const applyFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -45,7 +47,7 @@ export function MembersFiltersClient({
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4 mb-4 border-b pb-4">
       <div>
-        <label className="mb-2 block text-sm font-medium">మండలం</label>
+        <label className="mb-2 block text-sm font-medium">{t.membersBrowse.mandal}</label>
         <MandalDropdown
           value={mandalId}
           onChange={(value) => {
@@ -55,7 +57,7 @@ export function MembersFiltersClient({
         />
       </div>
       <div>
-        <label className="mb-2 block text-sm font-medium">ఊరు</label>
+        <label className="mb-2 block text-sm font-medium">{t.membersBrowse.village}</label>
         <VillageDropdown
           mandalId={mandalId}
           value={villageId}
@@ -65,10 +67,10 @@ export function MembersFiltersClient({
       </div>
       <div className="flex items-end gap-2">
         <Button type="button" onClick={applyFilters}>
-          ఫిల్టర్ చేయండి
+          {t.membersBrowse.filterBtn}
         </Button>
         <Button type="button" variant="outline" onClick={resetFilters}>
-          రీసెట్
+          {t.membersBrowse.resetBtn}
         </Button>
       </div>
     </div>

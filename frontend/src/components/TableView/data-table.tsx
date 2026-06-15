@@ -30,6 +30,7 @@ import {
 
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -65,6 +66,7 @@ export function DataTable<TData, TValue>({
   hidePagination = false,
   onSearch,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useLanguage();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -153,7 +155,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <span className="loader" /> లోడ్ అవుతోంది...
+                  <span className="loader" /> {t.common.loading}
                 </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
@@ -162,7 +164,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center overflow-hidden text-ellipsis"
                 >
-                  {isLastPage ? "పట్టిక ముగిసింది" : "ఫలితాలు లభించలేదు"}
+                  {isLastPage ? t.common.tableEnd : t.common.noResults}
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
@@ -203,7 +205,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  ఫలితాలు లభించలేదు.
+                  {t.common.noResultsDot}
                 </TableCell>
               </TableRow>
             )}

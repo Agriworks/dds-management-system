@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ContentLayout } from "../../../components/admin-panel/content-layout";
 import { VillageTransactionsChart } from "./components/village-transactions-chart";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 type VillageSummary = {
   villageId: string;
@@ -24,6 +25,7 @@ type DashboardSummaryResponse = {
 };
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
   const [data, setData] = useState<VillageSummary[]>([]);
   const [totals, setTotals] = useState<DashboardSummaryResponse["totals"] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -66,7 +68,7 @@ export default function DashboardPage() {
   }));
 
   return (
-    <ContentLayout title="డ్యాష్‌బోర్డ్">
+    <ContentLayout title={t.dashboard.title}>
       {loading ? (
         <div className="flex items-center justify-center h-full">
           <Loader2 className="h-8 w-8 animate-spin" />
@@ -80,25 +82,25 @@ export default function DashboardPage() {
         {totals && (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 p-8 pb-0">
             <div className="rounded-lg border bg-card p-4 shadow-sm">
-              <div className="text-sm text-muted-foreground">Villages</div>
+              <div className="text-sm text-muted-foreground">{t.dashboard.villages}</div>
               <div className="mt-2 text-2xl font-semibold">
                 {totals.villageCount}
               </div>
             </div>
             <div className="rounded-lg border bg-card p-4 shadow-sm">
-              <div className="text-sm text-muted-foreground">Members</div>
+              <div className="text-sm text-muted-foreground">{t.dashboard.members}</div>
               <div className="mt-2 text-2xl font-semibold">
                 {totals.memberCount}
               </div>
             </div>
             <div className="rounded-lg border bg-card p-4 shadow-sm">
-              <div className="text-sm text-muted-foreground">Total Deposits</div>
+              <div className="text-sm text-muted-foreground">{t.dashboard.totalDeposits}</div>
               <div className="mt-2 text-2xl font-semibold">
                 ₹{totals.totalDeposits.toLocaleString()}
               </div>
             </div>
             <div className="rounded-lg border bg-card p-4 shadow-sm">
-              <div className="text-sm text-muted-foreground">Total Loans</div>
+              <div className="text-sm text-muted-foreground">{t.dashboard.totalLoans}</div>
               <div className="mt-2 text-2xl font-semibold">
                 ₹{totals.totalLoans.toLocaleString()}
               </div>
@@ -111,10 +113,10 @@ export default function DashboardPage() {
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold">
-                  Loans and Deposits by Village
+                  {t.dashboard.chartTitle}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Total amount of loans and deposits from each village.
+                  {t.dashboard.chartSubtitle}
                 </p>
               </div>
             </div>
@@ -126,4 +128,3 @@ export default function DashboardPage() {
     </ContentLayout>
   );
 }
-

@@ -6,8 +6,10 @@ import { DataTable } from "@/components/TableView/data-table";
 import { getTransactions, validateTransaction } from "@/lib/api-client";
 import { TransactionWithNames } from "@/types/transaction";
 import { getTransactionColumns } from "../transactions/browse/columns";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export default function AccountsPage() {
+  const { t } = useLanguage();
   const [transactions, setTransactions] = useState<TransactionWithNames[]>([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -48,10 +50,10 @@ export default function AccountsPage() {
   };
 
   return (
-    <ContentLayout title="అకౌంట్లు">
+    <ContentLayout title={t.accountsPage.title}>
           <div className="overflow-x-auto p-4 sm:p-6 lg:p-8">
             <DataTable
-              columns={getTransactionColumns({
+              columns={getTransactionColumns(t, {
                 onValidate: async (transactionId) => {
                   await validateTransaction(transactionId);
                   await fetchTransactions({
@@ -79,4 +81,3 @@ export default function AccountsPage() {
     </ContentLayout>
   );
 }
-

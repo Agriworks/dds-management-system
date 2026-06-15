@@ -21,7 +21,7 @@ Now, run the following commands to setup your database with synthetic data.
 
 \i backend/scripts/seed_endpointaccess.sql
 
-\i backend/scripts/seed_mandals.sql
+\i backend/scripts/seed_mandals.sql 
 
 \i backend/scripts/seed_villages.sql
 

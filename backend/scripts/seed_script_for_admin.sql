@@ -1,3 +1,3 @@
 UPDATE user_roles_mapping 
-SET role_id = '556c2fd3-cff0-479d-ba29-dfa2db883967' 
-WHERE user_id = 'c7b33f18-951d-4f63-be71-ee58dc887166';
+SET role_id = 'db04fccb-eaa5-4c41-a7ae-636b2fce6d58' 
+WHERE user_id = 'a1516067-c5cb-40d7-bd09-bbabb7d3afd7';  
