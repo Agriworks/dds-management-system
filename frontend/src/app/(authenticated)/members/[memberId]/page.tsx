@@ -3,18 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { getMemberLedger } from "@/lib/member-account-balances";
 import { MemberDetailClient } from "./member-detail-client";
 
-function formatInr(amount: number): string {
-  return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
-}
-
-function formatDate(d: Date): string {
-  return d.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
 export default async function MemberAccountsPage({
   params,
 }: {
@@ -61,8 +49,7 @@ export default async function MemberAccountsPage({
       village={member.villages.label_english}
       phone={member.phone_number}
       ledger={ledger}
-      formatInr={formatInr}
-      formatDate={formatDate}
     />
   );
 }
+

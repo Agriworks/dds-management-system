@@ -6,6 +6,18 @@ import { cn } from "@/lib/utils";
 import { ClientContentLayout } from "@/components/admin-panel/client-content-layout";
 import { useLanguage } from "@/i18n/LanguageContext";
 
+function formatInr(amount: number): string {
+  return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
+}
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 type LedgerTransaction = {
   id: string;
   transaction_date: Date;
@@ -34,8 +46,6 @@ interface MemberDetailClientProps {
   village: string;
   phone: string;
   ledger: Ledger;
-  formatInr: (amount: number) => string;
-  formatDate: (d: Date) => string;
 }
 
 export function MemberDetailClient({
@@ -45,8 +55,6 @@ export function MemberDetailClient({
   village,
   phone,
   ledger,
-  formatInr,
-  formatDate,
 }: MemberDetailClientProps) {
   const { t } = useLanguage();
 
@@ -78,9 +86,9 @@ export function MemberDetailClient({
             {t.memberDetail.balancesTitle}
           </h2>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <BalanceCard label={t.memberDetail.savings} amount={ledger.balances.savingsBalance} formatInr={formatInr} />
-            <BalanceCard label={t.memberDetail.withdraw} amount={ledger.balances.withdrawBalance} formatInr={formatInr} />
-            <BalanceCard label={t.memberDetail.laagodi} amount={ledger.balances.laagodiBalance} formatInr={formatInr} />
+            <BalanceCard label={t.memberDetail.savings} amount={ledger.balances.savingsBalance} />
+            <BalanceCard label={t.memberDetail.withdraw} amount={ledger.balances.withdrawBalance} />
+            <BalanceCard label={t.memberDetail.laagodi} amount={ledger.balances.laagodiBalance} />
           </div>
         </section>
 
@@ -157,11 +165,9 @@ export function MemberDetailClient({
 function BalanceCard({
   label,
   amount,
-  formatInr,
 }: {
   label: string;
   amount: number;
-  formatInr: (amount: number) => string;
 }) {
   return (
     <div className="rounded-xl border bg-muted/40 px-4 py-3">

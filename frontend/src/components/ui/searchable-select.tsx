@@ -58,6 +58,12 @@ export function SearchableSelect({
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredOptions, setFilteredOptions] =
     React.useState<SearchableSelectOption[]>(options);
+  // On mobile, start with inputMode='none' so the keyboard doesn't pop up
+  // automatically when the dropdown opens. Switches to 'numeric' only when
+  // the user deliberately taps the search input.
+  const [searchInputMode, setSearchInputMode] = React.useState<
+    "none" | "numeric"
+  >("numeric");
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const searchContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -96,19 +102,23 @@ export function SearchableSelect({
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (open) {
-      // On mobile, calling focus() on the search input triggers the soft keyboard,
-      // which resizes the viewport and causes Radix UI to close the dropdown immediately.
-      // Only auto-focus on non-touch devices (desktop). On mobile the user taps manually.
       const isTouchDevice =
         typeof window !== "undefined" &&
         ("ontouchstart" in window || navigator.maxTouchPoints > 0);
-      if (!isTouchDevice) {
+      if (isTouchDevice) {
+        // On mobile: suppress keyboard by setting inputMode='none'.
+        // The keyboard will only appear when the user deliberately taps the input.
+        setSearchInputMode("none");
+      } else {
+        // On desktop: auto-focus the search input for convenience.
+        setSearchInputMode("numeric");
         setTimeout(() => {
           searchInputRef.current?.focus({ preventScroll: true });
         }, 0);
       }
     } else {
       setSearchTerm("");
+      setSearchInputMode("numeric");
     }
   };
 
@@ -191,7 +201,7 @@ export function SearchableSelect({
             <input
               ref={searchInputRef}
               type="text"
-              inputMode="numeric"
+              inputMode={searchInputMode}
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
@@ -201,7 +211,11 @@ export function SearchableSelect({
               enterKeyHint="search"
               onPointerDown={stopEventPropagation}
               onMouseDown={stopEventPropagation}
-              onTouchStart={stopEventPropagation}
+              onTouchStart={(e) => {
+                // User deliberately tapped the input — allow keyboard now.
+                setSearchInputMode("numeric");
+                stopEventPropagation(e);
+              }}
               onClick={stopEventPropagation}
               onKeyDown={stopEventPropagation}
               className="w-full pl-8 pr-8 py-2 text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent touch-manipulation"
