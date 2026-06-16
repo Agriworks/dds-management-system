@@ -209,8 +209,9 @@ const en: Translations = {
   customerDropdown: {
     placeholder: "Select Member",
     selectMandaVillageFirst: "Select mandal and village first",
-    searchPlaceholder: "Search by Aadhar number...",
-    emptyMessage: "Search for a member by entering their Aadhar number",
+    searchPlaceholder: "Last 4 digits of Aadhar...",
+    emptyMessage: "Enter the last 4 digits of Aadhar to search",
+    loadingMoreMessage: "Loading more members...",
     loadingMessage: "Loading members...",
     errorMessage: "Failed to load members",
   },
