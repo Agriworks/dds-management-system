@@ -17,9 +17,12 @@ export default async function MemberAccountsPage({
         given_name: true,
         family_name: true,
         phone_number: true,
+        aadhar_number: true,
         villages: {
           select: {
+            id: true,
             label_english: true,
+            mandal_id: true,
             mandals: { select: { label_english: true } },
           },
         },
@@ -43,6 +46,10 @@ export default async function MemberAccountsPage({
 
   return (
     <MemberDetailClient
+      memberId={memberId}
+      mandalId={member.villages.mandal_id}
+      villageId={member.villages.id}
+      aadharNumber={member.aadhar_number}
       displayGiven={displayGiven}
       displayFamily={displayFamily}
       mandal={member.villages.mandals.label_english}

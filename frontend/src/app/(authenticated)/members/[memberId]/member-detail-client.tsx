@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ReceiptText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ClientContentLayout } from "@/components/admin-panel/client-content-layout";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 function formatInr(amount: number): string {
@@ -40,6 +41,10 @@ type Ledger = {
 };
 
 interface MemberDetailClientProps {
+  memberId: string;
+  mandalId: string;
+  villageId: string;
+  aadharNumber: string;
   displayGiven: string;
   displayFamily: string;
   mandal: string;
@@ -49,6 +54,10 @@ interface MemberDetailClientProps {
 }
 
 export function MemberDetailClient({
+  memberId,
+  mandalId,
+  villageId,
+  aadharNumber,
   displayGiven,
   displayFamily,
   mandal,
@@ -57,6 +66,16 @@ export function MemberDetailClient({
   ledger,
 }: MemberDetailClientProps) {
   const { t } = useLanguage();
+
+  const newTransactionHref = (() => {
+    const params = new URLSearchParams({
+      memberId,
+      mandalId,
+      villageId,
+      aadhar: aadharNumber,
+    });
+    return `/transactions/add?${params.toString()}`;
+  })();
 
   return (
     <ClientContentLayout titleKey="memberDetail" subKey="title">
@@ -79,6 +98,12 @@ export function MemberDetailClient({
           <p className="mt-0.5 text-sm tabular-nums text-muted-foreground">
             {phone}
           </p>
+          <Button asChild className="mt-4 w-full sm:w-auto">
+            <Link href={newTransactionHref}>
+              <ReceiptText className="h-4 w-4" aria-hidden />
+              {t.nav.addTransaction}
+            </Link>
+          </Button>
         </header>
 
         <section aria-label="Account balances">

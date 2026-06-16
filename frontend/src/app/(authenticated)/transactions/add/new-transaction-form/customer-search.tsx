@@ -18,6 +18,7 @@ interface CustomerDropdownProps {
   disabled?: boolean;
   onChange: (customerId: string) => void;
   onVillageChange?: (villageId: string) => void;
+  initialCustomer?: Customer | null;
 }
 
 export function CustomerDropdown({
@@ -27,6 +28,7 @@ export function CustomerDropdown({
   disabled,
   onChange,
   onVillageChange,
+  initialCustomer,
 }: CustomerDropdownProps) {
   const { t, lang } = useLanguage();
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -45,6 +47,12 @@ export function CustomerDropdown({
       setSelectedCustomer(null);
     }
   }, [value]);
+
+  useEffect(() => {
+    if (initialCustomer) {
+      setSelectedCustomer(initialCustomer);
+    }
+  }, [initialCustomer]);
 
   useEffect(() => {
     setCustomers([]);
