@@ -79,14 +79,7 @@ export function AccountsDropdown({
       value={value || undefined}
       disabled={disabled || !memberId || !villageId || loading}
     >
-      <SelectTrigger
-        className={
-          "w-full min-w-0 max-w-full overflow-hidden " +
-          "[&_[data-slot=select-value]]:!block [&_[data-slot=select-value]]:min-w-0 " +
-          "[&_[data-slot=select-value]]:flex-1 [&_[data-slot=select-value]]:truncate " +
-          "[&_[data-slot=select-value]]:text-left"
-        }
-      >
+      <SelectTrigger>
         <SelectValue
           placeholder={
             !memberId || !villageId

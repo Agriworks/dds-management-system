@@ -149,12 +149,12 @@ export default function AddTransactionForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="h-full flex flex-col space-y-6 p-6"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-background shadow-none">
+          <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
+            <Card className="min-w-0 overflow-hidden bg-background shadow-none">
               <CardHeader>
                 <CardTitle>{t.transactionAdd.cardMember}</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-6">
+              <CardContent className="grid min-w-0 gap-6">
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
@@ -220,8 +220,9 @@ export default function AddTransactionForm() {
                           {t.transactionAdd.member}
                           <span className="text-destructive">*</span>
                         </FormLabel>
-                        <div className="flex gap-2 items-start">
-                          <FormControl className="flex-1">
+                        <div className="flex min-w-0 items-start gap-2">
+                          <div className="min-w-0 flex-1">
+                          <FormControl>
                             <CustomerDropdown
                               mandalId={form.watch("mandal")}
                               villageId={form.watch("village")}
@@ -239,6 +240,7 @@ export default function AddTransactionForm() {
                               }
                             />
                           </FormControl>
+                          </div>
                           <Button
                             type="button"
                             variant="outline"
@@ -280,11 +282,11 @@ export default function AddTransactionForm() {
               </CardContent>
             </Card>
 
-            <Card className="bg-background shadow-none">
+            <Card className="min-w-0 overflow-hidden bg-background shadow-none">
               <CardHeader>
                 <CardTitle>{t.transactionAdd.cardTransaction}</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-6">
+              <CardContent className="grid min-w-0 gap-6">
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
