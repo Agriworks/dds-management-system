@@ -230,6 +230,10 @@ export default function AddTransactionForm() {
                                 field.onChange(val);
                                 form.setValue("accountId", "");
                               }}
+                              onVillageChange={(memberVillageId) => {
+                                form.setValue("village", memberVillageId);
+                                form.setValue("accountId", "");
+                              }}
                               disabled={
                                 !form.watch("mandal") || !form.watch("village")
                               }
