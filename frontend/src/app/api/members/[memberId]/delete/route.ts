@@ -59,11 +59,11 @@ export async function POST(
     // Archive the member so they no longer appear in the browse list
     await prisma.members.update({
       where: { id: memberId },
-      data: { is_archived: true },
+      data: { is_archived: false },
     });
 
     return createSuccessResponse(
-      { id: memberId, is_archived: true, transactions_updated: updateResult.count },
+      { id: memberId, is_archived: false, transactions_updated: updateResult.count },
       "Member deleted successfully",
     );
   } catch (error) {

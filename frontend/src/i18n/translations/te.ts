@@ -43,6 +43,8 @@ export type Translations = {
     colSupervisor: string; colComments: string; colActions: string; confirmValidate: string;
     confirmInvalidate: string; approved: string; approve: string; cancel: string; cancelDone: string;
     archiveConfirm: string; archiveBtn: string; archiveSuccess: string; archiveError: string;
+    deleteBtn: string; deleteConfirmTitle: string; deleteConfirmDesc: string;
+    deleteYes: string; deleteNo: string; deleteSuccess: string; deleteError: string;
   };
   transactionAdd: {
     title: string; cardMember: string; cardTransaction: string; mandal: string; village: string;
@@ -245,6 +247,13 @@ const te: Translations = {
     archiveBtn: "ఆర్కైవ్",
     archiveSuccess: "ట్రాన్సాక్షన్ ఆర్కైవ్ అయింది",
     archiveError: "ట్రాన్సాక్షన్ ఆర్కైవ్ చేయలేకపోయాం",
+    deleteBtn: "తొలగించు",
+    deleteConfirmTitle: "శాశ్వతంగా తొలగించాలా?",
+    deleteConfirmDesc: "మీరు ఖచ్చితంగా ఈ ట్రాన్సాక్షన్‌ను శాశ్వతంగా తొలగించాలనుకుంటున్నారా?",
+    deleteYes: "అవును",
+    deleteNo: "కాదు",
+    deleteSuccess: "ట్రాన్సాక్షన్ విజయవంతంగా తొలగించబడింది",
+    deleteError: "ట్రాన్సాక్షన్‌ను తొలగించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
   },
 
   // Transactions – Add

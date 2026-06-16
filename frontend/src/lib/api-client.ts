@@ -512,6 +512,37 @@ export async function archiveTransaction(
   return data.data;
 }
 
+export async function deleteTransaction(
+  transactionId: string,
+  accessToken: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(
+    `${API_BASE_URL}/transactions/${transactionId}/delete`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to delete transaction");
+  }
+
+  return data.data;
+}
+
 // Typed hooks for React components (if using SWR or React Query later)
 export type MandalApiHook = () => {
   mandals: Mandal[] | undefined;

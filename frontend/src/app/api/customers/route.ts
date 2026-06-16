@@ -91,7 +91,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     const whereConditions = {
-      is_archived: false,
+      is_archived: true,
       aadhar_number: { endsWith: searchSuffix },
       villages: {
         mandal_id: mandalId!,

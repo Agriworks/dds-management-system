@@ -84,7 +84,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const existingAadharMember = await prisma.members.findFirst({
       where: {
         aadhar_number: cleanAadharNumber,
-        is_archived: false,
+        is_archived: true,
       },
     });
 

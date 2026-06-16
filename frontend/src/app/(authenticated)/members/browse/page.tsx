@@ -20,7 +20,7 @@ async function getMembers(mandalId?: string, villageId?: string) {
             village_id: villageId,
           }
         : {}),
-      is_archived: false,
+      is_archived: true,
     },
     orderBy: {
       given_name: "asc",

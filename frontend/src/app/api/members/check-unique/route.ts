@@ -24,7 +24,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     const aadharMember = await prisma.members.findFirst({
-      where: { aadhar_number: aadharNumber, is_archived: false },
+      where: { aadhar_number: aadharNumber, is_archived: true },
       select: { id: true },
     });
 
