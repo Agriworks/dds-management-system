@@ -70,6 +70,13 @@ const en: Translations = {
     archiveSuccess: "Member archived successfully",
     archiveError: "Failed to archive member. Please try again.",
     newTransactionBtn: "New Transaction",
+    deleteBtn: "Delete",
+    deleteConfirmTitle: "Delete permanently?",
+    deleteConfirmDesc: "Are you sure you want to delete this member permanently?",
+    deleteYes: "Yes",
+    deleteNo: "No",
+    deleteSuccess: "Member deleted successfully",
+    deleteError: "Failed to delete member. Please try again.",
   },
 
   // Member – Add
