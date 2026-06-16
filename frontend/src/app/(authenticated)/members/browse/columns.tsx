@@ -110,26 +110,26 @@ export function getMemberColumns(
     },
     ...(canArchive && onArchive
       ? ([
-          {
-            id: "actions",
-            header: t.membersBrowse.colActions,
-            cell: ({ row }) => (
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={async () => {
-                  const ok = window.confirm(
-                    t.membersBrowse.archiveConfirm,
-                  );
-                  if (!ok) return;
-                  await onArchive(row.original.id);
-                }}
-              >
-                {t.membersBrowse.archiveBtn}
-              </Button>
-            ),
-          } satisfies ColumnDef<MemberRow>,
-        ] as ColumnDef<MemberRow>[])
+        {
+          id: "actions",
+          header: t.membersBrowse.colActions,
+          cell: ({ row }) => (
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={async () => {
+                const ok = window.confirm(
+                  t.membersBrowse.archiveConfirm,
+                );
+                if (!ok) return;
+                await onArchive(row.original.id);
+              }}
+            >
+              {t.membersBrowse.archiveBtn}
+            </Button>
+          ),
+        } satisfies ColumnDef<MemberRow>,
+      ] as ColumnDef<MemberRow>[])
       : []),
   ];
 }

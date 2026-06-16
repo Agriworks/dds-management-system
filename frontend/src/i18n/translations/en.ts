@@ -69,6 +69,7 @@ const en: Translations = {
     archiveBtn: "Archive",
     archiveSuccess: "Member archived successfully",
     archiveError: "Failed to archive member. Please try again.",
+    newTransactionBtn: "New Transaction",
   },
 
   // Member – Add

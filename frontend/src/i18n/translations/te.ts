@@ -19,7 +19,7 @@ export type Translations = {
     colPhone: string; colMandal: string; colVillage: string; colSavings: string;
     colWithdraw: string; colLaagodi: string;
     colActions: string; archiveConfirm: string; archiveBtn: string;
-    archiveSuccess: string; archiveError: string;
+    archiveSuccess: string; archiveError: string; newTransactionBtn: string;
   };
   memberAdd: {
     title: string; cardPersonal: string; cardLocation: string; givenName: string;
@@ -163,6 +163,7 @@ const te: Translations = {
     archiveBtn: "ఆర్కైవ్",
     archiveSuccess: "సభ్యుడు ఆర్కైవ్ అయ్యారు",
     archiveError: "సభ్యుని ఆర్కైవ్ చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    newTransactionBtn: "కొత్త ట్రాన్సాక్షన్",
   },
 
   // Member – Add

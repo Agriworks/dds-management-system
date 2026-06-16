@@ -3,6 +3,7 @@ import { MembersTableClient } from "./members-table-client";
 import { MembersFiltersClient } from "./members-filters-client";
 import { getMemberBalancesForMembers } from "@/lib/member-account-balances";
 import { ClientContentLayout } from "@/components/admin-panel/client-content-layout";
+import { NewTransactionFab } from "./new-transaction-fab";
 
 async function getMembers(mandalId?: string, villageId?: string) {
   return prisma.members.findMany({
@@ -133,6 +134,7 @@ export default async function MembersBrowsePage({
               <MembersTableClient data={rows} />
             </div>
           </div>
+        <NewTransactionFab />
     </ClientContentLayout>
   );
 }
