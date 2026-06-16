@@ -35,6 +35,11 @@ export interface SearchableSelectProps {
   errorMessage?: string;
   options: SearchableSelectOption[];
   onSearch?: (searchTerm: string) => void;
+  onLoadMore?: () => void;
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  loadingMoreMessage?: string;
+  maxSearchLength?: number;
   loading?: boolean;
   error?: string | null;
   serverSideSearch?: boolean;
@@ -80,6 +85,11 @@ interface SearchableSelectBodyProps {
   renderOption?: (option: SearchableSelectOption) => React.ReactNode;
   onSelect: (value: string) => void;
   listClassName?: string;
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  loadingMoreMessage?: string;
+  onLoadMore?: () => void;
+  serverSideSearch?: boolean;
 }
 
 function SearchableSelectBody({
@@ -97,7 +107,27 @@ function SearchableSelectBody({
   renderOption,
   onSelect,
   listClassName,
+  hasMore,
+  loadingMore,
+  loadingMoreMessage = "Loading more...",
+  onLoadMore,
+  serverSideSearch = false,
 }: SearchableSelectBodyProps) {
+  const handleScroll = React.useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      if (!hasMore || loading || loadingMore || !onLoadMore) return;
+
+      const target = event.currentTarget;
+      const distanceFromBottom =
+        target.scrollHeight - target.scrollTop - target.clientHeight;
+
+      if (distanceFromBottom < 48) {
+        onLoadMore();
+      }
+    },
+    [hasMore, loading, loadingMore, onLoadMore],
+  );
+
   return (
     <>
       <div className="shrink-0 border-b bg-popover p-2">
@@ -114,6 +144,7 @@ function SearchableSelectBody({
             autoCorrect="off"
             autoCapitalize="none"
             enterKeyHint="search"
+            maxLength={4}
             className="w-full touch-manipulation rounded-md border py-2 pl-8 pr-8 text-base focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {searchTerm && (
@@ -129,12 +160,13 @@ function SearchableSelectBody({
       </div>
 
       <CommandList
+        onScroll={handleScroll}
         className={cn(
           "max-h-[50vh] overflow-y-auto overscroll-contain sm:max-h-60",
           listClassName,
         )}
       >
-        {loading ? (
+        {loading && filteredOptions.length === 0 ? (
           <div className="flex items-center justify-center px-3 py-4 text-sm text-muted-foreground">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             {loadingMessage}
@@ -148,15 +180,34 @@ function SearchableSelectBody({
             {emptyMessage}
           </div>
         ) : (
-          filteredOptions.map((option) => (
-            <CommandItem
-              key={option.value}
-              value={`${option.label} ${option.searchText || ""}`}
-              onSelect={() => onSelect(option.value)}
-            >
-              {renderOption ? renderOption(option) : option.label}
-            </CommandItem>
-          ))
+          <>
+            {filteredOptions.map((option) =>
+              serverSideSearch ? (
+                <button
+                  key={option.value}
+                  type="button"
+                  className="relative flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-hidden hover:bg-accent hover:text-accent-foreground"
+                  onClick={() => onSelect(option.value)}
+                >
+                  {renderOption ? renderOption(option) : option.label}
+                </button>
+              ) : (
+                <CommandItem
+                  key={option.value}
+                  value={`${option.label} ${option.searchText || ""}`}
+                  onSelect={() => onSelect(option.value)}
+                >
+                  {renderOption ? renderOption(option) : option.label}
+                </CommandItem>
+              ),
+            )}
+            {loadingMore && (
+              <div className="flex items-center justify-center px-3 py-2 text-sm text-muted-foreground">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {loadingMoreMessage}
+              </div>
+            )}
+          </>
         )}
       </CommandList>
     </>
@@ -212,6 +263,11 @@ export function SearchableSelect({
   errorMessage = "Error loading options",
   options = [],
   onSearch,
+  onLoadMore,
+  hasMore = false,
+  loadingMore = false,
+  loadingMoreMessage = "Loading more...",
+  maxSearchLength = 4,
   loading = false,
   error = null,
   serverSideSearch = false,
@@ -245,7 +301,9 @@ export function SearchableSelect({
   }, [options, searchTerm, serverSideSearch]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchTerm = e.target.value;
+    const newSearchTerm = e.target.value
+      .replace(/\D/g, "")
+      .slice(0, maxSearchLength);
     setSearchTerm(newSearchTerm);
     onSearch?.(newSearchTerm);
   };
@@ -313,6 +371,11 @@ export function SearchableSelect({
     errorMessage,
     renderOption,
     onSelect: handleSelect,
+    hasMore,
+    loadingMore,
+    loadingMoreMessage,
+    onLoadMore,
+    serverSideSearch,
   };
 
   if (isMobile) {
