@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { DataTable } from "@/components/TableView/data-table";
 import { MemberRow, getMemberColumns } from "./columns";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { archiveMember } from "@/lib/api-client";
 import { type AccessObject } from "@/lib/roles";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +17,7 @@ export function MembersTableClient({ data }: { data: MemberRow[] }) {
   const [rows, setRows] = useState(data);
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const { t, lang } = useLanguage();
   const [userPermissions, setUserPermissions] = useState<AccessObject | null>(null);
 
   useEffect(() => {
@@ -64,15 +66,15 @@ export function MembersTableClient({ data }: { data: MemberRow[] }) {
       await archiveMember(memberId, session.user.accessToken);
       setRows((prev) => prev.filter((row) => row.id !== memberId));
       theToast.toast({
-        title: "సభ్యుడు ఆర్కైవ్ అయ్యారు",
+        title: t.membersBrowse.archiveSuccess,
         duration: 3000,
       });
       router.refresh();
     } catch (error) {
       theToast.toast({
-        title: "లోపం",
+        title: t.common.error,
         description:
-          error instanceof Error ? error.message : "సభ్యుని ఆర్కైవ్ చేయలేకపోయాం",
+          error instanceof Error ? error.message : t.membersBrowse.archiveError,
         variant: "destructive",
         duration: 5000,
       });
@@ -81,7 +83,7 @@ export function MembersTableClient({ data }: { data: MemberRow[] }) {
 
   return (
     <DataTable<MemberRow, unknown>
-      columns={getMemberColumns({
+      columns={getMemberColumns(t, lang, {
         canArchive: !!userPermissions?.admin,
         onArchive: handleArchive,
       })}

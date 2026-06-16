@@ -8,6 +8,7 @@ import { getUsers, updateUserRoles } from "@/lib/api-client";
 import { createColumns } from "./columns";
 import { useSession } from "next-auth/react";
 import { type AccessObject } from "@/lib/roles";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 type UserRow = {
   id: string;
@@ -18,6 +19,7 @@ type UserRow = {
 
 export default function CustomersPage() {
   const { data: session } = useSession();
+  const { t } = useLanguage();
   const [data, setData] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,18 +106,16 @@ export default function CustomersPage() {
 
     try {
       await updateUserRoles(id, roles, session.user.accessToken);
-      // Update local state
       setData((prev) => prev.map((u) => (u.id === id ? { ...u, roles } : u)));
     } catch (error) {
       console.error("Failed to update user roles:", error);
-      // You could add a toast notification here
     }
   };
 
-  const columns = createColumns(handleUpdateRoles, userPermissions);
+  const columns = createColumns(handleUpdateRoles, userPermissions, t);
 
   return (
-    <ContentLayout title="పాత్రల నిర్వహణ">
+    <ContentLayout title={t.customersPage.title}>
       <div className="shadow-md bg-background rounded-lg">
         <div className="p-4">
           {loading ? (

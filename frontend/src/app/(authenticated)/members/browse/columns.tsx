@@ -1,16 +1,23 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 export type MemberRow = {
   id: string;
-  givenName: string;
-  familyName: string;
+  givenNameEnglish: string;
+  familyNameEnglish: string;
+  givenNameTelugu: string;
+  familyNameTelugu: string;
   husbandOrFatherName: string;
   aadharNumber: string;
   phoneNumber: string;
-  mandal: string;
-  village: string;
+  mandalEnglish: string;
+  mandalTelugu: string;
+  villageEnglish: string;
+  villageTelugu: string;
   savingsBalance: number;
   withdrawBalance: number;
   laagodiBalance: number;
@@ -20,68 +27,83 @@ function formatInr(amount: number): string {
   return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
 }
 
-export function getMemberColumns(opts?: {
-  onArchive?: (memberId: string) => Promise<void> | void;
-  canArchive?: boolean;
-}): ColumnDef<MemberRow>[] {
+// The columns need access to translations - we pass t and lang as parameters
+export function getMemberColumns(
+  t: ReturnType<typeof useLanguage>["t"],
+  lang: ReturnType<typeof useLanguage>["lang"],
+  opts?: {
+    onArchive?: (memberId: string) => Promise<void> | void;
+    canArchive?: boolean;
+  }
+): ColumnDef<MemberRow>[] {
   const onArchive = opts?.onArchive;
   const canArchive = opts?.canArchive;
 
   return [
     {
       id: "memberName",
-      accessorFn: (row) => `${row.givenName} ${row.familyName}`.trim(),
-      header: "సభ్యుని పేరు",
-      cell: ({ row }) => (
-        <Link
-          href={`/members/${row.original.id}`}
-          className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-        >
-          {row.original.givenName}
-        </Link>
-      ),
+      accessorFn: (row) => {
+        const given = lang === "te" ? row.givenNameTelugu : row.givenNameEnglish;
+        const family = lang === "te" ? row.familyNameTelugu : row.familyNameEnglish;
+        return `${given} ${family}`.trim();
+      },
+      header: t.membersBrowse.colName,
+      cell: ({ row }) => {
+        const given = lang === "te" ? row.original.givenNameTelugu : row.original.givenNameEnglish;
+        return (
+          <Link
+            href={`/members/${row.original.id}`}
+            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+          >
+            {given}
+          </Link>
+        );
+      },
     },
     {
-      accessorKey: "familyName",
-      header: "ఇంటి పేరు",
+      id: "familyName",
+      accessorFn: (row) => lang === "te" ? row.familyNameTelugu : row.familyNameEnglish,
+      header: t.membersBrowse.colFamilyName,
     },
     {
       accessorKey: "husbandOrFatherName",
-      header: "భర్త / తండ్రి పేరు",
+      header: t.membersBrowse.colHusbandFather,
     },
     {
       accessorKey: "aadharNumber",
-      header: "ఆధార్ నంబర్",
+      header: t.membersBrowse.colAadhar,
     },
     {
       accessorKey: "phoneNumber",
-      header: "ఫోన్ నంబర్",
+      header: t.membersBrowse.colPhone,
     },
     {
-      accessorKey: "mandal",
-      header: "మండలం",
+      id: "mandal",
+      accessorFn: (row) => lang === "te" ? row.mandalTelugu : row.mandalEnglish,
+      header: t.membersBrowse.colMandal,
     },
     {
-      accessorKey: "village",
-      header: "ఊరు",
+      id: "village",
+      accessorFn: (row) => lang === "te" ? row.villageTelugu : row.villageEnglish,
+      header: t.membersBrowse.colVillage,
     },
     {
       accessorKey: "savingsBalance",
-      header: "సేవింగ్స్ బ్యాలెన్స్",
+      header: t.membersBrowse.colSavings,
       cell: ({ row }) => (
         <span className="tabular-nums">{formatInr(row.original.savingsBalance)}</span>
       ),
     },
     {
       accessorKey: "withdrawBalance",
-      header: "విత్‌డ్రాల్ బ్యాలెన్స్",
+      header: t.membersBrowse.colWithdraw,
       cell: ({ row }) => (
         <span className="tabular-nums">{formatInr(row.original.withdrawBalance)}</span>
       ),
     },
     {
       accessorKey: "laagodiBalance",
-      header: "లాగోడి బ్యాలెన్స్",
+      header: t.membersBrowse.colLaagodi,
       cell: ({ row }) => (
         <span className="tabular-nums">{formatInr(row.original.laagodiBalance)}</span>
       ),
@@ -90,20 +112,20 @@ export function getMemberColumns(opts?: {
       ? ([
           {
             id: "actions",
-            header: "చర్యలు",
+            header: t.membersBrowse.colActions,
             cell: ({ row }) => (
               <Button
                 size="sm"
                 variant="destructive"
                 onClick={async () => {
                   const ok = window.confirm(
-                    "ఈ సభ్యుని ఆర్కైవ్ చేయాలా? వారు జాబితాలో కనిపించరు.",
+                    t.membersBrowse.archiveConfirm,
                   );
                   if (!ok) return;
                   await onArchive(row.original.id);
                 }}
               >
-                ఆర్కైవ్
+                {t.membersBrowse.archiveBtn}
               </Button>
             ),
           } satisfies ColumnDef<MemberRow>,

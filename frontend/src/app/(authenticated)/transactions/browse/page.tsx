@@ -6,11 +6,13 @@ import { getTransactions, archiveTransaction } from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
 import { getTransactionColumns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
+import { useLanguage } from "@/i18n/LanguageContext";
 import { useSession } from "next-auth/react";
 import { type AccessObject } from "@/lib/roles";
 import { useToast } from "@/hooks/use-toast";
 
 export default function TransactionsPage() {
+  const { t } = useLanguage();
   const { data: session } = useSession();
   const theToast = useToast();
   const [transactions, setTransactions] = useState<TransactionWithNames[]>([]);
@@ -91,14 +93,14 @@ export default function TransactionsPage() {
         total: Math.max(0, prev.total - 1),
       }));
       theToast.toast({
-        title: "ట్రాన్సాక్షన్ ఆర్కైవ్ అయింది",
+        title: t.transactionsBrowse.archiveSuccess,
         duration: 3000,
       });
     } catch (error) {
       theToast.toast({
-        title: "లోపం",
+        title: t.common.error,
         description:
-          error instanceof Error ? error.message : "ట్రాన్సాక్షన్ ఆర్కైవ్ చేయలేకపోయాం",
+          error instanceof Error ? error.message : t.transactionsBrowse.archiveError,
         variant: "destructive",
         duration: 5000,
       });
@@ -106,15 +108,15 @@ export default function TransactionsPage() {
   };
 
   return (
-    <ContentLayout title="ట్రాన్సాక్షన్లు">
+    <ContentLayout title={t.transactionsBrowse.title}>
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="shadow-md bg-background rounded-lg p-2">
             <div className="text-lg sm:text-xl font-semibold py-2">
-              ట్రాన్సాక్షన్లు
+              {t.transactionsBrowse.title}
             </div>
           <div className="overflow-x-auto">
             <DataTable
-              columns={getTransactionColumns({
+              columns={getTransactionColumns(t, {
                 canArchive: !!userPermissions?.admin,
                 onArchive: handleArchive,
               })}

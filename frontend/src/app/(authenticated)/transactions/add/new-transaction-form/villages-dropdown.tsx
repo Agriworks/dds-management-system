@@ -9,6 +9,7 @@ import {
 import { Village } from "@/types/api";
 import { getVillages } from "@/lib/api-client";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 interface VillageDropdownProps {
   mandalId: string;
@@ -23,6 +24,7 @@ export function VillageDropdown({
   disabled,
   onChange,
 }: VillageDropdownProps) {
+  const { t, lang } = useLanguage();
   const [villages, setVillages] = useState<Village[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,14 +61,14 @@ export function VillageDropdown({
           placeholder={
             loading ? (
               <span className="inline-flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" /> Loading villages...
+                <Loader2 className="h-4 w-4 animate-spin" /> {t.common.loading}
               </span>
             ) : error ? (
               error
             ) : !mandalId ? (
-              "ముందు మండలం ఎంచుకోండి"
+              t.villageDropdown.selectMandalFirst
             ) : (
-              "ఊరు ఎంచుకోండి"
+              t.villageDropdown.placeholder
             )
           }
         />
@@ -74,7 +76,7 @@ export function VillageDropdown({
       <SelectContent>
         {loading ? (
           <div className="flex items-center justify-center py-2 px-3 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin mr-2" /> Loading...
+            <Loader2 className="h-4 w-4 animate-spin mr-2" /> {t.common.loading}
           </div>
         ) : error ? (
           <div className="py-2 px-3 text-sm text-destructive text-center">
@@ -82,12 +84,12 @@ export function VillageDropdown({
           </div>
         ) : villages.length === 0 ? (
           <div className="py-2 px-3 text-sm text-muted-foreground text-center">
-            ఊరు కనుగొనబడలేదు
+            {t.villageDropdown.notFound}
           </div>
         ) : (
           villages.map((village) => (
             <SelectItem key={village.id} value={village.id}>
-              {village.label_telugu}
+              {lang === "te" ? village.label_telugu : (village.label_english || village.label_telugu)}
             </SelectItem>
           ))
         )}
