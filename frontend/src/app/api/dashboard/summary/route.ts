@@ -39,12 +39,12 @@ export async function GET(): Promise<NextResponse> {
       villages.map(async (village) => {
         const [memberCount, depositsAgg, loansAgg] = await Promise.all([
           prisma.members.count({
-            where: { village_id: village.id, is_archived: true },
+            where: { village_id: village.id, is_archived: false },
           }),
           prisma.transactions.aggregate({
             _sum: { amount: true },
             where: {
-              is_archived: true,
+              is_archived: false,
               is_deleted: false,
               transaction_type: "credit",
               members: {
@@ -55,7 +55,7 @@ export async function GET(): Promise<NextResponse> {
           prisma.transactions.aggregate({
             _sum: { amount: true },
             where: {
-              is_archived: true,
+              is_archived: false,
               is_deleted: false,
               transaction_type: "debit",
               members: {

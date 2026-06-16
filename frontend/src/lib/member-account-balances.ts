@@ -15,7 +15,7 @@ async function balanceByAccountIds(accountIds: string[]): Promise<Map<string, nu
       by: ["account_id"],
       where: {
         account_id: { in: accountIds },
-        is_archived: true,
+        is_archived: false,
         is_deleted: false,
         transaction_type: "credit",
       },
@@ -25,7 +25,7 @@ async function balanceByAccountIds(accountIds: string[]): Promise<Map<string, nu
       by: ["account_id"],
       where: {
         account_id: { in: accountIds },
-        is_archived: true,
+        is_archived: false,
         is_deleted: false,
         transaction_type: "debit",
       },
@@ -122,7 +122,7 @@ export async function getMemberLedger(memberId: string): Promise<{
   const balances = balancesMap.get(memberId) ?? emptyBalances();
 
   const txns = await prisma.transactions.findMany({
-    where: { member_id: memberId, is_archived: true, is_deleted: false },
+    where: { member_id: memberId, is_archived: false, is_deleted: false },
     orderBy: [{ transaction_date: "asc" }, { created_at: "asc" }],
     select: {
       id: true,

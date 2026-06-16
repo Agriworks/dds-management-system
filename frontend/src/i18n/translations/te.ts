@@ -19,7 +19,7 @@ export type Translations = {
     colPhone: string; colMandal: string; colVillage: string; colSavings: string;
     colWithdraw: string; colLaagodi: string;
     colActions: string; archiveConfirm: string; archiveBtn: string;
-    archiveSuccess: string; archiveError: string; newTransactionBtn: string;
+    archiveSuccess: string; archiveError: string;
     deleteBtn: string; deleteConfirmTitle: string; deleteConfirmDesc: string;
     deleteYes: string; deleteNo: string; deleteSuccess: string; deleteError: string;
   };
@@ -167,7 +167,6 @@ const te: Translations = {
     archiveBtn: "ఆర్కైవ్",
     archiveSuccess: "సభ్యుడు ఆర్కైవ్ అయ్యారు",
     archiveError: "సభ్యుని ఆర్కైవ్ చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
-    newTransactionBtn: "కొత్త ట్రాన్సాక్షన్",
     deleteBtn: "తొలగించు",
     deleteConfirmTitle: "శాశ్వతంగా తొలగించాలా?",
     deleteConfirmDesc: "మీరు ఖచ్చితంగా ఈ సభ్యుని శాశ్వతంగా తొలగించాలనుకుంటున్నారా?",

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     // Ensure member exists and belongs to villageId
     const member = await prisma.members.findFirst({
-      where: { id: memberId!, is_archived: true },
+      where: { id: memberId!, is_archived: false },
     });
     if (!member) {
       return createErrorResponse("NOT_FOUND", `Member ${memberId} not found`, 404);

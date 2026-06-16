@@ -50,20 +50,20 @@ export async function POST(
       );
     }
 
-    // Set is_archived = false on all transactions for this member
+    // Set is_archived = true on all transactions for this member
     const updateResult = await prisma.transactions.updateMany({
       where: { member_id: memberId },
-      data: { is_archived: false },
+      data: { is_archived: true },
     });
 
     // Archive the member so they no longer appear in the browse list
     await prisma.members.update({
       where: { id: memberId },
-      data: { is_archived: false },
+      data: { is_archived: true },
     });
 
     return createSuccessResponse(
-      { id: memberId, is_archived: false, transactions_updated: updateResult.count },
+      { id: memberId, is_archived: true, transactions_updated: updateResult.count },
       "Member deleted successfully",
     );
   } catch (error) {

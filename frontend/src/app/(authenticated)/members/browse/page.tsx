@@ -3,7 +3,6 @@ import { MembersTableClient } from "./members-table-client";
 import { MembersFiltersClient } from "./members-filters-client";
 import { getMemberBalancesForMembers } from "@/lib/member-account-balances";
 import { ClientContentLayout } from "@/components/admin-panel/client-content-layout";
-import { NewTransactionFab } from "./new-transaction-fab";
 
 async function getMembers(mandalId?: string, villageId?: string) {
   return prisma.members.findMany({
@@ -20,7 +19,7 @@ async function getMembers(mandalId?: string, villageId?: string) {
             village_id: villageId,
           }
         : {}),
-      is_archived: true,
+      is_archived: false,
     },
     orderBy: {
       given_name: "asc",
@@ -134,7 +133,6 @@ export default async function MembersBrowsePage({
               <MembersTableClient data={rows} />
             </div>
           </div>
-        <NewTransactionFab />
     </ClientContentLayout>
   );
 }

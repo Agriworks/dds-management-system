@@ -13,7 +13,7 @@ const transactionIdSchema = z.string().uuid();
 
 /**
  * POST /api/transactions/:transactionId/delete
- * Deletes a transaction by setting is_archived=false and reverses its balance effect (admin only).
+ * Deletes a transaction by setting is_archived=true and reverses its balance effect (admin only).
  */
 export async function POST(
   request: NextRequest,
@@ -56,14 +56,14 @@ export async function POST(
       );
     }
 
-    if (!transaction.is_archived) {
+    if (transaction.is_archived) {
       return createSuccessResponse(
-        { id: transaction.id, is_archived: false },
+        { id: transaction.id, is_archived: true },
         "Transaction already deleted",
       );
     }
 
-    // Since transaction is active (is_archived=true), we must reverse its balance effect when setting is_archived=false
+    // Since transaction is active (is_archived=false), we must reverse its balance effect when setting is_archived=true
     const reverseAdjustment =
       transaction.transaction_type === "credit"
         ? -transaction.amount
@@ -72,7 +72,7 @@ export async function POST(
     await prisma.$transaction(async (tx) => {
       await tx.transactions.update({
         where: { id: transactionId },
-        data: { is_archived: false },
+        data: { is_archived: true },
       });
 
       await tx.accounts.update({
@@ -86,7 +86,7 @@ export async function POST(
     });
 
     return createSuccessResponse(
-      { id: transactionId, is_archived: false },
+      { id: transactionId, is_archived: true },
       "Transaction deleted successfully",
     );
   } catch (error) {
