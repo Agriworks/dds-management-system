@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createTransaction } from "@/lib/api-client";
+import { createTransaction, getCustomers } from "@/lib/api-client";
 import { Input } from "@/components/ui/input";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,12 +28,14 @@ import { MandalDropdown } from "./new-transaction-form/mandals-dropdown";
 import { VillageDropdown } from "./new-transaction-form/villages-dropdown";
 import { CustomerDropdown } from "./new-transaction-form/customer-search";
 import { AccountsDropdown } from "./new-transaction-form/accounts-dropdown";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Loader2, Plus } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { Customer } from "@/types/api";
 
 interface FormSchemaValues {
   mandal: string;
@@ -50,6 +52,9 @@ export default function AddTransactionForm() {
   const theToast = useToast();
   const [loading, setLoading] = useState(false);
   const { t } = useLanguage();
+  const searchParams = useSearchParams();
+  const [prefillCustomer, setPrefillCustomer] = useState<Customer | null>(null);
+  const prefillApplied = useRef(false);
 
   const formSchema = useMemo(() => z
     .object({
@@ -81,6 +86,35 @@ export default function AddTransactionForm() {
       comments: null,
     },
   });
+
+  useEffect(() => {
+    if (prefillApplied.current) return;
+
+    const memberId = searchParams.get("memberId");
+    const mandalId = searchParams.get("mandalId");
+    const villageId = searchParams.get("villageId");
+    const aadhar = searchParams.get("aadhar");
+
+    if (!memberId || !mandalId || !villageId) return;
+
+    prefillApplied.current = true;
+    form.setValue("mandal", mandalId);
+    form.setValue("village", villageId);
+    form.setValue("customer", memberId);
+
+    if (aadhar) {
+      void getCustomers({
+        mandalId,
+        villageId,
+        search: aadhar.replace(/\D/g, "").slice(-4),
+        limit: "10",
+        offset: "0",
+      }).then((data) => {
+        const found = data.customers.find((customer) => customer.id === memberId);
+        if (found) setPrefillCustomer(found);
+      });
+    }
+  }, [searchParams, form]);
 
   async function onSubmit(values: FormSchemaValues) {
     try {
@@ -149,12 +183,12 @@ export default function AddTransactionForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="h-full flex flex-col space-y-6 p-6"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-background shadow-none">
+          <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
+            <Card className="min-w-0 overflow-hidden bg-background shadow-none">
               <CardHeader>
                 <CardTitle>{t.transactionAdd.cardMember}</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-6">
+              <CardContent className="grid min-w-0 gap-6">
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
@@ -220,14 +254,20 @@ export default function AddTransactionForm() {
                           {t.transactionAdd.member}
                           <span className="text-destructive">*</span>
                         </FormLabel>
-                        <div className="flex gap-2 items-start">
-                          <FormControl className="flex-1">
+                        <div className="flex min-w-0 items-start gap-2">
+                          <div className="min-w-0 flex-1">
+                          <FormControl>
                             <CustomerDropdown
                               mandalId={form.watch("mandal")}
                               villageId={form.watch("village")}
                               value={field.value}
+                              initialCustomer={prefillCustomer}
                               onChange={(val) => {
                                 field.onChange(val);
+                                form.setValue("accountId", "");
+                              }}
+                              onVillageChange={(memberVillageId) => {
+                                form.setValue("village", memberVillageId);
                                 form.setValue("accountId", "");
                               }}
                               disabled={
@@ -235,6 +275,7 @@ export default function AddTransactionForm() {
                               }
                             />
                           </FormControl>
+                          </div>
                           <Button
                             type="button"
                             variant="outline"
@@ -276,11 +317,11 @@ export default function AddTransactionForm() {
               </CardContent>
             </Card>
 
-            <Card className="bg-background shadow-none">
+            <Card className="min-w-0 overflow-hidden bg-background shadow-none">
               <CardHeader>
                 <CardTitle>{t.transactionAdd.cardTransaction}</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-6">
+              <CardContent className="grid min-w-0 gap-6">
                 <div className="space-y-2">
                   <FormField
                     control={form.control}

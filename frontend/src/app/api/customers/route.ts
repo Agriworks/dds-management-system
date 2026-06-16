@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 
 /**
  * GET /api/customers?villageId=string&mandalId=string&limit=number&offset=number&search=string
- * Returns members for a given village and mandal, searchable by Aadhar number only.
+ * Returns members for a given village and mandal, searchable by the last 4 digits of Aadhar.
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
@@ -30,15 +30,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return createErrorResponse("VALIDATION_ERROR", validationError, 400);
     }
 
-    if (!search) {
+    if (!search || search.length < 4) {
       return createSuccessResponse(
         {
           items: [],
           pagination: { total: 0, limit: 0, offset: 0, hasMore: false },
         },
-        "Enter an Aadhar number to search for members",
+        "Enter the last 4 digits of Aadhar number to search for members",
       );
     }
+
+    const searchSuffix = search.slice(-4);
 
     const limit = limitParam ? parseInt(limitParam, 10) : 100;
     const offset = offsetParam ? parseInt(offsetParam, 10) : 0;
@@ -59,25 +61,41 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const village = await prisma.villages.findFirst({
-      where: {
-        id: villageId!,
-        mandal_id: mandalId!,
-      },
+    const mandal = await prisma.mandals.findUnique({
+      where: { id: mandalId! },
     });
 
-    if (!village) {
+    if (!mandal) {
       return createErrorResponse(
         "NOT_FOUND",
-        `Village with ID ${villageId} not found in mandal ${mandalId}`,
+        `Mandal with ID ${mandalId} not found`,
         404,
       );
     }
 
+    if (villageId) {
+      const village = await prisma.villages.findFirst({
+        where: {
+          id: villageId,
+          mandal_id: mandalId!,
+        },
+      });
+
+      if (!village) {
+        return createErrorResponse(
+          "NOT_FOUND",
+          `Village with ID ${villageId} not found in mandal ${mandalId}`,
+          404,
+        );
+      }
+    }
+
     const whereConditions = {
-      village_id: villageId!,
       is_archived: false,
-      aadhar_number: { contains: search },
+      aadhar_number: { endsWith: searchSuffix },
+      villages: {
+        mandal_id: mandalId!,
+      },
     };
 
     const [customers, total] = await Promise.all([
@@ -102,6 +120,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           husband_or_father_name: true,
           created_at: true,
           updated_at: true,
+          villages: {
+            select: {
+              label_english: true,
+            },
+          },
         },
         orderBy: {
           aadhar_number: "asc",
@@ -122,6 +145,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       id: customer.id,
       full_name_english: `${customer.given_name} ${customer.family_name}`.trim(),
       village_id: customer.village_id,
+      village_name: customer.villages.label_english,
       house_number: customer.house_number,
       phone_number: customer.phone_number,
       aadhar_number: customer.aadhar_number,

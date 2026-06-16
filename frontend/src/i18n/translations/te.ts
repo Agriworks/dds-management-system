@@ -60,7 +60,7 @@ export type Translations = {
   villageDropdown: { placeholder: string; selectMandalFirst: string; notFound: string };
   customerDropdown: {
     placeholder: string; selectMandaVillageFirst: string; searchPlaceholder: string;
-    emptyMessage: string; loadingMessage: string; errorMessage: string;
+    emptyMessage: string; loadingMessage: string; loadingMoreMessage: string; errorMessage: string;
   };
   accountsDropdown: { selectMemberFirst: string; placeholder: string; notFound: string; memberNotFound: string };
   accessRestricted: {
@@ -303,8 +303,9 @@ const te: Translations = {
   customerDropdown: {
     placeholder: "సంఘం సభ్యుని ఎంచుకోండి",
     selectMandaVillageFirst: "ముందు మండలం మరియు ఊరు ఎంచుకోండి",
-    searchPlaceholder: "ఆధార్ నంబర్ ద్వారా వెతకండి...",
-    emptyMessage: "ఆధార్ నంబర్ ఇచ్చి సభ్యుని వెతకండి",
+    searchPlaceholder: "ఆధార్ చివరి 4 అంకెలు...",
+    emptyMessage: "వెతకడానికి ఆధార్ చివరి 4 అంకెలు ఇవ్వండి",
+    loadingMoreMessage: "మరిన్ని సభ్యులు లోడ్ అవుతున్నారు...",
     loadingMessage: "సభ్యుల వివరాలు లోడ్ అవుతున్నాయి...",
     errorMessage: "సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం",
   },
