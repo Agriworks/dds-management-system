@@ -69,6 +69,13 @@ const en: Translations = {
     archiveBtn: "Archive",
     archiveSuccess: "Member archived successfully",
     archiveError: "Failed to archive member. Please try again.",
+    deleteBtn: "Delete",
+    deleteConfirmTitle: "Delete permanently?",
+    deleteConfirmDesc: "Are you sure you want to delete this member permanently?",
+    deleteYes: "Yes",
+    deleteNo: "No",
+    deleteSuccess: "Member deleted successfully",
+    deleteError: "Failed to delete member. Please try again.",
   },
 
   // Member – Add
@@ -141,6 +148,13 @@ const en: Translations = {
     archiveBtn: "Archive",
     archiveSuccess: "Transaction archived successfully",
     archiveError: "Failed to archive transaction",
+    deleteBtn: "Delete",
+    deleteConfirmTitle: "Delete Permanently?",
+    deleteConfirmDesc: "Are you sure you want to delete this transaction permanently?",
+    deleteYes: "Yes",
+    deleteNo: "No",
+    deleteSuccess: "Transaction deleted successfully",
+    deleteError: "Failed to delete transaction. Please try again.",
   },
 
   // Transactions – Add
