@@ -3,6 +3,7 @@ export type Translations = {
     dashboard: string; members: string; browseMembers: string; addMember: string;
     transactions: string; browseTransactions: string; addTransaction: string;
     accounts: string; rolesManagement: string; language: string; logout: string; account: string;
+    deletedMembers: string; deletedTransactions: string;
   };
   common: {
     loading: string; noResults: string; noResultsDot: string; tableEnd: string;
@@ -22,6 +23,8 @@ export type Translations = {
     archiveSuccess: string; archiveError: string;
     deleteBtn: string; deleteConfirmTitle: string; deleteConfirmDesc: string;
     deleteYes: string; deleteNo: string; deleteSuccess: string; deleteError: string;
+    deletedTitle: string; restoreBtn: string; restoreConfirmTitle: string; restoreConfirmDesc: string;
+    restoreSuccess: string; restoreError: string;
   };
   memberAdd: {
     title: string; cardPersonal: string; cardLocation: string; givenName: string;
@@ -45,6 +48,8 @@ export type Translations = {
     archiveConfirm: string; archiveBtn: string; archiveSuccess: string; archiveError: string;
     deleteBtn: string; deleteConfirmTitle: string; deleteConfirmDesc: string;
     deleteYes: string; deleteNo: string; deleteSuccess: string; deleteError: string;
+    deletedTitle: string; restoreBtn: string; restoreConfirmTitle: string; restoreConfirmDesc: string;
+    restoreSuccess: string; restoreError: string;
   };
   transactionAdd: {
     title: string; cardMember: string; cardTransaction: string; mandal: string; village: string;
@@ -112,6 +117,8 @@ const te: Translations = {
     language: "Language",
     logout: "లాగ్ అవుట్",
     account: "ఖాతా",
+    deletedMembers: "తొలగించబడిన సభ్యులు",
+    deletedTransactions: "తొలగించబడిన ట్రాన్సాక్షన్లు",
   },
 
   // Common
@@ -174,6 +181,12 @@ const te: Translations = {
     deleteNo: "కాదు",
     deleteSuccess: "సభ్యుడు విజయవంతంగా తొలగించబడ్డారు",
     deleteError: "సభ్యుని తొలగించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    deletedTitle: "తొలగించబడిన సభ్యులు",
+    restoreBtn: "పునరుద్ధరించు",
+    restoreConfirmTitle: "పునరుద్ధరించాలా?",
+    restoreConfirmDesc: "మీరు ఈ సభ్యుని పునరుద్ధరించాలనుకుంటున్నారా?",
+    restoreSuccess: "సభ్యుడు విజయవంతంగా పునరుద్ధరించబడ్డారు",
+    restoreError: "సభ్యుని పునరుద్ధరించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
   },
 
   // Member – Add
@@ -253,6 +266,12 @@ const te: Translations = {
     deleteNo: "కాదు",
     deleteSuccess: "ట్రాన్సాక్షన్ విజయవంతంగా తొలగించబడింది",
     deleteError: "ట్రాన్సాక్షన్‌ను తొలగించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+    deletedTitle: "తొలగించబడిన ట్రాన్సాక్షన్లు",
+    restoreBtn: "పునరుద్ధరించు",
+    restoreConfirmTitle: "పునరుద్ధరించాలా?",
+    restoreConfirmDesc: "మీరు ఈ ట్రాన్సాక్షన్‌ను పునరుద్ధరించాలనుకుంటున్నారా? ఇది బ్యాలెన్స్ ప్రభావాన్ని తిరిగి వర్తింపజేస్తుంది.",
+    restoreSuccess: "ట్రాన్సాక్షన్ విజయవంతంగా పునరుద్ధరించబడింది",
+    restoreError: "ట్రాన్సాక్షన్‌ను పునరుద్ధరించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
   },
 
   // Transactions – Add

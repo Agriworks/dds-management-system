@@ -15,6 +15,8 @@ const en: Translations = {
     language: "Language",
     logout: "Log Out",
     account: "Account",
+    deletedMembers: "Deleted Members",
+    deletedTransactions: "Deleted Transactions",
   },
 
   // Common
@@ -76,6 +78,12 @@ const en: Translations = {
     deleteNo: "No",
     deleteSuccess: "Member deleted successfully",
     deleteError: "Failed to delete member. Please try again.",
+    deletedTitle: "Deleted Members",
+    restoreBtn: "Restore",
+    restoreConfirmTitle: "Restore member?",
+    restoreConfirmDesc: "Are you sure you want to restore this member?",
+    restoreSuccess: "Member restored successfully",
+    restoreError: "Failed to restore member. Please try again.",
   },
 
   // Member – Add
@@ -155,6 +163,12 @@ const en: Translations = {
     deleteNo: "No",
     deleteSuccess: "Transaction deleted successfully",
     deleteError: "Failed to delete transaction. Please try again.",
+    deletedTitle: "Deleted Transactions",
+    restoreBtn: "Restore",
+    restoreConfirmTitle: "Restore transaction?",
+    restoreConfirmDesc: "Are you sure you want to restore this transaction? This will re-apply its balance impact.",
+    restoreSuccess: "Transaction restored successfully",
+    restoreError: "Failed to restore transaction. Please try again.",
   },
 
   // Transactions – Add

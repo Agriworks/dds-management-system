@@ -28,7 +28,7 @@ type Group = {
   menus: Menu[];
 };
 
-export function getMenuList(t: Translations): Group[] {
+export function getMenuList(t: Translations, showDeleted = false): Group[] {
   return [
     {
       groupLabel: "",
@@ -51,6 +51,14 @@ export function getMenuList(t: Translations): Group[] {
               href: "/members/add",
               label: t.nav.addMember,
             },
+            ...(showDeleted
+              ? [
+                  {
+                    href: "/members/deleted",
+                    label: t.nav.deletedMembers,
+                  },
+                ]
+              : []),
           ],
         },
         {
@@ -66,6 +74,14 @@ export function getMenuList(t: Translations): Group[] {
               href: "/transactions/add",
               label: t.nav.addTransaction,
             },
+            ...(showDeleted
+              ? [
+                  {
+                    href: "/transactions/deleted",
+                    label: t.nav.deletedTransactions,
+                  },
+                ]
+              : []),
           ],
         },
         {
