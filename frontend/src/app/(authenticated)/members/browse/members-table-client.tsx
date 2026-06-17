@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { DataTable } from "@/components/TableView/data-table";
 import { MemberRow, getMemberColumns } from "./columns";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { archiveMember } from "@/lib/api-client";
+import { archiveMember, deleteMember } from "@/lib/api-client";
 import { type AccessObject } from "@/lib/roles";
 import { useToast } from "@/hooks/use-toast";
 
@@ -81,11 +81,34 @@ export function MembersTableClient({ data }: { data: MemberRow[] }) {
     }
   };
 
+  const handleDelete = async (memberId: string) => {
+    if (!session?.user?.accessToken) return;
+
+    try {
+      await deleteMember(memberId, session.user.accessToken);
+      setRows((prev) => prev.filter((row) => row.id !== memberId));
+      theToast.toast({
+        title: t.membersBrowse.deleteSuccess,
+        duration: 3000,
+      });
+      router.refresh();
+    } catch (error) {
+      theToast.toast({
+        title: t.common.error,
+        description:
+          error instanceof Error ? error.message : t.membersBrowse.deleteError,
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
+  };
+
   return (
     <DataTable<MemberRow, unknown>
       columns={getMemberColumns(t, lang, {
         canArchive: !!userPermissions?.admin,
         onArchive: handleArchive,
+        onDelete: handleDelete,
       })}
       data={pagedData}
       pageCount={pageCount}

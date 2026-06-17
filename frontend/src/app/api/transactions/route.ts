@@ -51,7 +51,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Validate that the member exists and is not archived
+    // Validate that the member exists and is active
     const member = await prisma.members.findFirst({
       where: { id: data.member_id, is_archived: false },
     });
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           transaction_date: new Date(data.transaction_date),
           comments: data.comments || null,
           receipt_number: receiptNumber,
-          is_archived: true,
+          is_archived: false,
         },
         include: {
           members: {
@@ -222,7 +222,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       whereConditions.supervisor_id = supervisorId;
     }
 
-    // Only show valid (non-archived) transactions by default
+    // Only show active (non-archived/non-deleted) transactions by default
     if (isArchivedParam !== null) {
       whereConditions.is_archived = isArchivedParam === "true";
     } else {

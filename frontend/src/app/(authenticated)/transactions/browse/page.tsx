@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import { getTransactions, archiveTransaction } from "@/lib/api-client";
+import { getTransactions, deleteTransaction } from "@/lib/api-client";
 import { DataTable } from "@/components/TableView/data-table";
 import { getTransactionColumns } from "./columns";
 import { TransactionWithNames } from "@/types/transaction";
@@ -82,25 +82,25 @@ export default function TransactionsPage() {
     });
   };
 
-  const handleArchive = async (transactionId: string) => {
+  const handleDelete = async (transactionId: string) => {
     if (!session?.user?.accessToken) return;
 
     try {
-      await archiveTransaction(transactionId, session.user.accessToken);
+      await deleteTransaction(transactionId, session.user.accessToken);
       setTransactions((prev) => prev.filter((t) => t.id !== transactionId));
       setPagination((prev) => ({
         ...prev,
         total: Math.max(0, prev.total - 1),
       }));
       theToast.toast({
-        title: t.transactionsBrowse.archiveSuccess,
+        title: t.transactionsBrowse.deleteSuccess,
         duration: 3000,
       });
     } catch (error) {
       theToast.toast({
         title: t.common.error,
         description:
-          error instanceof Error ? error.message : t.transactionsBrowse.archiveError,
+          error instanceof Error ? error.message : t.transactionsBrowse.deleteError,
         variant: "destructive",
         duration: 5000,
       });
@@ -117,8 +117,8 @@ export default function TransactionsPage() {
           <div className="overflow-x-auto">
             <DataTable
               columns={getTransactionColumns(t, {
-                canArchive: !!userPermissions?.admin,
-                onArchive: handleArchive,
+                canDelete: !!userPermissions?.admin,
+                onDelete: handleDelete,
               })}
               data={transactions}
               pageCount={Math.ceil(pagination.total / pagination.limit)}

@@ -453,6 +453,34 @@ export async function archiveMember(
   return data.data;
 }
 
+export async function deleteMember(
+  memberId: string,
+  accessToken: string,
+): Promise<{ id: string; transactions_updated: number }> {
+  const response = await fetch(`${API_BASE_URL}/members/${memberId}/delete`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to delete member");
+  }
+
+  return data.data;
+}
+
 export async function archiveTransaction(
   transactionId: string,
   accessToken: string,
@@ -479,6 +507,37 @@ export async function archiveTransaction(
   const data = await response.json();
   if (!data.success) {
     throw new Error(data.error?.message || "Failed to archive transaction");
+  }
+
+  return data.data;
+}
+
+export async function deleteTransaction(
+  transactionId: string,
+  accessToken: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(
+    `${API_BASE_URL}/transactions/${transactionId}/delete`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to delete transaction");
   }
 
   return data.data;
