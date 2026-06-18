@@ -543,6 +543,92 @@ export async function deleteTransaction(
   return data.data;
 }
 
+export async function getDeletedMembers(
+  accessToken: string,
+): Promise<unknown[]> {
+  const response = await fetch(`${API_BASE_URL}/members/deleted`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to fetch deleted members");
+  }
+
+  return data.data;
+}
+
+export async function restoreMember(
+  memberId: string,
+  accessToken: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(`${API_BASE_URL}/members/${memberId}/restore`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to restore member");
+  }
+
+  return data.data;
+}
+
+export async function restoreTransaction(
+  transactionId: string,
+  accessToken: string,
+): Promise<{ id: string; is_archived: boolean }> {
+  const response = await fetch(
+    `${API_BASE_URL}/transactions/${transactionId}/restore`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      errorData.error?.message ||
+        `HTTP ${response.status}: ${response.statusText}`,
+    );
+  }
+
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Failed to restore transaction");
+  }
+
+  return data.data;
+}
+
 // Typed hooks for React components (if using SWR or React Query later)
 export type MandalApiHook = () => {
   mandals: Mandal[] | undefined;

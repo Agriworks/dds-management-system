@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSuccessResponse, createErrorResponse } from "@/lib/api-utils";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { requireAdminAccess } from "@/lib/admin-auth";
 
 const createTransactionSchema = z.object({
   supervisor_id: z.string().uuid("Supervisor ID must be a valid UUID"),
@@ -187,6 +188,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const supervisorId = searchParams.get("supervisorId");
     const type = searchParams.get("type");
     const isArchivedParam = searchParams.get("isArchived");
+
+    if (isArchivedParam === "true") {
+      const auth = await requireAdminAccess(request, "/transactions/deleted");
+      if (!auth.authorized) {
+        return createErrorResponse("FORBIDDEN", auth.message, auth.status);
+      }
+    }
 
     // Parse and validate optional parameters
     const limit = limitParam ? parseInt(limitParam, 10) : 10;

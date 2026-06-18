@@ -45,6 +45,8 @@ export interface SearchableSelectProps {
   serverSideSearch?: boolean;
   renderOption?: (option: SearchableSelectOption) => React.ReactNode;
   renderValue?: (value: string, options: SearchableSelectOption[]) => string;
+  inputMode?: "text" | "numeric" | "tel" | "search" | "url" | "email" | "decimal" | "none";
+  sanitizeSearch?: (val: string) => string;
 }
 
 const triggerClassName =
@@ -90,6 +92,8 @@ interface SearchableSelectBodyProps {
   loadingMoreMessage?: string;
   onLoadMore?: () => void;
   serverSideSearch?: boolean;
+  inputMode?: "text" | "numeric" | "tel" | "search" | "url" | "email" | "decimal" | "none";
+  maxSearchLength?: number;
 }
 
 function SearchableSelectBody({
@@ -112,6 +116,8 @@ function SearchableSelectBody({
   loadingMoreMessage = "Loading more...",
   onLoadMore,
   serverSideSearch = false,
+  inputMode = "numeric",
+  maxSearchLength = 4,
 }: SearchableSelectBodyProps) {
   const handleScroll = React.useCallback(
     (event: React.UIEvent<HTMLDivElement>) => {
@@ -136,7 +142,7 @@ function SearchableSelectBody({
           <input
             ref={searchInputRef}
             type="text"
-            inputMode="numeric"
+            inputMode={inputMode}
             placeholder={searchPlaceholder}
             value={searchTerm}
             onChange={onSearchChange}
@@ -144,7 +150,7 @@ function SearchableSelectBody({
             autoCorrect="off"
             autoCapitalize="none"
             enterKeyHint="search"
-            maxLength={4}
+            maxLength={maxSearchLength}
             className="w-full touch-manipulation rounded-md border py-2 pl-8 pr-8 text-base focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {searchTerm && (
@@ -273,6 +279,8 @@ export function SearchableSelect({
   serverSideSearch = false,
   renderOption,
   renderValue,
+  inputMode = "numeric",
+  sanitizeSearch,
 }: SearchableSelectProps) {
   const isMobile = useIsMobile();
   const viewportHeight = useVisualViewportHeight();
@@ -301,9 +309,8 @@ export function SearchableSelect({
   }, [options, searchTerm, serverSideSearch]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchTerm = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, maxSearchLength);
+    const sanitized = sanitizeSearch ? sanitizeSearch(e.target.value) : e.target.value.replace(/\D/g, "");
+    const newSearchTerm = sanitized.slice(0, maxSearchLength);
     setSearchTerm(newSearchTerm);
     onSearch?.(newSearchTerm);
   };
@@ -376,6 +383,8 @@ export function SearchableSelect({
     loadingMoreMessage,
     onLoadMore,
     serverSideSearch,
+    inputMode,
+    maxSearchLength,
   };
 
   if (isMobile) {
