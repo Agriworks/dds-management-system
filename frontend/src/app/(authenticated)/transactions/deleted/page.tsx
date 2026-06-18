@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useLanguage } from "@/i18n/LanguageContext";
