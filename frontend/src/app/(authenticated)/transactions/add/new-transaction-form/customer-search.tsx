@@ -9,7 +9,6 @@ import { useDebouncedCallback } from "@/hooks/use-debounce";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const PAGE_SIZE = 10;
-const MIN_SEARCH_LENGTH = 0;
 
 interface CustomerDropdownProps {
   mandalId: string;

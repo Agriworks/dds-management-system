@@ -5,6 +5,7 @@ import {
   validateRequiredParams,
 } from "@/lib/api-utils";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma";
 
 /**
  * GET /api/customers?villageId=string&mandalId=string&limit=number&offset=number&search=string
@@ -78,9 +79,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       }
     }
 
-    const whereConditions: any = {
+    const whereConditions: Prisma.membersWhereInput = {
       is_archived: false,
-      village_id: villageId,
+      ...(villageId ? { village_id: villageId } : {}),
       villages: {
         mandal_id: mandalId!,
       },
@@ -88,7 +89,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     if (search) {
       const isNumeric = /^\d+$/.test(search);
-      const conditions: any[] = [
+      const conditions: Prisma.membersWhereInput[] = [
         { given_name: { contains: search, mode: "insensitive" } },
         { family_name: { contains: search, mode: "insensitive" } },
         {
