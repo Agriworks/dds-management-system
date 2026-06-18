@@ -8,8 +8,8 @@ import { getCustomers } from "@/lib/api-client";
 import { useDebouncedCallback } from "@/hooks/use-debounce";
 import { useLanguage } from "@/i18n/LanguageContext";
 
-const PAGE_SIZE = 5;
-const MIN_SEARCH_LENGTH = 4;
+const PAGE_SIZE = 10;
+const MIN_SEARCH_LENGTH = 0;
 
 interface CustomerDropdownProps {
   mandalId: string;
@@ -54,23 +54,9 @@ export function CustomerDropdown({
     }
   }, [initialCustomer]);
 
-  useEffect(() => {
-    setCustomers([]);
-    setHasMore(false);
-    searchQueryRef.current = "";
-    offsetRef.current = 0;
-  }, [mandalId, villageId]);
-
   const fetchCustomers = useCallback(
     async (search: string, offset: number, append: boolean) => {
       if (!mandalId || !villageId) {
-        setCustomers([]);
-        setHasMore(false);
-        return;
-      }
-
-      const cleanSearch = search.replace(/\D/g, "");
-      if (cleanSearch.length < MIN_SEARCH_LENGTH) {
         setCustomers([]);
         setHasMore(false);
         return;
@@ -87,12 +73,12 @@ export function CustomerDropdown({
         const data = await getCustomers({
           mandalId,
           villageId,
-          search: cleanSearch,
+          search: search,
           limit: String(PAGE_SIZE),
           offset: String(offset),
         });
 
-        searchQueryRef.current = cleanSearch;
+        searchQueryRef.current = search;
         offsetRef.current = offset + data.customers.length;
         setHasMore(data.pagination.hasMore);
 
@@ -119,6 +105,16 @@ export function CustomerDropdown({
     [mandalId, villageId],
   );
 
+  useEffect(() => {
+    setCustomers([]);
+    setHasMore(false);
+    searchQueryRef.current = "";
+    offsetRef.current = 0;
+    if (mandalId && villageId) {
+      void fetchCustomers("", 0, false);
+    }
+  }, [mandalId, villageId, fetchCustomers]);
+
   const debouncedSearch = useDebouncedCallback(
     useCallback(
       (search: string) => {
@@ -131,24 +127,11 @@ export function CustomerDropdown({
   );
 
   const handleSearch = (search: string) => {
-    const cleanSearch = search.replace(/\D/g, "");
-    if (cleanSearch.length < MIN_SEARCH_LENGTH) {
-      setCustomers([]);
-      setHasMore(false);
-      searchQueryRef.current = "";
-      offsetRef.current = 0;
-      return;
-    }
-    debouncedSearch(cleanSearch);
+    debouncedSearch(search);
   };
 
   const handleLoadMore = useCallback(() => {
-    if (
-      loading ||
-      loadingMore ||
-      !hasMore ||
-      searchQueryRef.current.length < MIN_SEARCH_LENGTH
-    ) {
+    if (loading || loadingMore || !hasMore) {
       return;
     }
 
@@ -185,12 +168,13 @@ export function CustomerDropdown({
         lang === "te"
           ? customer.full_name_telugu || customer.full_name_english
           : customer.full_name_english || customer.full_name_telugu;
+      const phoneText = customer.phone_number ? `(${customer.phone_number}) ` : "";
       return {
         value: customer.id,
         label: customer.village_name
-          ? `${name} (${customer.aadhar_number}) — ${customer.village_name}`
-          : `${name} (${customer.aadhar_number})`,
-        searchText: customer.aadhar_number,
+          ? `${name} ${phoneText}(${customer.aadhar_number}) — ${customer.village_name}`
+          : `${name} ${phoneText}(${customer.aadhar_number})`,
+        searchText: `${name} ${customer.phone_number || ""} ${customer.aadhar_number}`,
       };
     },
   );
@@ -218,6 +202,9 @@ export function CustomerDropdown({
       loadingMore={loadingMore}
       error={error}
       serverSideSearch
+      inputMode="text"
+      sanitizeSearch={(val) => val}
+      maxSearchLength={50}
     />
   );
 }

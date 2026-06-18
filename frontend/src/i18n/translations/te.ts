@@ -340,8 +340,8 @@ const te: Translations = {
   customerDropdown: {
     placeholder: "సంఘం సభ్యుని ఎంచుకోండి",
     selectMandaVillageFirst: "ముందు మండలం మరియు ఊరు ఎంచుకోండి",
-    searchPlaceholder: "ఆధార్ చివరి 4 అంకెలు...",
-    emptyMessage: "వెతకడానికి ఆధార్ చివరి 4 అంకెలు ఇవ్వండి",
+    searchPlaceholder: "పేరు, ఫోన్ లేదా ఆధార్ చివరి 4 అంకెలు ద్వారా వెతకండి...",
+    emptyMessage: "సభ్యులు కనుగొనబడలేదు. పేరు, ఫోన్ లేదా ఆధార్ చివరి 4 అంకెలు ద్వారా వెతికి చూడండి.",
     loadingMoreMessage: "మరిన్ని సభ్యులు లోడ్ అవుతున్నారు...",
     loadingMessage: "సభ్యుల వివరాలు లోడ్ అవుతున్నాయి...",
     errorMessage: "సభ్యుల వివరాలు లోడ్ చేయలేకపోయాం",

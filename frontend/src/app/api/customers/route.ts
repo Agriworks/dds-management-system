@@ -17,7 +17,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const mandalId = searchParams.get("mandalId");
     const limitParam = searchParams.get("limit");
     const offsetParam = searchParams.get("offset");
-    const search = searchParams.get("search")?.replace(/\D/g, "") || "";
+    const search = searchParams.get("search") || "";
 
     const validationError = validateRequiredParams(
       {
@@ -29,18 +29,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     if (validationError) {
       return createErrorResponse("VALIDATION_ERROR", validationError, 400);
     }
-
-    if (!search || search.length < 4) {
-      return createSuccessResponse(
-        {
-          items: [],
-          pagination: { total: 0, limit: 0, offset: 0, hasMore: false },
-        },
-        "Enter the last 4 digits of Aadhar number to search for members",
-      );
-    }
-
-    const searchSuffix = search.slice(-4);
 
     const limit = limitParam ? parseInt(limitParam, 10) : 100;
     const offset = offsetParam ? parseInt(offsetParam, 10) : 0;
@@ -90,13 +78,43 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       }
     }
 
-    const whereConditions = {
+    const whereConditions: any = {
       is_archived: false,
-      aadhar_number: { endsWith: searchSuffix },
+      village_id: villageId,
       villages: {
         mandal_id: mandalId!,
       },
     };
+
+    if (search) {
+      const isNumeric = /^\d+$/.test(search);
+      const conditions: any[] = [
+        { given_name: { contains: search, mode: "insensitive" } },
+        { family_name: { contains: search, mode: "insensitive" } },
+        {
+          name_labels: {
+            some: {
+              OR: [
+                { given_name: { contains: search, mode: "insensitive" } },
+                { family_name: { contains: search, mode: "insensitive" } },
+              ],
+            },
+          },
+        },
+      ];
+
+      if (isNumeric) {
+        conditions.push({ phone_number: { contains: search } });
+        if (search.length >= 4) {
+          conditions.push({ aadhar_number: { endsWith: search.slice(-4) } });
+        }
+      } else {
+        conditions.push({ phone_number: { contains: search } });
+        conditions.push({ aadhar_number: { contains: search } });
+      }
+
+      whereConditions.OR = conditions;
+    }
 
     const [customers, total] = await Promise.all([
       prisma.members.findMany({
@@ -126,9 +144,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             },
           },
         },
-        orderBy: {
-          aadhar_number: "asc",
-        },
+        orderBy: [
+          { given_name: "asc" },
+          { family_name: "asc" },
+        ],
         take: limit,
         skip: offset,
       }),
