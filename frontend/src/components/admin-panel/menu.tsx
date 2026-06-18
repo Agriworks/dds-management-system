@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Ellipsis, LogOut, Settings, Languages } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -35,7 +36,40 @@ export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const { lang, setLang, t } = useLanguage();
-  const menuList = getMenuList(t);
+  const [showDeleted, setShowDeleted] = useState(false);
+
+  useEffect(() => {
+    if (!session?.user?.id || !session?.user?.accessToken) return;
+
+    let mounted = true;
+    (async () => {
+      try {
+        const response = await fetch(
+          `/api/users/${session.user.id}/permissions?endpoint=${encodeURIComponent("/members/deleted")}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${session.user.accessToken}`,
+            },
+          },
+        );
+
+        if (!response.ok) return;
+        const permissions = await response.json();
+        if (mounted) {
+          setShowDeleted(!!permissions?.admin);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user permissions for deleted items:", error);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [session?.user?.id, session?.user?.accessToken]);
+
+  const menuList = getMenuList(t, showDeleted);
 
   const handleLogout = async () => {
     await signOut({ redirect: true, callbackUrl: "/" });
