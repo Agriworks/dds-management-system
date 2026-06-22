@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ContentLayout } from "../../../components/admin-panel/content-layout";
-import { VillageTransactionsChart } from "./components/village-transactions-chart";
+import { MandalPieChart, MandalPieItem } from "./components/mandal-pie-chart";
 import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
@@ -14,8 +14,18 @@ type VillageSummary = {
   totalLoans: number;
 };
 
+type MandalSummary = {
+  mandalId: string;
+  mandalName: string;
+  mandalNameTelugu: string;
+  totalDeposits: number;
+  totalLoans: number;
+  totalLaagodi: number;
+};
+
 type DashboardSummaryResponse = {
   villages: VillageSummary[];
+  mandals: MandalSummary[];
   totals: {
     villageCount: number;
     memberCount: number;
@@ -26,7 +36,7 @@ type DashboardSummaryResponse = {
 
 export default function DashboardPage() {
   const { t } = useLanguage();
-  const [data, setData] = useState<VillageSummary[]>([]);
+  const [mandals, setMandals] = useState<MandalSummary[]>([]);
   const [totals, setTotals] = useState<DashboardSummaryResponse["totals"] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +59,7 @@ export default function DashboardPage() {
           throw new Error(json.error?.message || "Failed to load dashboard summary");
         }
 
-        setData(json.data.villages);
+        setMandals(json.data.mandals);
         setTotals(json.data.totals);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
@@ -61,10 +71,26 @@ export default function DashboardPage() {
     fetchSummary();
   }, []);
 
-  const chartData = data.map((village) => ({
-    village: village.villageName,
-    deposits: village.totalDeposits,
-    loans: village.totalLoans,
+  // Prepare pie chart data per category
+  const depositsData: MandalPieItem[] = mandals.map((m) => ({
+    mandalId: m.mandalId,
+    mandalName: m.mandalName,
+    mandalNameTelugu: m.mandalNameTelugu,
+    value: m.totalDeposits,
+  }));
+
+  const loansData: MandalPieItem[] = mandals.map((m) => ({
+    mandalId: m.mandalId,
+    mandalName: m.mandalName,
+    mandalNameTelugu: m.mandalNameTelugu,
+    value: m.totalLoans,
+  }));
+
+  const laagodiData: MandalPieItem[] = mandals.map((m) => ({
+    mandalId: m.mandalId,
+    mandalName: m.mandalName,
+    mandalNameTelugu: m.mandalNameTelugu,
+    value: m.totalLaagodi,
   }));
 
   return (
@@ -108,21 +134,24 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div className="flex-1 space-y-8 p-8 pt-4">
-          <div className="rounded-lg border bg-card p-4 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold">
-                  {t.dashboard.chartTitle}
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  {t.dashboard.chartSubtitle}
-                </p>
-              </div>
-            </div>
-              <VillageTransactionsChart data={chartData} />
-          </div>
-          </div>
+        {/* Pie Charts Grid */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-8 pt-4">
+          <MandalPieChart
+            title={t.dashboard.pieDeposits}
+            data={depositsData}
+            labelPrefix={t.dashboard.totalDepositsLabel}
+          />
+          <MandalPieChart
+            title={t.dashboard.pieLoans}
+            data={loansData}
+            labelPrefix={t.dashboard.totalLoansLabel}
+          />
+          <MandalPieChart
+            title={t.dashboard.pieLaagodi}
+            data={laagodiData}
+            labelPrefix={t.dashboard.totalLaagodiLabel}
+          />
+        </div>
         </div>
       )}
     </ContentLayout>
