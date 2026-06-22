@@ -13,6 +13,8 @@ export type Translations = {
   dashboard: {
     title: string; villages: string; members: string; totalDeposits: string; totalLoans: string;
     chartTitle: string; chartSubtitle: string; deposits: string; loans: string;
+    pieDeposits: string; pieLoans: string; pieLaagodi: string;
+    totalDepositsLabel: string; totalLoansLabel: string; totalLaagodiLabel: string;
   };
   membersBrowse: {
     title: string; mandal: string; village: string; filterBtn: string; resetBtn: string;
@@ -150,6 +152,12 @@ const te: Translations = {
     chartSubtitle: "ప్రతి గ్రామం నుండి మొత్తం రుణాలు మరియు డిపాజిట్లు.",
     deposits: "డిపాజిట్లు",
     loans: "రుణాలు",
+    pieDeposits: "సంఘం మొత్తం జమలు",
+    pieLoans: "సంఘం మొత్తం అప్పులు",
+    pieLaagodi: "సంఘం మొత్తం లోన్లు",
+    totalDepositsLabel: "మొత్తం జమలు",
+    totalLoansLabel: "మొత్తం అప్పులు",
+    totalLaagodiLabel: "మొత్తం లోన్లు",
   },
 
   // Members – Browse

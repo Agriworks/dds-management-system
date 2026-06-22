@@ -48,6 +48,12 @@ const en: Translations = {
     chartSubtitle: "Total amount of loans and deposits from each village.",
     deposits: "Deposits",
     loans: "Loans",
+    pieDeposits: "Sangham Total Deposits",
+    pieLoans: "Sangham Total Loans",
+    pieLaagodi: "Sangham Total Laagodi",
+    totalDepositsLabel: "Total Deposits",
+    totalLoansLabel: "Total Loans",
+    totalLaagodiLabel: "Total Laagodi",
   },
 
   membersBrowse: {
